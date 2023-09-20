@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/delta/FestAPI/config"
+	"github.com/delta/FestAPI/router"
 	"github.com/delta/FestAPI/utils"
 
 	"github.com/labstack/echo/v4"
@@ -11,8 +12,6 @@ import (
 func main() {
 
 	server := echo.New()
-
-	utils.InitLogger(server)
 	server.Use(middleware.CORS())
 	server.Use(middleware.Recover())
 
@@ -20,5 +19,10 @@ func main() {
 	config.ConnectDB()
 	config.MigrateDB()
 
+	router.NewRouter(server)
+
+	utils.InitLogger(server)
+
 	server.Logger.Fatal(server.Start(":" + config.ServerPort))
+
 }

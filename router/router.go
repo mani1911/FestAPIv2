@@ -1,8 +1,15 @@
 package router
 
-import "github.com/labstack/echo/v4"
+import (
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+)
 
 func NewRouter(e *echo.Echo) {
-	// Open Routes
-	_ = e.Group("/api/v1")
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+	apiRouter := e.Group("/api")
+	userRouter(apiRouter)
 }
