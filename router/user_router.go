@@ -8,12 +8,12 @@ import (
 
 func userRouter(e *echo.Group) {
 
-	userRoutes := e.Group("/user/")
+	userRoutes := e.Group("/user")
 	// Public Routes
-	userRoutes.GET("dauth/callback/", controller.AuthUserLogin)
-	userRoutes.POST("register", controller.AuthUserRegister)
-	userRoutes.POST("signin", controller.AuthUserSignin)
+	userRoutes.GET("/dauth/callback/", controller.DAuthUserLogin)
+	userRoutes.POST("/register", controller.AuthUserRegister)
+	userRoutes.POST("/login", controller.AuthUserLogin)
 	//Protected Routes
 	userRoutes.Use(middleware.UserAuth())
-	userRoutes.PUT("update", controller.AuthUserUpdate)
+	userRoutes.PUT("/update", controller.AuthUserUpdate)
 }

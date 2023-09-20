@@ -52,12 +52,7 @@ func AuthUserRegister(c echo.Context) error {
 		len(req.Phone) == 0 ||
 		len(req.Degree) == 0 ||
 		len(req.Year) == 0 ||
-		len(req.College) == 0 ||
-		len(req.OtherCollege) == 0 ||
-		len(req.Sponsor) == 0 ||
-		len(req.VoucherName) == 0 ||
-		len(req.ReferralCode) == 0 ||
-		len(req.Country) == 0 {
+		len(req.College) == 0 {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 	var userDetails models.User

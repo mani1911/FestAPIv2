@@ -10,7 +10,7 @@ type User struct {
 	CollegeID    uint    `gorm:"foreignKey:CollegeID"`
 	College      College `gorm:"foreignKey:CollegeID"`
 	OtherCollege string  `gorm:"size:255"`
-	Email        string  `gorm:"size:255;unique;not null"`
+	Email        string  `gorm:"size:255;unique;not null;uniqueIndex"`
 	Gender       Gender  `gorm:"size:10;not null"`
 	Country      string  `gorm:"size:255;not null"`
 	State        string  `gorm:"size:255;not null"`

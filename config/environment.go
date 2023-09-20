@@ -35,7 +35,6 @@ func InitConfig() {
 	DBPort = os.Getenv("POSTGRES_PORT")
 	JWTSecret = os.Getenv("JWT_SECRET")
 	TokenHourLifeSpan = os.Getenv("TOKEN_HOUR_LIFESPAN")
-	AdminToken = os.Getenv("ADMIN_TOKEN")
 	DAuthClientID = os.Getenv("DAUTH_CLIENT_ID")
 	DAuthClientSecret = os.Getenv("DAUTH_CLIENT_SECRET")
 	DAuthCallbackURL = os.Getenv("DAUTH_CALLBACK_URL")

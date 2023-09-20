@@ -15,7 +15,7 @@ type AuthUserRequest struct {
 	Code string `query:"code"`
 }
 
-func AuthUserLogin(c echo.Context) error {
+func DAuthUserLogin(c echo.Context) error {
 	var req AuthUserRequest
 	if err := c.Bind(&req); err != nil {
 		return utils.SendResponse(c, http.StatusInternalServerError, "Server Error")

@@ -19,7 +19,6 @@ type AuthUserUpdateRequest struct {
 	State        string `json:"user_state" binding:"required"`
 	City         string `json:"user_city" binding:"required"`
 	Phone        string `json:"user_phone" binding:"required"`
-	Country      string `json:"user_country" binding:"required"`
 	Degree       string `json:"user_degree" binding:"required"`
 	Year         string `json:"user_year" binding:"required"`
 	College      string `json:"user_college" binding:"required"`
@@ -27,6 +26,7 @@ type AuthUserUpdateRequest struct {
 	Sponsor      string `json:"user_sponsor"`
 	VoucherName  string `json:"user_voucher_name"`
 	ReferralCode string `json:"user_referral_code"`
+	Country      string `json:"user_country"`
 }
 
 func AuthUserUpdate(c echo.Context) error {
@@ -49,12 +49,7 @@ func AuthUserUpdate(c echo.Context) error {
 		len(req.Phone) == 0 ||
 		len(req.Degree) == 0 ||
 		len(req.Year) == 0 ||
-		len(req.College) == 0 ||
-		len(req.OtherCollege) == 0 ||
-		len(req.Sponsor) == 0 ||
-		len(req.VoucherName) == 0 ||
-		len(req.ReferralCode) == 0 ||
-		len(req.Country) == 0 {
+		len(req.College) == 0 {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 

@@ -12,11 +12,11 @@ import (
 )
 
 type AuthUserSigninRequest struct {
-	Email    string `form:"user_email" query:"user_email" json:"user_email" binding:"required"`
-	Password string `form:"user_password" query:"user_password" json:"user_password" binding:"required"`
+	Email    string `json:"user_email" binding:"required"`
+	Password string `json:"user_password" binding:"required"`
 }
 
-func AuthUserSignin(c echo.Context) error {
+func AuthUserLogin(c echo.Context) error {
 	var req AuthUserSigninRequest
 	if err := c.Bind(&req); err != nil {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
