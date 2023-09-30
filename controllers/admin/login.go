@@ -1,0 +1,56 @@
+package controller
+
+import (
+	"net/http"
+
+	"github.com/delta/FestAPI/config"
+	"github.com/delta/FestAPI/models"
+	"github.com/delta/FestAPI/utils"
+	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
+
+type AuthAdminAdminRequest struct {
+	Username string `json:"admin_username" binding:"required"`
+	Password string `json:"admin_password" binding:"required"`
+}
+
+func Ping(c echo.Context) error {
+	return utils.SendResponse(c, http.StatusOK, "pong")
+}
+
+func AuthAdminLogin(c echo.Context) error {
+	var req AuthAdminAdminRequest
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+	// Checking if both email and password are present
+	if len(req.Username) == 0 || len(req.Password) == 0 {
+		return utils.SendResponse(c, http.StatusBadRequest, "enter username / password")
+	}
+
+	var adminDetails models.Admin
+	db := config.GetDB()
+
+	// Checking if admin exists in the database
+	if err := db.Where("Username = ? ", req.Username).First(&adminDetails).Error; err != nil {
+		// If admin doesn't exist
+		if err == gorm.ErrRecordNotFound {
+			return utils.SendResponse(c, http.StatusBadRequest, "Admin not found")
+		}
+		return utils.SendResponse(c, http.StatusInternalServerError, "Error in searching for admin")
+	}
+
+	// Comparing passwords
+	err := bcrypt.CompareHashAndPassword(adminDetails.Password, []byte(req.Password))
+	if err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Enter a valid password")
+	}
+	// Creating JWT for the user along with role
+	jwtToken, err := utils.GenerateToken(adminDetails.ID, true, adminDetails.Role)
+	if err != nil {
+		return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
+	}
+	return utils.SendResponse(c, http.StatusOK, jwtToken)
+}

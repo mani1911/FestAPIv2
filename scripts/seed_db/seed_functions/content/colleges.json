@@ -1,0 +1,604 @@
+{
+    "colleges": [
+        {
+            "id": 1,
+            "name": "A.C. College of Engineering and Technology"
+        },
+        {
+            "id": 2,
+            "name": "A.M.S College of Engineering"
+        },
+        {
+            "id": 3,
+            "name": "Aalim Muhammed Salegh College Of Engineering"
+        },
+        {
+            "id": 4,
+            "name": "ABES Engineering College , Ghaziabad"
+        },
+        {
+            "id": 5,
+            "name": "ABV-IIITM, Gwalior"
+        },
+        {
+            "id": 6,
+            "name": "ACCET Karaikudi"
+        },
+        {
+            "id": 7,
+            "name": "Acharaya Nagarjuna University"
+        },
+        {
+            "id": 8,
+            "name": "Achariya College of Engineering and Technology"
+        },
+        {
+            "id": 9,
+            "name": "Acropolois Technical Campus"
+        },
+        {
+            "id": 10,
+            "name": "ACT Anna University"
+        },
+        {
+            "id": 11,
+            "name": "Adhiyamaan College of Engineering, Hosur"
+        },
+        {
+            "id": 12,
+            "name": "Adithya Institute of Technology"
+        },
+        {
+            "id": 13,
+            "name": "Alagappa Chettiar College of Engineering and Technology, Karaikudi"
+        },
+        {
+            "id": 14,
+            "name": "American College"
+        },
+        {
+            "id": 15,
+            "name": "Amrita Vishwa Vidyapeetham, Bengaluru"
+        },
+        {
+            "id": 16,
+            "name": "Amrita Vishwa Vidyapeetham, Coimbatore"
+        },
+        {
+            "id": 17,
+            "name": "Anand Institute of Higher Technology"
+        },
+        {
+            "id": 18,
+            "name": "Andhra University"
+        },
+        {
+            "id": 19,
+            "name": "Anjalai Ammal Mahalingam Engineering College"
+        },
+        {
+            "id": 20,
+            "name": "Anna University - BIT Campus Tiruchirappalli"
+        },
+        {
+            "id": 21,
+            "name": "Anuradha Engineering College Chikhali"
+        },
+        {
+            "id": 22,
+            "name": "Apollo Priyadarshanam Institute of Technology"
+        },
+        {
+            "id": 23,
+            "name": "B.S.Abdur Rahman University"
+        },
+        {
+            "id": 24,
+            "name": "Bannari Amman Institute of Technology"
+        },
+        {
+            "id": 25,
+            "name": "Bharath University"
+        },
+        {
+            "id": 26,
+            "name": "Bharathidasan Institute of Management"
+        },
+        {
+            "id": 27,
+            "name": "Bharathidasan University"
+        },
+        {
+            "id": 28,
+            "name": "Bhopal School of Social Sciences"
+        },
+        {
+            "id": 29,
+            "name": "Bishop Heber College"
+        },
+        {
+            "id": 30,
+            "name": "BITS Pilani Hyderabad Campus"
+        },
+        {
+            "id": 31,
+            "name": "BITS Pilani K.K. Birla Goa Campus"
+        },
+        {
+            "id": 32,
+            "name": "BMS Institute of Technology"
+        },
+        {
+            "id": 33,
+            "name": "CARE School of Engineering"
+        },
+        {
+            "id": 34,
+            "name": "Chennai institute of technology"
+        },
+        {
+            "id": 35,
+            "name": "Christ University"
+        },
+        {
+            "id": 36,
+            "name": "Coimbatore Institute of Technology"
+        },
+        {
+            "id": 37,
+            "name": "College of Engineering, Guindy"
+        },
+        {
+            "id": 38,
+            "name": "D.G Vaishnav college"
+        },
+        {
+            "id": 39,
+            "name": "Dhanalakshmi Srinivasan College of Engineering and Technology"
+        },
+        {
+            "id": 40,
+            "name": "Ethiraj college for Women"
+        },
+        {
+            "id": 41,
+            "name": "Francis Xavier Engineering College"
+        },
+        {
+            "id": 42,
+            "name": "Government College of Engineering, Salem"
+        },
+        {
+            "id": 43,
+            "name": "Government College of Technology, Coimbatore"
+        },
+        {
+            "id": 44,
+            "name": "Government Engineering College, Thrissur"
+        },
+        {
+            "id": 45,
+            "name": "Guru Nanak College"
+        },
+        {
+            "id": 46,
+            "name": "Hindustan College of Engineering"
+        },
+        {
+            "id": 47,
+            "name": "Indian Institute of Management, Tiruchirappallo "
+        },
+        {
+            "id": 48,
+            "name": "Indian Institute of Information Technology Design and Manufacture, Kancheepuram"
+        },
+        {
+            "id": 49,
+            "name": "Indian Institute of Information Technology, Bhubaneswar"
+        },
+        {
+            "id": 50,
+            "name": "Indian Institute of Information Technology, Design and Manufacturing (IIITDM)"
+        },
+        {
+            "id": 51,
+            "name": "Indian Institute of Information Technology , Tiruchirappalli"
+        },
+        {
+            "id": 52,
+            "name": "Indian Institute of Science Education and Research, Thiruvananthapuram"
+        },
+        {
+            "id": 53,
+            "name": "Indian Institute of Space Science and Technology"
+        },
+        {
+            "id": 54,
+            "name": "Indian Institute of Technology Bhilai"
+        },
+        {
+            "id": 55,
+            "name": "Indian Institute of Technology Bombay"
+        },
+        {
+            "id": 56,
+            "name": "Indian Institute of Technology Kanpur"
+        },
+        {
+            "id": 57,
+            "name": "Indian Institute of Technology Madras"
+        },
+        {
+            "id": 58,
+            "name": "Indian Institute of Technology Palakkad"
+        },
+        {
+            "id": 59,
+            "name": "Indian Institute of Technology Roorkee"
+        },
+        {
+            "id": 60,
+            "name": "Indian Institute of Technology Varanasi"
+        },
+        {
+            "id": 61,
+            "name": "Indra Ganesan College of Engineering"
+        },
+        {
+            "id": 62,
+            "name": "Institute of Chemical Technology"
+        },
+        {
+            "id": 63,
+            "name": "International Institute of Information Technology, Bangalore"
+        },
+        {
+            "id": 64,
+            "name": "Jeppiaar Engineering College"
+        },
+        {
+            "id": 65,
+            "name": "JSS Academy Of Technical Education"
+        },
+        {
+            "id": 66,
+            "name": "K Ramakrishnan College of Technology"
+        },
+        {
+            "id": 67,
+            "name": "K.L.N College of Information Technology"
+        },
+        {
+            "id": 68,
+            "name": "Kalasalingam University"
+        },
+        {
+            "id": 69,
+            "name": "Kamaraj College of Engineering and Technology"
+        },
+        {
+            "id": 70,
+            "name": "Karpagam College of Engineering"
+        },
+        {
+            "id": 71,
+            "name": "Karpagam University"
+        },
+        {
+            "id": 72,
+            "name": "Kathir College of Engineering"
+        },
+        {
+            "id": 73,
+            "name": "Kummaraguru College of Technology, Coimbatore"
+        },
+        {
+            "id": 74,
+            "name": "KCG College of Technology"
+        },
+        {
+            "id": 75,
+            "name": "KGISL Institute Of Technology"
+        },
+        {
+            "id": 76,
+            "name": "Koneru Lakshmaiah College of Engineering"
+        },
+        {
+            "id": 77,
+            "name": "Kongunadu College of Engineering and Technology"
+        },
+        {
+            "id": 78,
+            "name": "Government Medical College Thrissur"
+        },
+        {
+            "id": 79,
+            "name": "KPR Institute of Engineering and Technology"
+        },
+        {
+            "id": 80,
+            "name": "M. Kumarasamy College of Engineering"
+        },
+        {
+            "id": 81,
+            "name": "M.A.M College of Engineering and Technology"
+        },
+        {
+            "id": 82,
+            "name": "Madras Christian College"
+        },
+        {
+            "id": 83,
+            "name": "Madras Institute of Technology"
+        },
+        {
+            "id": 84,
+            "name": "Madras University"
+        },
+        {
+            "id": 85,
+            "name": "Mar Athanasius College of Engineering"
+        },
+        {
+            "id": 86,
+            "name": "Mepco Schlenk Engineering College"
+        },
+        {
+            "id": 87,
+            "name": "Moogambigai College of Engineering"
+        },
+        {
+            "id": 88,
+            "name": "Nalanda Degree College"
+        },
+        {
+            "id": 89,
+            "name": "National Institute of Technology, Calicut"
+        },
+        {
+            "id": 90,
+            "name": "National Institute of Technology, Durgapur"
+        },
+        {
+            "id": 91,
+            "name": "National Institute of Technology, Karnataka, Surathkal"
+        },
+        {
+            "id": 92,
+            "name": "National Institute of Technology, Puducherry"
+        },
+        {
+            "id": 93,
+            "name": "National Institute of Technology, Srinagar"
+        },
+        {
+            "id": 94,
+            "name": "National Institute of Technology, Tiruchirapalli"
+        },
+        {
+            "id": 95,
+            "name": "National Institute of Technology, Uttarakhand"
+        },
+        {
+            "id": 96,
+            "name": "National University of Advanced Legal studies, Kochi"
+        },
+        {
+            "id": 97,
+            "name": "NRI INSTITUE OF TECHNOLOGY (NRIIT)"
+        },
+        {
+            "id": 98,
+            "name": "Nationa Institute of Fashion Technology, Bangalore"
+        },
+        {
+            "id": 99,
+            "name": "Nationa Institute of Fashion Technology, Kannur"
+        },
+        {
+            "id": 100,
+            "name": "P.S.G Itech, Coimbatore"
+        },
+        {
+            "id": 101,
+            "name": "P.S.G college of technology"
+        },
+        {
+            "id": 102,
+            "name": "PSGR Krishnammal College for women"
+        },
+        {
+            "id": 103,
+            "name": "Panimalar Engineering College"
+        },
+        {
+            "id": 104,
+            "name": "Parisutham Institute of Technology and Science(PITS)"
+        },
+        {
+            "id": 105,
+            "name": "People's Education Society Institute of Technology,South Campus (PESIT)"
+        },
+        {
+            "id": 106,
+            "name": "periyar maniammai university (PMU)"
+        },
+        {
+            "id": 107,
+            "name": "Pondicherry University"
+        },
+        {
+            "id": 108,
+            "name": "PSG College of Arts and Science"
+        },
+        {
+            "id": 109,
+            "name": "PSG POLYTECHNIC COLLEGE"
+        },
+        {
+            "id": 110,
+            "name": "PSNA College of Engineering and Technology (PSNA CET)"
+        },
+        {
+            "id": 111,
+            "name": "R.M.K Engineering College"
+        },
+        {
+            "id": 112,
+            "name": "Raja College of Engineering and Technology (RajaCET)"
+        },
+        {
+            "id": 113,
+            "name": "Rajagiri College Of Social Sciences"
+        },
+        {
+            "id": 114,
+            "name": "Rajalakshmi Engineering College"
+        },
+        {
+            "id": 115,
+            "name": "Rashtreeya Vidyalaya College of Engineering (RV College of Engineering)"
+        },
+        {
+            "id": 116,
+            "name": "RVS College of Engineering?and Technology"
+        },
+        {
+            "id": 117,
+            "name": "Saranathan College of Engineering"
+        },
+        {
+            "id": 118,
+            "name": "Sasi Institute of Technology &amp  Engineering"
+        },
+        {
+            "id": 119,
+            "name": "SASTRA University(Shanmugha Arts, Science, Technology &amp; Research Academy)"
+        },
+        {
+            "id": 120,
+            "name": "Sathyabama University/Sathyabama Institute of Science and Technology"
+        },
+        {
+            "id": 121,
+            "name": "Seethalakshmi Ramaswami college"
+        },
+        {
+            "id": 122,
+            "name": "Shiv Nadar College, Chennai"
+        },
+        {
+            "id": 123,
+            "name": "SNS COLLEGE OF TECHNOLOGY"
+        },
+        {
+            "id": 124,
+            "name": "SONA COLLEGE OF TECHNOLOGY."
+        },
+        {
+            "id": 125,
+            "name": "Sree Chitra Thirunal College of Engineering SCTCE"
+        },
+        {
+            "id": 126,
+            "name": "Sri Krishna College of Engineering &amp  Technology (SKCET)"
+        },
+        {
+            "id": 127,
+            "name": "Sri Ramakrishna Engineering College"
+        },
+        {
+            "id": 128,
+            "name": "Sri Ramachandra Institute, Chennai"
+        },
+        {
+            "id": 129,
+            "name": "Sri Sai Ram Engineering college"
+        },
+        {
+            "id": 130,
+            "name": "Sri Shakthi Institute of Engineering and Technology"
+        },
+        {
+            "id": 131,
+            "name": "Sri Sivasubramaniya Nadar College (SSN) of Engineering"
+        },
+        {
+            "id": 132,
+            "name": "Sri Venkateswara College of Engineering (SVCE)"
+        },
+        {
+            "id": 133,
+            "name": "SRM University"
+        },
+        {
+            "id": 134,
+            "name": "St. Joseph's Institute of Technology"
+        },
+        {
+            "id": 135,
+            "name": "St. Peter's College of Engineering and Technology"
+        },
+        {
+            "id": 136,
+            "name": "Thiyagarajar College of Engineering"
+        },
+        {
+            "id": 137,
+            "name": "Thiyagarajar School of Management"
+        },
+        {
+            "id": 138,
+            "name": "TRP Engineering College"
+        },
+        {
+            "id": 139,
+            "name": "University of Rajasthan"
+        },
+        {
+            "id": 140,
+            "name": "Urumu Dhanalakshmi College"
+        },
+        {
+            "id": 141,
+            "name": "V.S.B Engineering college, Karur"
+        },
+        {
+            "id": 142,
+            "name": "Vellamal College of Engineering and Technology"
+        },
+        {
+            "id": 143,
+            "name": "Vels University"
+        },
+        {
+            "id": 144,
+            "name": "Veltech University"
+        },
+        {
+            "id": 145,
+            "name": "Vignan's Lara Institute of Technology and Sciences"
+        },
+        {
+            "id": 146,
+            "name": "VIT University, Chennai"
+        },
+        {
+            "id": 147,
+            "name": "VIT University, Vellore"
+        },
+        {
+            "id": 148,
+            "name": "Vivekananda Institute of Technology"
+        },
+        {
+            "id": 149,
+            "name": "VSB Enginnering College"
+        },
+        {
+            "id": 150,
+            "name": "Vyas Institutes of Higher Education, Jodhpur"
+        }
+    ]
+}

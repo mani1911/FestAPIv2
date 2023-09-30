@@ -36,6 +36,12 @@ func createEnums() {
 	if createGender.Error != nil {
 		fmt.Println(color.RedString("Error creating Gender ENUM"))
 	}
+
+	createAdminRoles := db.Exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'admin_roles') THEN CREATE TYPE admin_roles AS ENUM('ADMIN'); END IF; END$$;")
+	if createAdminRoles.Error != nil {
+		fmt.Println(color.RedString("Error creating AdminRoles ENUM"))
+	}
+
 }
 
 // GetDB returns the database
@@ -47,7 +53,11 @@ func GetDB() *gorm.DB {
 func MigrateDB() {
 	db := GetDB()
 
-	for _, schema := range []interface{}{&models.College{}, &models.User{}} {
+	for _, schema := range []interface{}{
+		&models.College{},
+		&models.User{},
+		&models.Admin{},
+	} {
 		if err := db.AutoMigrate(&schema); err != nil {
 			panic(err)
 		}

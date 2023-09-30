@@ -4,19 +4,22 @@ import (
 	"time"
 
 	"github.com/delta/FestAPI/config"
+	"github.com/delta/FestAPI/models"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type JWTCustomClaims struct {
-	UserID uint `json:"name"`
-	Admin  bool `json:"admin"`
+	UserID uint             `json:"name"`
+	Admin  bool             `json:"admin"`
+	Role   models.AdminRole `json:"role"`
 	jwt.RegisteredClaims
 }
 
-func GenerateToken(userID uint, Admin bool) (string, error) {
+func GenerateToken(userID uint, Admin bool, AdminRole models.AdminRole) (string, error) {
 	claims := &JWTCustomClaims{
 		userID,
 		Admin,
+		AdminRole,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
 		},

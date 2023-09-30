@@ -3,7 +3,7 @@ package models
 type Gender string
 
 const (
-	MALE   = "MALE"
-	FEMALE = "FEMALE"
-	OTHER  = "OTHER"
+	MALE   Gender = "MALE"
+	FEMALE Gender = "FEMALE"
+	OTHER  Gender = "OTHER"
 )

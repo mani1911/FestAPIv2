@@ -11,17 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type AuthUserSigninRequest struct {
+type AuthUserLoginRequest struct {
 	Email    string `json:"user_email" binding:"required"`
 	Password string `json:"user_password" binding:"required"`
 }
 
 func AuthUserLogin(c echo.Context) error {
-	var req AuthUserSigninRequest
+	var req AuthUserLoginRequest
 	if err := c.Bind(&req); err != nil {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
-	// Checking if both email and password are present
+	// Check if both email and password are present
 	if len(req.Email) == 0 || len(req.Password) == 0 {
 		return utils.SendResponse(c, http.StatusBadRequest, "enter username / password")
 	}
@@ -29,7 +29,7 @@ func AuthUserLogin(c echo.Context) error {
 	var userDetails models.User
 	db := config.GetDB()
 
-	// Checkig if user exists in the database
+	// Check if user exists in the database
 	if err := db.Where("Email = ? ", req.Email).First(&userDetails).Error; err != nil {
 		// If user doesn't exist
 		if err == gorm.ErrRecordNotFound {
@@ -44,7 +44,7 @@ func AuthUserLogin(c echo.Context) error {
 		return utils.SendResponse(c, http.StatusBadRequest, "Enter a valid password")
 	}
 	// Creating JWT for the user
-	jwtToken, err := utils.GenerateToken(userDetails.ID, false)
+	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 	if err != nil {
 		return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
 	}

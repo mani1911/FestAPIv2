@@ -38,6 +38,19 @@
   git config core.hooksPath .githooks
   ```
 
+### Seeding Database
+
+- to seed admin table
+
+  ```
+  make seed_admin
+  ```
+- to seed other tables
+
+  ```
+  make seed_database
+  ```
+
 ### Run
 
 - #### On Docker

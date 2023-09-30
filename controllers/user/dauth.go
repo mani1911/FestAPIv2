@@ -76,7 +76,7 @@ func DAuthUserLogin(c echo.Context) error {
 				return utils.SendResponse(c, http.StatusInternalServerError, "Failed to create user")
 			}
 			// Creating JWT Token for the new user
-			jwtToken, err := utils.GenerateToken(userReg.ID, false)
+			jwtToken, err := utils.GenerateToken(userReg.ID, false, "")
 			if err != nil {
 				return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
 			}
@@ -87,7 +87,7 @@ func DAuthUserLogin(c echo.Context) error {
 
 	// User already exists in the database
 	// Creating JWT for the existing user
-	jwtToken, err := utils.GenerateToken(userDetails.ID, false)
+	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 	if err != nil {
 		return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
 	}
