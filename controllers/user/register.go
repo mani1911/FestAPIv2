@@ -33,6 +33,16 @@ type AuthUserRegisterRequest struct {
 	Country      string `json:"user_country"`
 }
 
+// @Summary Register a new user.
+// @Description Register a new user with the provided details.
+// @ID AuthUserRegister
+// @Accept json
+// @Produce json
+// @Param request body AuthUserRegisterRequest true "User registration request"
+// @Success 200 {string} string "Success"
+// @Failure 400 {string} string "Invalid Request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /user/register [post]
 func AuthUserRegister(c echo.Context) error {
 	var req AuthUserRegisterRequest
 	if err := c.Bind(&req); err != nil {

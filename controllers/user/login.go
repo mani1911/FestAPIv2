@@ -16,6 +16,16 @@ type AuthUserLoginRequest struct {
 	Password string `json:"user_password" binding:"required"`
 }
 
+// @Summary Authenticate and log in a user.
+// @Description Authenticates a user using email and password.
+// @ID AuthUserLogin
+// @Accept json
+// @Produce json
+// @Param request body AuthUserLoginRequest true "User authentication request"
+// @Success 200 {string} string "Success"
+// @Failure 400 {string} string "Invalid Request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /user/login [post]
 func AuthUserLogin(c echo.Context) error {
 	var req AuthUserLoginRequest
 	if err := c.Bind(&req); err != nil {

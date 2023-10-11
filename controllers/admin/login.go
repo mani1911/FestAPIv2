@@ -20,6 +20,16 @@ func Ping(c echo.Context) error {
 	return utils.SendResponse(c, http.StatusOK, "pong")
 }
 
+// @Summary Authenticate and log in an admin.
+// @Description Authenticates an admin using username and password, and returns a JWT token for authentication.
+// @ID AuthAdminLogin
+// @Accept json
+// @Produce json
+// @Param request body AuthAdminAdminRequest true "Admin authentication request"
+// @Success 200 {string} string "Success"
+// @Failure 400 {string} string "Invalid Request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /admin/login [post]
 func AuthAdminLogin(c echo.Context) error {
 	var req AuthAdminAdminRequest
 	if err := c.Bind(&req); err != nil {

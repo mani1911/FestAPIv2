@@ -29,6 +29,17 @@ type AuthUserUpdateRequest struct {
 	Country      string `json:"user_country"`
 }
 
+// @Summary Update user information.
+// @Description Update user information with the provided details.
+// @ID AuthUserUpdate
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param request body AuthUserUpdateRequest true "User update request"
+// @Success 200 {string} string "Success"
+// @Failure 400 {string} string "Invalid Request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /user/update [put]
 func AuthUserUpdate(c echo.Context) error {
 	// obtaining user id from jwt
 	user := c.Get("user").(*jwt.Token)

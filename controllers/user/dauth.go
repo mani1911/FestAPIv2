@@ -15,6 +15,16 @@ type AuthUserRequest struct {
 	Code string `query:"code"`
 }
 
+// @Summary Authenticate user with DAuth
+// @Description Callback url for DAuth, returns JWT token if successful
+// @ID DAuthUserLogin
+// @Accept json
+// @Produce json
+// @Param code query string true "DAuth code"
+// @Success 200 {string} string "Success"
+// @Failure 400 {string} string "Invalid Request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /user/dauth/callback [get]
 func DAuthUserLogin(c echo.Context) error {
 	var req AuthUserRequest
 	if err := c.Bind(&req); err != nil {

@@ -1,0 +1,442 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API Server for all fests",
+        "title": "FestAPI v2",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/admin/login": {
+            "post": {
+                "description": "Authenticates an admin using username and password, and returns a JWT token for authentication.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Authenticate and log in an admin.",
+                "operationId": "AuthAdminLogin",
+                "parameters": [
+                    {
+                        "description": "Admin authentication request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.AuthAdminAdminRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/verify": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "RoleAuth": []
+                    }
+                ],
+                "description": "Verifies the status of an admin.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Verify Admin status.",
+                "operationId": "AdminVerify",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/dauth/callback": {
+            "get": {
+                "description": "Callback url for DAuth, returns JWT token if successful",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Authenticate user with DAuth",
+                "operationId": "DAuthUserLogin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "DAuth code",
+                        "name": "code",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Authenticates a user using email and password.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Authenticate and log in a user.",
+                "operationId": "AuthUserLogin",
+                "parameters": [
+                    {
+                        "description": "User authentication request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.AuthUserLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "Register a new user with the provided details.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Register a new user.",
+                "operationId": "AuthUserRegister",
+                "parameters": [
+                    {
+                        "description": "User registration request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.AuthUserRegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/update": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update user information with the provided details.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update user information.",
+                "operationId": "AuthUserUpdate",
+                "parameters": [
+                    {
+                        "description": "User update request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.AuthUserUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.AuthAdminAdminRequest": {
+            "type": "object",
+            "required": [
+                "admin_password",
+                "admin_username"
+            ],
+            "properties": {
+                "admin_password": {
+                    "type": "string"
+                },
+                "admin_username": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.AuthUserLoginRequest": {
+            "type": "object",
+            "required": [
+                "user_email",
+                "user_password"
+            ],
+            "properties": {
+                "user_email": {
+                    "type": "string"
+                },
+                "user_password": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.AuthUserRegisterRequest": {
+            "type": "object",
+            "required": [
+                "user_address",
+                "user_city",
+                "user_college",
+                "user_degree",
+                "user_email",
+                "user_fullname",
+                "user_name",
+                "user_nationality",
+                "user_password",
+                "user_phone",
+                "user_pincode",
+                "user_sex",
+                "user_state",
+                "user_year"
+            ],
+            "properties": {
+                "user_address": {
+                    "type": "string"
+                },
+                "user_city": {
+                    "type": "string"
+                },
+                "user_college": {
+                    "type": "string"
+                },
+                "user_country": {
+                    "type": "string"
+                },
+                "user_degree": {
+                    "type": "string"
+                },
+                "user_email": {
+                    "type": "string"
+                },
+                "user_fullname": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                },
+                "user_nationality": {
+                    "type": "string"
+                },
+                "user_othercollege": {
+                    "type": "string"
+                },
+                "user_password": {
+                    "type": "string"
+                },
+                "user_phone": {
+                    "type": "string"
+                },
+                "user_pincode": {
+                    "type": "string"
+                },
+                "user_referral_code": {
+                    "type": "string"
+                },
+                "user_sex": {
+                    "type": "string"
+                },
+                "user_sponsor": {
+                    "type": "string"
+                },
+                "user_state": {
+                    "type": "string"
+                },
+                "user_voucher_name": {
+                    "type": "string"
+                },
+                "user_year": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.AuthUserUpdateRequest": {
+            "type": "object",
+            "required": [
+                "user_address",
+                "user_city",
+                "user_college",
+                "user_degree",
+                "user_nationality",
+                "user_phone",
+                "user_pincode",
+                "user_sex",
+                "user_state",
+                "user_year"
+            ],
+            "properties": {
+                "user_address": {
+                    "type": "string"
+                },
+                "user_city": {
+                    "type": "string"
+                },
+                "user_college": {
+                    "type": "string"
+                },
+                "user_country": {
+                    "type": "string"
+                },
+                "user_degree": {
+                    "type": "string"
+                },
+                "user_nationality": {
+                    "type": "string"
+                },
+                "user_othercollege": {
+                    "type": "string"
+                },
+                "user_phone": {
+                    "type": "string"
+                },
+                "user_pincode": {
+                    "type": "string"
+                },
+                "user_referral_code": {
+                    "type": "string"
+                },
+                "user_sex": {
+                    "type": "string"
+                },
+                "user_sponsor": {
+                    "type": "string"
+                },
+                "user_state": {
+                    "type": "string"
+                },
+                "user_voucher_name": {
+                    "type": "string"
+                },
+                "user_year": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
