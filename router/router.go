@@ -16,4 +16,5 @@ func NewRouter(e *echo.Echo) {
 	apiRouter := e.Group("/api")
 	userRouter(apiRouter)
 	adminRouter(apiRouter)
+	eventsRouter(apiRouter)
 }

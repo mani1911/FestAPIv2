@@ -57,6 +57,9 @@ func MigrateDB() {
 		&models.College{},
 		&models.User{},
 		&models.Admin{},
+		&models.Event{},
+		&models.EventRegistration{},
+		&models.EventSubmission{},
 	} {
 		if err := db.AutoMigrate(&schema); err != nil {
 			panic(err)

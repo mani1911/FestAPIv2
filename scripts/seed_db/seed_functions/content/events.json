@@ -1,0 +1,216 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "event_name": "Debate"
+    },
+    {
+      "id": 2,
+      "event_name": "What's The Good Word"
+    },
+    {
+      "id": 3,
+      "event_name": "Extempore"
+    },
+    {
+      "id": 4,
+      "event_name": "PotPourri"
+    },
+    {
+      "id": 5,
+      "event_name": "Cryptic Crossword"
+    },
+    {
+      "id": 6,
+      "event_name": "SpLitEnt Quiz"
+    },
+    {
+      "id": 7,
+      "event_name": "Spell Bee"
+    },
+    {
+      "id": 8,
+      "event_name": "Just A Minute"
+    },
+    {
+      "id": 9,
+      "event_name": "Frankenstein Quiz"
+    },
+    {
+      "id": 10,
+      "event_name": "Sorkkanai"
+    },
+    {
+      "id": 11,
+      "event_name": "Asatha Povathu Yaaru"
+    },
+    {
+      "id": 12,
+      "event_name": "Uyarthani Semmozhi"
+    },
+    {
+      "id": 13,
+      "event_name": "Padathodu Pesava"
+    },
+    {
+      "id": 14,
+      "event_name": "Kodambakkam"
+    },
+    {
+      "id": 15,
+      "event_name": "Sakalakalaa Vallavan"
+    },
+    {
+      "id": 16,
+      "event_name": "Rocket League"
+    },
+    {
+      "id": 17,
+      "event_name": "Valorant"
+    },
+    {
+      "id": 18,
+      "event_name": "Splash Spree"
+    },
+    {
+      "id": 19,
+      "event_name": "Tekken"
+    },
+    {
+      "id": 20,
+      "event_name": "Theatrix"
+    },
+    {
+      "id": 21,
+      "event_name": "Mime"
+    },
+    {
+      "id": 22,
+      "event_name": "Monoacting"
+    },
+    {
+      "id": 23,
+      "event_name": "Picture interlinking"
+    },
+    {
+      "id": 24,
+      "event_name": "Treasure hunt"
+    },
+    {
+      "id": 25,
+      "event_name": "Fashionista"
+    },
+    {
+      "id": 26,
+      "event_name": "Mr & Ms Festember"
+    },
+    {
+      "id": 27,
+      "event_name": "Rochak Mantara"
+    },
+    {
+      "id": 28,
+      "event_name": "Parliamentary Debate"
+    },
+    {
+      "id": 29,
+      "event_name": "Extempore"
+    },
+    {
+      "id": 30,
+      "event_name": "Cricket quiz"
+    },
+    {
+      "id": 31,
+      "event_name": "Titanic safari"
+    },
+    {
+      "id": 32,
+      "event_name": "Solo Western"
+    },
+    {
+      "id": 33,
+      "event_name": "Gigahertz"
+    },
+    {
+      "id": 34,
+      "event_name": "Upbeat"
+    },
+    {
+      "id": 35,
+      "event_name": "Acoustics"
+    },
+    {
+      "id": 36,
+      "event_name": "Tarangini"
+    },
+    {
+      "id": 37,
+      "event_name": "Reel Live It"
+    },
+    {
+      "id": 38,
+      "event_name": "Portrait Photography"
+    },
+    {
+      "id": 39,
+      "event_name": "Live Photography"
+    },
+    {
+      "id": 40,
+      "event_name": "Conceptual Photography"
+    },
+    {
+      "id": 41,
+      "event_name": "Reel Live It"
+    },
+    {
+      "id": 42,
+      "event_name": "Portrait Photography"
+    },
+    {
+      "id": 43,
+      "event_name": "Live Photography"
+    },
+    {
+      "id": 44,
+      "event_name": "Conceptual Photography"
+    },
+    {
+      "id": 45,
+      "event_name": "Classic Solo Instrumentals - Percussion"
+    },
+    {
+      "id": 46,
+      "event_name": "Classic Solo Vocals"
+    },
+    {
+      "id": 47,
+      "event_name": "Classic Solo Instrumentals - Non - Percussion"
+    },
+    {
+      "id": 48,
+      "event_name": "The Shrutilaya Quiz"
+    },
+    {
+      "id": 49,
+      "event_name": "Choreonite Eastern"
+    },
+    {
+      "id": 50,
+      "event_name": "Choreonite Western"
+    },
+    {
+      "id": 51,
+      "event_name": "Eastern Solo"
+    },
+    {
+      "id": 52,
+      "event_name": "Western Solo"
+    },
+    {
+      "id": 53,
+      "event_name": "Duet Freestyle"
+    }
+  ]
+}
