@@ -7,6 +7,9 @@
 - [Go](https://go.dev/)
 - [golangci](https://golangci-lint.run/usage/install/)
 - [Docker](https://www.docker.com/)
+- [Reflex](https://github.com/cespare/reflex)
+- [Swagger](https://github.com/swaggo/swag)
+
 
 ### Setup
 
@@ -38,6 +41,18 @@
   git config core.hooksPath .githooks
   ```
 
+### Swagger
+
+- To update swag docs, Run 
+  ```sh
+    make swag_init
+  ```
+
+- To format swaggo docs, Run
+  ```sh
+    make swag_fmt
+  ```
+
 ### Seeding Database
 
 - to seed admin table
@@ -52,6 +67,19 @@
   ```
 
 ### Run
+
+- #### On Local
+  - To run the server
+
+    ```sh
+    make run
+    ```
+  
+  - To run the server in watch mode
+  
+    ```sh
+    make watch
+    ```
 
 - #### On Docker
   ```sh

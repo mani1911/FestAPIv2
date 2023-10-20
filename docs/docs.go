@@ -93,6 +93,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/ping": {
+            "get": {
+                "description": "Checks if the server is up and running",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Ping",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "DAuth code",
+                        "name": "code",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user/dauth/callback": {
             "get": {
                 "description": "Callback url for DAuth, returns JWT token if successful",
@@ -276,10 +302,6 @@ const docTemplate = `{
     "definitions": {
         "controller.AuthAdminAdminRequest": {
             "type": "object",
-            "required": [
-                "admin_password",
-                "admin_username"
-            ],
             "properties": {
                 "admin_password": {
                     "type": "string"
@@ -291,10 +313,6 @@ const docTemplate = `{
         },
         "controller.AuthUserLoginRequest": {
             "type": "object",
-            "required": [
-                "user_email",
-                "user_password"
-            ],
             "properties": {
                 "user_email": {
                     "type": "string"
@@ -306,22 +324,6 @@ const docTemplate = `{
         },
         "controller.AuthUserRegisterRequest": {
             "type": "object",
-            "required": [
-                "user_address",
-                "user_city",
-                "user_college",
-                "user_degree",
-                "user_email",
-                "user_fullname",
-                "user_name",
-                "user_nationality",
-                "user_password",
-                "user_phone",
-                "user_pincode",
-                "user_sex",
-                "user_state",
-                "user_year"
-            ],
             "properties": {
                 "user_address": {
                     "type": "string"
@@ -384,18 +386,6 @@ const docTemplate = `{
         },
         "controller.AuthUserUpdateRequest": {
             "type": "object",
-            "required": [
-                "user_address",
-                "user_city",
-                "user_college",
-                "user_degree",
-                "user_nationality",
-                "user_phone",
-                "user_pincode",
-                "user_sex",
-                "user_state",
-                "user_year"
-            ],
             "properties": {
                 "user_address": {
                     "type": "string"

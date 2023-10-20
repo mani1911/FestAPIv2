@@ -77,6 +77,7 @@ func DBSeeder() {
 	var seeds = []string{
 		"colleges",
 		"events",
+		"event_abstract_details",
 	}
 
 	SeedData(seeds)

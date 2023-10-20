@@ -9,8 +9,8 @@ import (
 func eventsRouter(e *echo.Group) {
 
 	eventsRoutes := e.Group("/events")
+	// Protected Routes
 	eventsRoutes.Use(middleware.UserAuth())
-	eventsRoutes.GET("/submissions/details/:event_id", controller.SubmissionDetails)
+	eventsRoutes.GET("/abstract/details/:event_id", controller.AbstractDetails)
 	eventsRoutes.POST("/register", controller.EventRegistration)
-
 }

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
@@ -13,19 +12,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-//TODO check for binding
-
 type EventRegistrationRequest struct {
-	EventID string `param:"event_id"`
+	EventID uint `json:"event_id"`
 }
 
 func EventRegistration(c echo.Context) error {
 	var req EventRegistrationRequest
 	if err := c.Bind(&req); err != nil {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
-	}
-	if len(req.EventID) == 0 {
-		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Event ID")
 	}
 
 	userInstance := c.Get("user").(*jwt.Token)
@@ -47,10 +41,9 @@ func EventRegistration(c echo.Context) error {
 	if err := db.Where("user_id = ? AND event_id = ?", userID, req.EventID).First(&eventRegData).Error; err == nil {
 		return utils.SendResponse(c, http.StatusBadRequest, "You have already registered for the event")
 	}
-	eventID, _ := strconv.Atoi(req.EventID)
 
 	registration := models.EventRegistration{
-		EventID: uint(eventID),
+		EventID: req.EventID,
 		UserID:  userID,
 	}
 

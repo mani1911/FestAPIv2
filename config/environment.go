@@ -21,6 +21,7 @@ var DAuthClientID string
 var DAuthClientSecret string
 var DAuthCallbackURL string
 var AdminToken string
+var DAuthUserPassword string
 
 func InitConfig() {
 	err := godotenv.Load()
@@ -38,4 +39,5 @@ func InitConfig() {
 	DAuthClientID = os.Getenv("DAUTH_CLIENT_ID")
 	DAuthClientSecret = os.Getenv("DAUTH_CLIENT_SECRET")
 	DAuthCallbackURL = os.Getenv("DAUTH_CALLBACK_URL")
+	DAuthUserPassword = os.Getenv("DAUTH_USER_PASSWORD")
 }

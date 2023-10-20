@@ -59,7 +59,7 @@ func MigrateDB() {
 		&models.Admin{},
 		&models.Event{},
 		&models.EventRegistration{},
-		&models.EventSubmission{},
+		&models.EventAbstractDetails{},
 	} {
 		if err := db.AutoMigrate(&schema); err != nil {
 			panic(err)

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/delta/FestAPI/config"
 	"github.com/delta/FestAPI/models"
@@ -12,20 +13,20 @@ import (
 )
 
 type AuthUserLoginRequest struct {
-	Email    string `json:"user_email" binding:"required"`
-	Password string `json:"user_password" binding:"required"`
+	Email    string `json:"user_email"`
+	Password string `json:"user_password"`
 }
 
-// @Summary Authenticate and log in a user.
-// @Description Authenticates a user using email and password.
-// @ID AuthUserLogin
-// @Accept json
-// @Produce json
-// @Param request body AuthUserLoginRequest true "User authentication request"
-// @Success 200 {string} string "Success"
-// @Failure 400 {string} string "Invalid Request"
-// @Failure 500 {string} string "Internal Server Error"
-// @Router /user/login [post]
+// @Summary		Authenticate and log in a user.
+// @Description	Authenticates a user using email and password.
+// @ID				AuthUserLogin
+// @Accept			json
+// @Produce		json
+// @Param			request	body		AuthUserLoginRequest	true	"User authentication request"
+// @Success		200		{string}	string					"Success"
+// @Failure		400		{string}	string					"Invalid Request"
+// @Failure		500		{string}	string					"Internal Server Error"
+// @Router			/user/login [post]
 func AuthUserLogin(c echo.Context) error {
 	var req AuthUserLoginRequest
 	if err := c.Bind(&req); err != nil {
@@ -56,7 +57,15 @@ func AuthUserLogin(c echo.Context) error {
 	// Creating JWT for the user
 	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 	if err != nil {
-		return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
+		return utils.SendResponse(c, http.StatusInternalServerError, "Error in generating token")
 	}
-	return utils.SendResponse(c, http.StatusOK, jwtToken)
+
+	cookie := new(http.Cookie)
+	cookie.Name = "token"
+	cookie.Value = jwtToken
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	cookie.HttpOnly = true
+	c.SetCookie(cookie)
+
+	return utils.SendResponse(c, http.StatusOK, "user authenticated")
 }

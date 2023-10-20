@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/delta/FestAPI/config"
 	"github.com/delta/FestAPI/models"
@@ -12,24 +13,20 @@ import (
 )
 
 type AuthAdminAdminRequest struct {
-	Username string `json:"admin_username" binding:"required"`
-	Password string `json:"admin_password" binding:"required"`
+	Username string `json:"admin_username"`
+	Password string `json:"admin_password"`
 }
 
-func Ping(c echo.Context) error {
-	return utils.SendResponse(c, http.StatusOK, "pong")
-}
-
-// @Summary Authenticate and log in an admin.
-// @Description Authenticates an admin using username and password, and returns a JWT token for authentication.
-// @ID AuthAdminLogin
-// @Accept json
-// @Produce json
-// @Param request body AuthAdminAdminRequest true "Admin authentication request"
-// @Success 200 {string} string "Success"
-// @Failure 400 {string} string "Invalid Request"
-// @Failure 500 {string} string "Internal Server Error"
-// @Router /admin/login [post]
+// @Summary		Authenticate and log in an admin.
+// @Description	Authenticates an admin using username and password, and returns a JWT token for authentication.
+// @ID				AuthAdminLogin
+// @Accept			json
+// @Produce		json
+// @Param			request	body		AuthAdminAdminRequest	true	"Admin authentication request"
+// @Success		200		{string}	string					"Success"
+// @Failure		400		{string}	string					"Invalid Request"
+// @Failure		500		{string}	string					"Internal Server Error"
+// @Router			/admin/login [post]
 func AuthAdminLogin(c echo.Context) error {
 	var req AuthAdminAdminRequest
 	if err := c.Bind(&req); err != nil {
@@ -62,5 +59,14 @@ func AuthAdminLogin(c echo.Context) error {
 	if err != nil {
 		return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
 	}
-	return utils.SendResponse(c, http.StatusOK, jwtToken)
+
+	// Creating HTTPOnly Cookie
+	cookie := new(http.Cookie)
+	cookie.Name = "token"
+	cookie.Value = jwtToken
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	cookie.HttpOnly = true
+	c.SetCookie(cookie)
+
+	return utils.SendResponse(c, http.StatusOK, "User Authenticated Successfully")
 }

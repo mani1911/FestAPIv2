@@ -6,9 +6,6 @@ definitions:
         type: string
       admin_username:
         type: string
-    required:
-    - admin_password
-    - admin_username
     type: object
   controller.AuthUserLoginRequest:
     properties:
@@ -16,9 +13,6 @@ definitions:
         type: string
       user_password:
         type: string
-    required:
-    - user_email
-    - user_password
     type: object
   controller.AuthUserRegisterRequest:
     properties:
@@ -60,21 +54,6 @@ definitions:
         type: string
       user_year:
         type: string
-    required:
-    - user_address
-    - user_city
-    - user_college
-    - user_degree
-    - user_email
-    - user_fullname
-    - user_name
-    - user_nationality
-    - user_password
-    - user_phone
-    - user_pincode
-    - user_sex
-    - user_state
-    - user_year
     type: object
   controller.AuthUserUpdateRequest:
     properties:
@@ -108,17 +87,6 @@ definitions:
         type: string
       user_year:
         type: string
-    required:
-    - user_address
-    - user_city
-    - user_college
-    - user_degree
-    - user_nationality
-    - user_phone
-    - user_pincode
-    - user_sex
-    - user_state
-    - user_year
     type: object
 host: localhost:8000
 info:
@@ -178,6 +146,23 @@ paths:
       - ApiKeyAuth: []
       - RoleAuth: []
       summary: Verify Admin status.
+  /ping:
+    get:
+      description: Checks if the server is up and running
+      parameters:
+      - description: DAuth code
+        in: query
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+      summary: Ping
   /user/dauth/callback:
     get:
       consumes:

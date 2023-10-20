@@ -12,7 +12,8 @@ import (
 
 func UserAuth() echo.MiddlewareFunc {
 	return echojwt.WithConfig(echojwt.Config{
-		SigningKey: []byte(config.JWTSecret),
+		SigningKey:  []byte(config.JWTSecret),
+		TokenLookup: "cookie:token",
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(utils.JWTCustomClaims)
 		},

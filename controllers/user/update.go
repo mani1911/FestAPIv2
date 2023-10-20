@@ -12,16 +12,16 @@ import (
 )
 
 type AuthUserUpdateRequest struct {
-	Sex          string `json:"user_sex" binding:"required"`
-	Nationality  string `json:"user_nationality" binding:"required"`
-	Address      string `json:"user_address" binding:"required"`
-	Pincode      string `json:"user_pincode" binding:"required"`
-	State        string `json:"user_state" binding:"required"`
-	City         string `json:"user_city" binding:"required"`
-	Phone        string `json:"user_phone" binding:"required"`
-	Degree       string `json:"user_degree" binding:"required"`
-	Year         string `json:"user_year" binding:"required"`
-	College      string `json:"user_college" binding:"required"`
+	Sex          string `json:"user_sex"`
+	Nationality  string `json:"user_nationality"`
+	Address      string `json:"user_address"`
+	Pincode      string `json:"user_pincode"`
+	State        string `json:"user_state"`
+	City         string `json:"user_city"`
+	Phone        string `json:"user_phone"`
+	Degree       string `json:"user_degree"`
+	Year         string `json:"user_year"`
+	College      string `json:"user_college"`
 	OtherCollege string `json:"user_othercollege"`
 	Sponsor      string `json:"user_sponsor"`
 	VoucherName  string `json:"user_voucher_name"`
@@ -29,17 +29,17 @@ type AuthUserUpdateRequest struct {
 	Country      string `json:"user_country"`
 }
 
-// @Summary Update user information.
-// @Description Update user information with the provided details.
-// @ID AuthUserUpdate
-// @Accept json
-// @Produce json
-// @Security ApiKeyAuth
-// @Param request body AuthUserUpdateRequest true "User update request"
-// @Success 200 {string} string "Success"
-// @Failure 400 {string} string "Invalid Request"
-// @Failure 500 {string} string "Internal Server Error"
-// @Router /user/update [put]
+// @Summary		Update user information.
+// @Description	Update user information with the provided details.
+// @ID				AuthUserUpdate
+// @Accept			json
+// @Produce		json
+// @Security		ApiKeyAuth
+// @Param			request	body		AuthUserUpdateRequest	true	"User update request"
+// @Success		200		{string}	string					"Success"
+// @Failure		400		{string}	string					"Invalid Request"
+// @Failure		500		{string}	string					"Internal Server Error"
+// @Router			/user/update [put]
 func AuthUserUpdate(c echo.Context) error {
 	// obtaining user id from jwt
 	user := c.Get("user").(*jwt.Token)

@@ -1,0 +1,322 @@
+{
+    "event_abstract_details": [
+        {
+            "id": 1,
+            "event_id": 1,
+            "forward_email": "pragyan.debate@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 2,
+            "event_id": 2,
+            "forward_email": "pragyan.what'sthegoodword@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 3,
+            "event_id": 3,
+            "forward_email": "pragyan.extempore@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 4,
+            "event_id": 4,
+            "forward_email": "pragyan.potpourri@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 5,
+            "event_id": 5,
+            "forward_email": "pragyan.crypticcrossword@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 6,
+            "event_id": 6,
+            "forward_email": "pragyan.splitentquiz@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 7,
+            "event_id": 7,
+            "forward_email": "pragyan.spellbee@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 8,
+            "event_id": 8,
+            "forward_email": "pragyan.justaminute@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 9,
+            "event_id": 9,
+            "forward_email": "pragyan.frankensteinquiz@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 10,
+            "event_id": 10,
+            "forward_email": "pragyan.sorkkanai@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 11,
+            "event_id": 11,
+            "forward_email": "pragyan.asathapovathuyaaru@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 12,
+            "event_id": 12,
+            "forward_email": "pragyan.uyarthanisemmozhi@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 13,
+            "event_id": 13,
+            "forward_email": "pragyan.padathodupesava@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 14,
+            "event_id": 14,
+            "forward_email": "pragyan.kodambakkam@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 15,
+            "event_id": 15,
+            "forward_email": "pragyan.sakalakalaavallavan@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 16,
+            "event_id": 16,
+            "forward_email": "pragyan.rocketleague@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 17,
+            "event_id": 17,
+            "forward_email": "pragyan.valorant@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 18,
+            "event_id": 18,
+            "forward_email": "pragyan.splashspree@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 19,
+            "event_id": 19,
+            "forward_email": "pragyan.tekken@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 20,
+            "event_id": 20,
+            "forward_email": "pragyan.theatrix@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 21,
+            "event_id": 21,
+            "forward_email": "pragyan.mime@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 22,
+            "event_id": 22,
+            "forward_email": "pragyan.monoacting@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 23,
+            "event_id": 23,
+            "forward_email": "pragyan.pictureinterlinking@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 24,
+            "event_id": 24,
+            "forward_email": "pragyan.treasurehunt@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 25,
+            "event_id": 25,
+            "forward_email": "pragyan.fashionista@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 26,
+            "event_id": 26,
+            "forward_email": "pragyan.mr&msfestember@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 27,
+            "event_id": 27,
+            "forward_email": "pragyan.rochakmantara@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 28,
+            "event_id": 28,
+            "forward_email": "pragyan.parliamentarydebate@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 29,
+            "event_id": 29,
+            "forward_email": "pragyan.extempore@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 30,
+            "event_id": 30,
+            "forward_email": "pragyan.cricketquiz@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 31,
+            "event_id": 31,
+            "forward_email": "pragyan.titanicsafari@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 32,
+            "event_id": 32,
+            "forward_email": "pragyan.solowestern@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 33,
+            "event_id": 33,
+            "forward_email": "pragyan.gigahertz@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 34,
+            "event_id": 34,
+            "forward_email": "pragyan.upbeat@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 35,
+            "event_id": 35,
+            "forward_email": "pragyan.acoustics@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 36,
+            "event_id": 36,
+            "forward_email": "pragyan.tarangini@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 37,
+            "event_id": 37,
+            "forward_email": "pragyan.reelliveit@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 38,
+            "event_id": 38,
+            "forward_email": "pragyan.portraitphotography@gmail.com",
+            "max_participants": 5
+        },
+        {
+            "id": 39,
+            "event_id": 39,
+            "forward_email": "pragyan.livephotography@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 40,
+            "event_id": 40,
+            "forward_email": "pragyan.conceptualphotography@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 41,
+            "event_id": 41,
+            "forward_email": "pragyan.reelliveit@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 42,
+            "event_id": 42,
+            "forward_email": "pragyan.portraitphotography@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 43,
+            "event_id": 43,
+            "forward_email": "pragyan.livephotography@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 44,
+            "event_id": 44,
+            "forward_email": "pragyan.conceptualphotography@gmail.com",
+            "max_participants": 3
+        },
+        {
+            "id": 45,
+            "event_id": 45,
+            "forward_email": "pragyan.classicsoloinstrumentals_percussion@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 46,
+            "event_id": 46,
+            "forward_email": "pragyan.classicsolovocals@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 47,
+            "event_id": 47,
+            "forward_email": "pragyan.classicsoloinstrumentals_non_percussion@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 48,
+            "event_id": 48,
+            "forward_email": "pragyan.theshrutilayaquiz@gmail.com",
+            "max_participants": 1
+        },
+        {
+            "id": 49,
+            "event_id": 49,
+            "forward_email": "pragyan.choreoniteeastern@gmail.com",
+            "max_participants": 4
+        },
+        {
+            "id": 50,
+            "event_id": 50,
+            "forward_email": "pragyan.choreonitewestern@gmail.com",
+            "max_participants": 2
+        },
+        {
+            "id": 51,
+            "event_id": 51,
+            "forward_email": "pragyan.easternsolo@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 52,
+            "event_id": 52,
+            "forward_email": "pragyan.westernsolo@gmail.com",
+            "max_participants": 6
+        },
+        {
+            "id": 53,
+            "event_id": 53,
+            "forward_email": "pragyan.duetfreestyle@gmail.com",
+            "max_participants": 6
+        }
+    ]
+}

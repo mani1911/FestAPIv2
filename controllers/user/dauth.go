@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/delta/FestAPI/config"
 	"github.com/delta/FestAPI/models"
@@ -15,20 +16,20 @@ type AuthUserRequest struct {
 	Code string `query:"code"`
 }
 
-// @Summary Authenticate user with DAuth
-// @Description Callback url for DAuth, returns JWT token if successful
-// @ID DAuthUserLogin
-// @Accept json
-// @Produce json
-// @Param code query string true "DAuth code"
-// @Success 200 {string} string "Success"
-// @Failure 400 {string} string "Invalid Request"
-// @Failure 500 {string} string "Internal Server Error"
-// @Router /user/dauth/callback [get]
+// @Summary		Authenticate user with DAuth
+// @Description	Callback url for DAuth, returns JWT token if successful
+// @ID				DAuthUserLogin
+// @Accept			json
+// @Produce		json
+// @Param			code	query		string	true	"DAuth code"
+// @Success		200		{string}	string	"Success"
+// @Failure		400		{string}	string	"Invalid Request"
+// @Failure		500		{string}	string	"Internal Server Error"
+// @Router			/user/dauth/callback [get]
 func DAuthUserLogin(c echo.Context) error {
 	var req AuthUserRequest
 	if err := c.Bind(&req); err != nil {
-		return utils.SendResponse(c, http.StatusInternalServerError, "Server Error")
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Code")
 	}
 	// Fetching code from header
 	code := req.Code
@@ -64,13 +65,13 @@ func DAuthUserLogin(c echo.Context) error {
 		if err == gorm.ErrRecordNotFound {
 			// Fetching college details
 			if err = db.Where("Name = ?", "National Institute of Technology, Tiruchirapalli").First(&collegeDetails).Error; err != nil {
-				return utils.SendResponse(c, http.StatusInternalServerError, "Failed to create user")
+				return utils.SendResponse(c, http.StatusInternalServerError, "Error in finding college")
 			}
 			// Creating a password for each user
-			password := Email + "may4cebewithu"
+			password := Email + config.DAuthUserPassword
 			passHash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 			if err != nil {
-				return utils.SendResponse(c, http.StatusInternalServerError, "Failed to create user")
+				return utils.SendResponse(c, http.StatusInternalServerError, "Error in generating password")
 			}
 			// Creating new User object
 			userReg := models.User{
@@ -99,7 +100,15 @@ func DAuthUserLogin(c echo.Context) error {
 	// Creating JWT for the existing user
 	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 	if err != nil {
-		return utils.SendResponse(c, http.StatusInternalServerError, "Token Not generated")
+		return utils.SendResponse(c, http.StatusInternalServerError, "Error in generating token")
 	}
-	return utils.SendResponse(c, http.StatusOK, jwtToken)
+
+	cookie := new(http.Cookie)
+	cookie.Name = "token"
+	cookie.Value = jwtToken
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	cookie.HttpOnly = true
+	c.SetCookie(cookie)
+
+	return utils.SendResponse(c, http.StatusOK, "User authenticated successfully")
 }
