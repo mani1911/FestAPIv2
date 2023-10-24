@@ -39,9 +39,9 @@ type AuthUserRegisterRequest struct {
 // @Accept			json
 // @Produce		json
 // @Param			request	body		AuthUserRegisterRequest	true	"User registration request"
-// @Success		200		{string}	string					"Success"
-// @Failure		400		{string}	string					"Invalid Request"
-// @Failure		500		{string}	string					"Internal Server Error"
+// @Success		200		{object}	utils.SendResponse.DefaultResponse	"Success"
+// @Failure		400		{object}	utils.SendResponse.DefaultResponse	"Invalid Request"
+// @Failure		500		{object}	utils.SendResponse.DefaultResponse	"Internal Server Error"
 // @Router			/user/register [post]
 func AuthUserRegister(c echo.Context) error {
 	var req AuthUserRegisterRequest

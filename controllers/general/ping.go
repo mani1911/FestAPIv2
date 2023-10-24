@@ -11,7 +11,7 @@ import (
 // @Description	Checks if the server is up and running
 // @Produce		json
 // @Param			code	query		string	true	"DAuth code"
-// @Success		200		{string}	string	"Success"
+// @Success		200		{object}	utils.SendResponse.DefaultResponse	"Success"
 // @Router			/ping [get]
 func Ping(c echo.Context) error {
 	return utils.SendResponse(c, http.StatusOK, "Pong")

@@ -22,9 +22,9 @@ type AuthUserRequest struct {
 // @Accept			json
 // @Produce		json
 // @Param			code	query		string	true	"DAuth code"
-// @Success		200		{string}	string	"Success"
-// @Failure		400		{string}	string	"Invalid Request"
-// @Failure		500		{string}	string	"Internal Server Error"
+// @Success		200		{object}	utils.SendResponse.DefaultResponse "Success"
+// @Failure		400		{object}	utils.SendResponse.DefaultResponse	"Invalid Request"
+// @Failure		500		{object}	utils.SendResponse.DefaultResponse	"Internal Server Error"
 // @Router			/user/dauth/callback [get]
 func DAuthUserLogin(c echo.Context) error {
 	var req AuthUserRequest

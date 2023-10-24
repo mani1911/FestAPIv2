@@ -88,6 +88,12 @@ definitions:
       user_year:
         type: string
     type: object
+  utils.SendResponse.DefaultResponse:
+    properties:
+      message:
+        description: Default Response
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -121,15 +127,15 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "400":
           description: Invalid Request
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       summary: Authenticate and log in an admin.
   /admin/verify:
     get:
@@ -141,7 +147,7 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       security:
       - ApiKeyAuth: []
       - RoleAuth: []
@@ -161,7 +167,7 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       summary: Ping
   /user/dauth/callback:
     get:
@@ -181,15 +187,15 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "400":
           description: Invalid Request
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       summary: Authenticate user with DAuth
   /user/login:
     post:
@@ -210,15 +216,15 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "400":
           description: Invalid Request
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       summary: Authenticate and log in a user.
   /user/register:
     post:
@@ -239,15 +245,15 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "400":
           description: Invalid Request
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       summary: Register a new user.
   /user/update:
     put:
@@ -268,15 +274,15 @@ paths:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "400":
           description: Invalid Request
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
         "500":
           description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
       security:
       - ApiKeyAuth: []
       summary: Update user information.

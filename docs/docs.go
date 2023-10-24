@@ -49,19 +49,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -87,7 +87,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -113,7 +113,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -143,19 +143,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -187,19 +187,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -231,19 +231,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -280,19 +280,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
                         }
                     }
                 }
@@ -430,6 +430,15 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.SendResponse.DefaultResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Default Response",
                     "type": "string"
                 }
             }

@@ -11,7 +11,7 @@ import (
 // @Description	Verifies the status of an admin.
 // @ID				AdminVerify
 // @Produce		json
-// @Success		200	{string}	string	"Success"
+// @Success		200	{object}	utils.SendResponse.DefaultResponse	"Success"
 // @Security		ApiKeyAuth
 // @Security		RoleAuth
 // @Router			/admin/verify [get]

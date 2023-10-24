@@ -23,9 +23,9 @@ type AuthUserLoginRequest struct {
 // @Accept			json
 // @Produce		json
 // @Param			request	body		AuthUserLoginRequest	true	"User authentication request"
-// @Success		200		{string}	string					"Success"
-// @Failure		400		{string}	string					"Invalid Request"
-// @Failure		500		{string}	string					"Internal Server Error"
+// @Success		200		{object}	utils.SendResponse.DefaultResponse	"Success"
+// @Failure		400		{object}	utils.SendResponse.DefaultResponse	"Invalid Request"
+// @Failure		500		{object}	utils.SendResponse.DefaultResponse	"Internal Server Error"
 // @Router			/user/login [post]
 func AuthUserLogin(c echo.Context) error {
 	var req AuthUserLoginRequest
