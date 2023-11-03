@@ -1,20 +1,33 @@
 basePath: /
 definitions:
-  controller.AuthAdminAdminRequest:
+  dto.AbstractDetailsResponse:
+    properties:
+      forward_email:
+        type: string
+      max_participants:
+        type: integer
+    type: object
+  dto.AuthAdminRequest:
     properties:
       admin_password:
         type: string
       admin_username:
         type: string
+    required:
+    - admin_password
+    - admin_username
     type: object
-  controller.AuthUserLoginRequest:
+  dto.AuthUserLoginRequest:
     properties:
       user_email:
         type: string
       user_password:
         type: string
+    required:
+    - user_email
+    - user_password
     type: object
-  controller.AuthUserRegisterRequest:
+  dto.AuthUserRegisterRequest:
     properties:
       user_address:
         type: string
@@ -55,7 +68,7 @@ definitions:
       user_year:
         type: string
     type: object
-  controller.AuthUserUpdateRequest:
+  dto.AuthUserUpdateRequest:
     properties:
       user_address:
         type: string
@@ -88,10 +101,16 @@ definitions:
       user_year:
         type: string
     type: object
-  utils.SendResponse.DefaultResponse:
+  dto.EventRegistrationRequest:
     properties:
-      message:
-        description: Default Response
+      event_id:
+        type: integer
+    type: object
+  dto.GetEventDetailsResponse:
+    properties:
+      event_id:
+        type: integer
+      event_name:
         type: string
     type: object
 host: localhost:8000
@@ -107,12 +126,11 @@ info:
   title: FestAPI v2
   version: "1.0"
 paths:
-  /admin/login:
+  /api/admin/login:
     post:
       consumes:
       - application/json
-      description: Authenticates an admin using username and password, and returns
-        a JWT token for authentication.
+      description: Authenticates an admin user and returns a JWT token for authentication.
       operationId: AuthAdminLogin
       parameters:
       - description: Admin authentication request
@@ -120,24 +138,26 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controller.AuthAdminAdminRequest'
+          $ref: '#/definitions/dto.AuthAdminRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "400":
           description: Invalid Request
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
       summary: Authenticate and log in an admin.
-  /admin/verify:
+      tags:
+      - Admin
+  /api/admin/verify:
     get:
       description: Verifies the status of an admin.
       operationId: AdminVerify
@@ -147,32 +167,118 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
       security:
       - ApiKeyAuth: []
-      - RoleAuth: []
       summary: Verify Admin status.
-  /ping:
+      tags:
+      - Admin
+  /api/events/abstract/details/{event_id}:
     get:
-      description: Checks if the server is up and running
+      description: Retrieve the details of the abstract for the specified event.
+      operationId: EventAbstractDetails
       parameters:
-      - description: DAuth code
-        in: query
-        name: code
+      - description: EventID
+        in: path
+        name: event_id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
-      summary: Ping
-  /user/dauth/callback:
-    get:
-      consumes:
+            $ref: '#/definitions/dto.AbstractDetailsResponse'
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Event not found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Event's Abstract Details
+      tags:
+      - Event
+  /api/events/register:
+    post:
+      description: Register the user for the specified event.
+      operationId: EventRegister
+      parameters:
+      - description: Event Registration Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.EventRegistrationRequest'
+      produces:
       - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Register the user for an event.
+      tags:
+      - Event
+  /api/events/user/registered:
+    get:
+      description: Retrieve a list of events registered by the user.
+      operationId: UserEventDetails
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/dto.GetEventDetailsResponse'
+            type: array
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get details of events registered by a user.
+      tags:
+      - Event
+      - User
+  /api/user/dauth/callback:
+    get:
       description: Callback url for DAuth, returns JWT token if successful
       operationId: DAuthUserLogin
       parameters:
@@ -187,17 +293,19 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "400":
           description: Invalid Request
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
       summary: Authenticate user with DAuth
-  /user/login:
+      tags:
+      - User
+  /api/user/login:
     post:
       consumes:
       - application/json
@@ -209,24 +317,26 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controller.AuthUserLoginRequest'
+          $ref: '#/definitions/dto.AuthUserLoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "400":
           description: Invalid Request
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
       summary: Authenticate and log in a user.
-  /user/register:
+      tags:
+      - User
+  /api/user/register:
     post:
       consumes:
       - application/json
@@ -238,25 +348,27 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controller.AuthUserRegisterRequest'
+          $ref: '#/definitions/dto.AuthUserRegisterRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "400":
           description: Invalid Request
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
       summary: Register a new user.
-  /user/update:
-    put:
+      tags:
+      - User
+  /api/user/update:
+    patch:
       consumes:
       - application/json
       description: Update user information with the provided details.
@@ -267,23 +379,36 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controller.AuthUserUpdateRequest'
+          $ref: '#/definitions/dto.AuthUserUpdateRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
         "400":
           description: Invalid Request
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/utils.SendResponse.DefaultResponse'
+            type: string
       security:
+      - middleware.UserAuth: []
       - ApiKeyAuth: []
       summary: Update user information.
+      tags:
+      - User
+securityDefinitions:
+  ApiKeyAuth:
+    description: Authorization token
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

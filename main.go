@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/delta/FestAPI/config"
+	"github.com/delta/FestAPI/registry"
 	"github.com/delta/FestAPI/router"
 	"github.com/delta/FestAPI/utils"
 
@@ -25,6 +26,12 @@ import (
 // @host						localhost:8000
 // @BasePath					/
 // @query.collection.format	multi
+
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+//	@name						Authorization
+//	@description				Authorization token
+
 func main() {
 
 	server := echo.New()
@@ -35,7 +42,11 @@ func main() {
 	config.ConnectDB()
 	config.MigrateDB()
 
-	router.NewRouter(server)
+	db := config.GetDB()
+
+	registry := registry.NewRegistry(db)
+
+	router.NewRouter(server, registry)
 
 	utils.InitLogger(server)
 

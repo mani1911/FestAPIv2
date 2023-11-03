@@ -1,0 +1,24 @@
+{
+    "informals_details": [
+        {
+            "id": 1, 
+            "name": "Human foosball"
+        },
+        {
+            "id": 2, 
+            "name": "Sumo wrestling"
+        },
+        {
+            "id": 3, 
+            "name": "Escape room"
+        },
+        {
+            "id": 4, 
+            "name": "Rage room"
+        },
+        {
+            "id": 5, 
+            "name": "VR & PS4"
+        }
+    ]        
+}

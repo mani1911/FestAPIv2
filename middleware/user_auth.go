@@ -11,14 +11,18 @@ import (
 )
 
 func UserAuth() echo.MiddlewareFunc {
+	TokenLookupString := "cookie:token"
+	if config.Target == "dev" {
+		TokenLookupString = "cookie:token,header:Authorization:Bearer "
+	}
 	return echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(config.JWTSecret),
-		TokenLookup: "cookie:token",
+		TokenLookup: TokenLookupString,
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(utils.JWTCustomClaims)
 		},
 		ErrorHandler: func(c echo.Context, err error) error {
-			return utils.SendResponse(c, http.StatusForbidden, "Prohibited")
+			return utils.SendResponse(c, http.StatusUnauthorized, "Prohibited")
 		},
 	})
 }

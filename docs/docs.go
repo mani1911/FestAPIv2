@@ -23,14 +23,17 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/admin/login": {
+        "/api/admin/login": {
             "post": {
-                "description": "Authenticates an admin using username and password, and returns a JWT token for authentication.",
+                "description": "Authenticates an admin user and returns a JWT token for authentication.",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Admin"
                 ],
                 "summary": "Authenticate and log in an admin.",
                 "operationId": "AuthAdminLogin",
@@ -41,7 +44,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.AuthAdminAdminRequest"
+                            "$ref": "#/definitions/dto.AuthAdminRequest"
                         }
                     }
                 ],
@@ -49,37 +52,37 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/admin/verify": {
+        "/api/admin/verify": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
-                    },
-                    {
-                        "RoleAuth": []
                     }
                 ],
                 "description": "Verifies the status of an admin.",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Admin"
                 ],
                 "summary": "Verify Admin status.",
                 "operationId": "AdminVerify",
@@ -87,25 +90,40 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/ping": {
+        "/api/events/abstract/details/{event_id}": {
             "get": {
-                "description": "Checks if the server is up and running",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve the details of the abstract for the specified event.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Ping",
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Get Event's Abstract Details",
+                "operationId": "EventAbstractDetails",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "DAuth code",
-                        "name": "code",
-                        "in": "query",
+                        "type": "integer",
+                        "description": "EventID",
+                        "name": "event_id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -113,20 +131,141 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "$ref": "#/definitions/dto.AbstractDetailsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/user/dauth/callback": {
-            "get": {
-                "description": "Callback url for DAuth, returns JWT token if successful",
-                "consumes": [
-                    "application/json"
+        "/api/events/register": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
                 ],
+                "description": "Register the user for the specified event.",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Register the user for an event.",
+                "operationId": "EventRegister",
+                "parameters": [
+                    {
+                        "description": "Event Registration Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EventRegistrationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/user/registered": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve a list of events registered by the user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Event",
+                    "User"
+                ],
+                "summary": "Get details of events registered by a user.",
+                "operationId": "UserEventDetails",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.GetEventDetailsResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/dauth/callback": {
+            "get": {
+                "description": "Callback url for DAuth, returns JWT token if successful",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
                 ],
                 "summary": "Authenticate user with DAuth",
                 "operationId": "DAuthUserLogin",
@@ -143,25 +282,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/user/login": {
+        "/api/user/login": {
             "post": {
                 "description": "Authenticates a user using email and password.",
                 "consumes": [
@@ -169,6 +308,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "User"
                 ],
                 "summary": "Authenticate and log in a user.",
                 "operationId": "AuthUserLogin",
@@ -179,7 +321,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.AuthUserLoginRequest"
+                            "$ref": "#/definitions/dto.AuthUserLoginRequest"
                         }
                     }
                 ],
@@ -187,25 +329,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/user/register": {
+        "/api/user/register": {
             "post": {
                 "description": "Register a new user with the provided details.",
                 "consumes": [
@@ -213,6 +355,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "User"
                 ],
                 "summary": "Register a new user.",
                 "operationId": "AuthUserRegister",
@@ -223,7 +368,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.AuthUserRegisterRequest"
+                            "$ref": "#/definitions/dto.AuthUserRegisterRequest"
                         }
                     }
                 ],
@@ -231,27 +376,30 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/user/update": {
-            "put": {
+        "/api/user/update": {
+            "patch": {
                 "security": [
+                    {
+                        "middleware.UserAuth": []
+                    },
                     {
                         "ApiKeyAuth": []
                     }
@@ -263,6 +411,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Update user information.",
                 "operationId": "AuthUserUpdate",
                 "parameters": [
@@ -272,7 +423,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.AuthUserUpdateRequest"
+                            "$ref": "#/definitions/dto.AuthUserUpdateRequest"
                         }
                     }
                 ],
@@ -280,19 +431,25 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     },
                     "400": {
                         "description": "Invalid Request",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/utils.SendResponse.DefaultResponse"
+                            "type": "string"
                         }
                     }
                 }
@@ -300,8 +457,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controller.AuthAdminAdminRequest": {
+        "dto.AbstractDetailsResponse": {
             "type": "object",
+            "properties": {
+                "forward_email": {
+                    "type": "string"
+                },
+                "max_participants": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.AuthAdminRequest": {
+            "type": "object",
+            "required": [
+                "admin_password",
+                "admin_username"
+            ],
             "properties": {
                 "admin_password": {
                     "type": "string"
@@ -311,8 +483,12 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.AuthUserLoginRequest": {
+        "dto.AuthUserLoginRequest": {
             "type": "object",
+            "required": [
+                "user_email",
+                "user_password"
+            ],
             "properties": {
                 "user_email": {
                     "type": "string"
@@ -322,7 +498,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.AuthUserRegisterRequest": {
+        "dto.AuthUserRegisterRequest": {
             "type": "object",
             "properties": {
                 "user_address": {
@@ -384,7 +560,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.AuthUserUpdateRequest": {
+        "dto.AuthUserUpdateRequest": {
             "type": "object",
             "properties": {
                 "user_address": {
@@ -434,14 +610,32 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.SendResponse.DefaultResponse": {
+        "dto.EventRegistrationRequest": {
             "type": "object",
             "properties": {
-                "message": {
-                    "description": "Default Response",
+                "event_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GetEventDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "event_id": {
+                    "type": "integer"
+                },
+                "event_name": {
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "description": "Authorization token",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

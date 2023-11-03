@@ -1,19 +1,19 @@
 package router
 
 import (
-	controller "github.com/delta/FestAPI/controllers/user"
+	"github.com/delta/FestAPI/app"
 	"github.com/delta/FestAPI/middleware"
 	"github.com/labstack/echo/v4"
 )
 
-func userRouter(e *echo.Group) {
+func NewUserRouter(e *echo.Group, controller app.UserController) {
 
 	userRoutes := e.Group("/user")
 	// Public Routes
-	userRoutes.GET("/dauth/callback/", controller.DAuthUserLogin)
-	userRoutes.POST("/register", controller.AuthUserRegister)
-	userRoutes.POST("/login", controller.AuthUserLogin)
+	userRoutes.GET("/dauth/callback/", controller.DAuthLogin)
+	userRoutes.POST("/register", controller.Register)
+	userRoutes.POST("/login", controller.Login)
 	//Protected Routes
 	userRoutes.Use(middleware.UserAuth())
-	userRoutes.PUT("/update", controller.AuthUserUpdate)
+	userRoutes.PATCH("/update", controller.Update)
 }

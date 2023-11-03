@@ -8,8 +8,8 @@ func SendResponse(c echo.Context, code int, message interface{}) error {
 	// @Description message
 	type DefaultResponse struct {
 		// Default Response
-		Message string `json:"message"`
+		Message interface{} `json:"message"`
 	}
 
-	return c.JSON(code, DefaultResponse{Message: message.(string)})
+	return c.JSON(code, DefaultResponse{Message: message})
 }

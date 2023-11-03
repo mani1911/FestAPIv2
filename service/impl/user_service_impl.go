@@ -1,0 +1,251 @@
+package impl
+
+import (
+	"net/http"
+
+	"github.com/delta/FestAPI/config"
+	dto "github.com/delta/FestAPI/dto"
+	"github.com/delta/FestAPI/models"
+	"github.com/delta/FestAPI/repository"
+	"github.com/delta/FestAPI/service"
+	"github.com/delta/FestAPI/utils"
+	"golang.org/x/crypto/bcrypt"
+)
+
+type userServiceImpl struct {
+	userRepository    repository.UserRepository
+	collegeRepository repository.CollegeRepository
+}
+
+func NewUserServiceImpl(
+	userRepository repository.UserRepository,
+	collegeRepository repository.CollegeRepository) service.UserService {
+	return &userServiceImpl{
+		userRepository:    userRepository,
+		collegeRepository: collegeRepository,
+	}
+}
+
+func (impl *userServiceImpl) DAuthLogin(req dto.AuthUserRequest) dto.Response {
+
+	// Fetching code from header
+	code := req.Code
+
+	// Obtaining access token from dauth server
+	token, err := utils.GetDAuthToken(code)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in Authenticating user"}
+	}
+
+	// Obtaining user details from dauth server
+	user, err := utils.GetDAuthUser(token.AccessToken)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in Authenticating User"}
+	}
+
+	Name := user.Name
+	Email := user.Email
+	Gender := user.Gender
+	Phone := user.Phone
+	if len(Name) == 0 || len(Email) == 0 {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "User not found"}
+	}
+
+	userDetails, err := impl.userRepository.FindByEmail(Email)
+	if userDetails == nil && err == nil {
+		// Fetching college details
+		collegeDetails, err := impl.collegeRepository.FindByName("National Institute of Technology, Tiruchirapalli")
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to create user"}
+		}
+
+		// Creating a password for each user
+		password := Email + config.DAuthUserPassword
+		passHash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to create user"}
+		}
+
+		// Creating new User object
+		userReg := models.User{
+			Email:     Email,
+			Name:      Name,
+			CollegeID: collegeDetails.ID,
+			Gender:    models.Gender(Gender),
+			Phone:     Phone,
+			Password:  passHash,
+		}
+
+		//Creating new User
+		err = impl.userRepository.CreateUser(&userReg)
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to Create User"}
+		}
+
+		// Creating JWT Token for the new user
+		jwtToken, err := utils.GenerateToken(userReg.ID, false, "")
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
+		}
+		return dto.Response{Code: http.StatusOK, Message: jwtToken}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in finding User"}
+	}
+
+	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: jwtToken}
+}
+
+func (impl *userServiceImpl) Login(req dto.AuthUserLoginRequest) dto.Response {
+
+	// Get User from database
+	userDetails, err := impl.userRepository.FindByEmail(req.Email)
+
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in finding User"}
+	}
+
+	// Comparing passwords
+	err = utils.ComapareHashPassword(userDetails.Password, req.Password)
+	if err != nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Enter a valid password"}
+	}
+
+	// Creating JWT for the user
+	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: jwtToken}
+}
+
+func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Response {
+	// checking if required fields are present
+	if len(req.Username) == 0 ||
+		len(req.Email) == 0 ||
+		len(req.Fullname) == 0 ||
+		len(req.Password) == 0 ||
+		len(req.Sex) == 0 ||
+		len(req.Nationality) == 0 ||
+		len(req.Address) == 0 ||
+		len(req.Pincode) == 0 ||
+		len(req.State) == 0 ||
+		len(req.City) == 0 ||
+		len(req.Phone) == 0 ||
+		len(req.Degree) == 0 ||
+		len(req.Year) == 0 ||
+		len(req.College) == 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
+	}
+	// Checking if user exists in the database or not
+	userDetails, err := impl.userRepository.FindByEmail(req.Email)
+	if userDetails == nil && err == nil {
+
+		// Creating password hash
+		passwordHash, err := utils.GenerateHashPassword(req.Password)
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server error"}
+		}
+
+		// Invalid College Name
+		if err = impl.collegeRepository.Exists(req.College); err != nil {
+			return dto.Response{Code: http.StatusBadRequest, Message: "Invalid College Name"}
+		}
+
+		// Fetch College details
+		collegeDetails, err := impl.collegeRepository.FindByName(req.College)
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Error finding College"}
+		}
+		// Creating new user
+		userReg := models.User{
+			Name:         req.Username,
+			FullName:     req.Fullname,
+			College:      *collegeDetails,
+			OtherCollege: req.OtherCollege,
+			Email:        req.Email,
+			Gender:       models.Gender(req.Sex),
+			Country:      req.Country,
+			State:        req.State,
+			City:         req.City,
+			Address:      req.Address,
+			Pincode:      req.Pincode,
+			Phone:        req.Phone,
+			Password:     passwordHash,
+			Sponsor:      req.Sponsor,
+			VoucherName:  req.VoucherName,
+			ReferralCode: req.ReferralCode,
+			Degree:       req.Degree,
+			Year:         req.Year,
+			Nationality:  req.Nationality,
+		}
+
+		if err = impl.userRepository.CreateUser(&userReg); err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to create user"}
+		}
+
+		// User Created
+		return dto.Response{Code: http.StatusOK, Message: "Account Created"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error Creating User. Try Later"}
+	}
+
+	// User already exists
+	return dto.Response{Code: http.StatusBadRequest, Message: "User already exists"}
+}
+
+func (impl *userServiceImpl) Update(req dto.AuthUserUpdateRequest, userID uint) dto.Response {
+
+	// Checking if user exists in DB
+	userDetails, err := impl.userRepository.FindByID(userID)
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error finding user. Try Later"}
+	}
+
+	// Invalid College Name
+	if err = impl.collegeRepository.Exists(req.College); err != nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid College Name"}
+	}
+
+	// Fetch College details
+	collegeDetails, err := impl.collegeRepository.FindByName(req.College)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Error finding College"}
+	}
+
+	// Updating Details
+	userDetails.College = *collegeDetails
+	userDetails.OtherCollege = req.OtherCollege
+	userDetails.Gender = models.Gender(req.Sex)
+	userDetails.Country = req.Country
+	userDetails.State = req.State
+	userDetails.City = req.City
+	userDetails.Address = req.Address
+	userDetails.Pincode = req.Pincode
+	userDetails.Phone = req.Phone
+	userDetails.Sponsor = req.Sponsor
+	userDetails.VoucherName = req.VoucherName
+	userDetails.ReferralCode = req.ReferralCode
+	userDetails.Degree = req.Degree
+	userDetails.Year = req.Year
+	userDetails.Nationality = req.Nationality
+
+	// Error Updating User
+	err = impl.userRepository.Update(userDetails)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to update user"}
+	}
+
+	//User Updated
+	return dto.Response{Code: http.StatusOK, Message: "Account Updated"}
+}
