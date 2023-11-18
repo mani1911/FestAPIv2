@@ -133,3 +133,47 @@ func (impl *userControllerImpl) Update(c echo.Context) error {
 	res := impl.userService.Update(req, userID)
 	return utils.SendResponse(c, res.Code, res.Message)
 }
+
+// @Summary		Profile information.
+// @Description	profile information to be displayed.
+// @ID				ProfileDetails
+// @Tags			Profile
+// @Produce		json
+// @Security		middleware.UserAuth
+// @Success		200	{object}	dto.ProfileDetailsResponse
+// @Failure		400	{object}	string	"User not found"
+// @Failure		500	{object}	string	"Internal Server Error"
+// @Router			/api/user/details [get]
+func (impl *userControllerImpl) ProfileDetails(c echo.Context) error {
+
+	// obtaining user id from jwt
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*utils.JWTCustomClaims)
+	userID := claims.UserID
+
+	res := impl.userService.ProfileDetails(userID)
+
+	return utils.SendResponse(c, res.Code, res.Message)
+}
+
+// @Summary		QR Generation.
+// @Description	QR for the profile page.
+// @ID				ProfileQR
+// @Tags			Profile
+// @Produce		json
+// @Security		middleware.UserAuth
+// @Success		200	{object}	string
+// @Failure		400	{object}	string	"User not found"
+// @Failure		500	{object}	string	"Internal Server Error"
+// @Router			/api/user/qr [get]
+func (impl *userControllerImpl) QRgeneration(c echo.Context) error {
+
+	// obtaining user id from jwt
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*utils.JWTCustomClaims)
+	userID := claims.UserID
+
+	res := impl.userService.QRgeneration(userID)
+
+	return utils.SendResponse(c, res.Code, res.Message)
+}

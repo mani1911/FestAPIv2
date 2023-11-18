@@ -51,6 +51,19 @@ func (repository *userRepositoryImpl) FindByID(id uint) (*models.User, error) {
 	return &userDetail, nil
 }
 
+func (repository *userRepositoryImpl) FindByCollegeID(id uint) (*models.College, error) {
+	var collegeDetail models.College
+
+	// Find College by ID
+	if err := repository.DB.Where("ID = ? ", id).First(&collegeDetail).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, errors.New("Cannot find College")
+	}
+	return &collegeDetail, nil
+}
+
 func (repository *userRepositoryImpl) Update(userDetails *models.User) error {
 
 	// Update User

@@ -53,12 +53,12 @@ func (impl *eventControllerImpl) Register(c echo.Context) error {
 // @ID				EventAbstractDetails
 // @Tags			Event
 // @Produce		json
-// @Param			event_id	path		int	true	"EventID"
-// @Success		200		{object}	dto.AbstractDetailsResponse	"Success"
-// @Failure		400		{string}	string						"Invalid Request"
-// @Failure		401		{object}	string						"Unauthorized"
-// @Failure		404		{string}	string						"Event not found"
-// @Failure		500		{string}	string						"Internal Server Error"
+// @Param			event_id	path		int							true	"EventID"
+// @Success		200			{object}	dto.AbstractDetailsResponse	"Success"
+// @Failure		400			{string}	string						"Invalid Request"
+// @Failure		401			{object}	string						"Unauthorized"
+// @Failure		404			{string}	string						"Event not found"
+// @Failure		500			{string}	string						"Internal Server Error"
 // @Security		ApiKeyAuth
 // @Router			/api/events/abstract/details/{event_id} [get]
 func (impl *eventControllerImpl) AbstractDetails(c echo.Context) error {

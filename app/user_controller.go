@@ -7,4 +7,6 @@ type UserController interface {
 	Login(c echo.Context) error
 	Register(c echo.Context) error
 	Update(c echo.Context) error
+	ProfileDetails(c echo.Context) error
+	QRgeneration(c echo.Context) error
 }

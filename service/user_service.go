@@ -9,4 +9,6 @@ type UserService interface {
 	Login(dto.AuthUserLoginRequest) dto.Response
 	Register(dto.AuthUserRegisterRequest) dto.Response
 	Update(dto.AuthUserUpdateRequest, uint) dto.Response
+	ProfileDetails(uint) dto.Response
+	QRgeneration(uint) dto.Response
 }

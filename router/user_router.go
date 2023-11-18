@@ -15,5 +15,7 @@ func NewUserRouter(e *echo.Group, controller app.UserController) {
 	userRoutes.POST("/login", controller.Login)
 	//Protected Routes
 	userRoutes.Use(middleware.UserAuth())
+	userRoutes.GET("/details", controller.ProfileDetails)
+	userRoutes.GET("/qr", controller.QRgeneration)
 	userRoutes.PATCH("/update", controller.Update)
 }

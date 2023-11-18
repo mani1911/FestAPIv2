@@ -66,7 +66,7 @@ definitions:
       user_voucher_name:
         type: string
       user_year:
-        type: string
+        type: integer
     type: object
   dto.AuthUserUpdateRequest:
     properties:
@@ -99,7 +99,7 @@ definitions:
       user_voucher_name:
         type: string
       user_year:
-        type: string
+        type: integer
     type: object
   dto.EventRegistrationRequest:
     properties:
@@ -112,6 +112,17 @@ definitions:
         type: integer
       event_name:
         type: string
+    type: object
+  dto.ProfileDetailsResponse:
+    properties:
+      user_college:
+        type: string
+      user_degree:
+        type: string
+      user_fullname:
+        type: string
+      user_year:
+        type: integer
     type: object
 host: localhost:8000
 info:
@@ -305,6 +316,30 @@ paths:
       summary: Authenticate user with DAuth
       tags:
       - User
+  /api/user/details:
+    get:
+      description: profile information to be displayed.
+      operationId: ProfileDetails
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ProfileDetailsResponse'
+        "400":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - middleware.UserAuth: []
+      summary: Profile information.
+      tags:
+      - Profile
   /api/user/login:
     post:
       consumes:
@@ -336,6 +371,30 @@ paths:
       summary: Authenticate and log in a user.
       tags:
       - User
+  /api/user/qr:
+    get:
+      description: QR for the profile page.
+      operationId: ProfileQR
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - middleware.UserAuth: []
+      summary: QR Generation.
+      tags:
+      - Profile
   /api/user/register:
     post:
       consumes:

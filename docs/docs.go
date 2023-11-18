@@ -300,6 +300,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/user/details": {
+            "get": {
+                "security": [
+                    {
+                        "middleware.UserAuth": []
+                    }
+                ],
+                "description": "profile information to be displayed.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Profile information.",
+                "operationId": "ProfileDetails",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ProfileDetailsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "User not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/user/login": {
             "post": {
                 "description": "Authenticates a user using email and password.",
@@ -334,6 +372,44 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/qr": {
+            "get": {
+                "security": [
+                    {
+                        "middleware.UserAuth": []
+                    }
+                ],
+                "description": "QR for the profile page.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "QR Generation.",
+                "operationId": "ProfileQR",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "User not found",
                         "schema": {
                             "type": "string"
                         }
@@ -556,7 +632,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
@@ -606,7 +682,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
@@ -626,6 +702,23 @@ const docTemplate = `{
                 },
                 "event_name": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.ProfileDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "user_college": {
+                    "type": "string"
+                },
+                "user_degree": {
+                    "type": "string"
+                },
+                "user_fullname": {
+                    "type": "string"
+                },
+                "user_year": {
+                    "type": "integer"
                 }
             }
         }

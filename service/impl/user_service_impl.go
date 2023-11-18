@@ -1,6 +1,10 @@
 package impl
 
 import (
+	"bytes"
+	"encoding/base64"
+	"image"
+	"image/png"
 	"net/http"
 
 	"github.com/delta/FestAPI/config"
@@ -9,6 +13,7 @@ import (
 	"github.com/delta/FestAPI/repository"
 	"github.com/delta/FestAPI/service"
 	"github.com/delta/FestAPI/utils"
+	qrcode "github.com/skip2/go-qrcode"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -141,7 +146,7 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		len(req.City) == 0 ||
 		len(req.Phone) == 0 ||
 		len(req.Degree) == 0 ||
-		len(req.Year) == 0 ||
+		req.Year == 0 ||
 		len(req.College) == 0 {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
 	}
@@ -248,4 +253,63 @@ func (impl *userServiceImpl) Update(req dto.AuthUserUpdateRequest, userID uint) 
 
 	//User Updated
 	return dto.Response{Code: http.StatusOK, Message: "Account Updated"}
+}
+
+func (impl *userServiceImpl) ProfileDetails(userID uint) dto.Response {
+
+	// Checking if user exists in DB
+	userDetails, err := impl.userRepository.FindByID(userID)
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+	collegeDetails, _ := impl.userRepository.FindByCollegeID(userDetails.CollegeID)
+
+	profile := dto.ProfileDetailsResponse{
+		Fullname: userDetails.FullName,
+		College:  collegeDetails.Name,
+		Degree:   userDetails.Degree,
+		Year:     userDetails.Year,
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: profile}
+
+}
+
+func (impl *userServiceImpl) QRgeneration(userID uint) dto.Response {
+
+	// Checking if user exists in DB
+	userDetails, err := impl.userRepository.FindByID(userID)
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	// Generate token for userEmail
+	token, _ := utils.GenerateTokenforQR(userDetails.Email)
+
+	// Generate the QR code for token
+	qr, err := qrcode.New(token, qrcode.Medium)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+	encodeImageBase64 := func(img image.Image) (string, error) {
+		var base64String string
+		buffer := new(bytes.Buffer)
+		err := png.Encode(buffer, img)
+		if err != nil {
+			return base64String, err
+		}
+		base64String = base64.StdEncoding.EncodeToString(buffer.Bytes())
+		return base64String, nil
+	}
+
+	base64Image, err := encodeImageBase64(qr.Image(256))
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: "data:image/png;base64," + base64Image}
 }

@@ -23,6 +23,6 @@ type User struct {
 	VoucherName  string  `gorm:"size:255;not null"`
 	ReferralCode string  `gorm:"size:255;not null"`
 	Degree       string  `gorm:"size:255;not null"`
-	Year         string  `gorm:"size:255;not null"`
+	Year         uint    `gorm:"size:255;not null"`
 	Nationality  string  `gorm:"size:255;not null"`
 }
