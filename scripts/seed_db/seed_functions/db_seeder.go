@@ -78,7 +78,9 @@ func DBSeeder() {
 		"colleges",
 		"events",
 		"event_abstract_details",
-		// "informals_details",
+		"informals_details",
+		"hostels",
+		"rooms",
 	}
 
 	SeedData(seeds)

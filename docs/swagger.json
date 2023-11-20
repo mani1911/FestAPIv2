@@ -252,6 +252,229 @@
                 }
             }
         },
+        "/api/hospi/deleteRoom": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a room with the provided ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Delete a room.",
+                "operationId": "DeleteRoom",
+                "parameters": [
+                    {
+                        "description": "Delete room request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DeleteRoomRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/hospi/getHostels": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve the details of the hostels.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Get all the Hostels",
+                "operationId": "GetHostels",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetHostelsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Hostels not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/hospi/getRooms": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Retrieve the details of the rooms along with the hostel name.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Get all the Rooms",
+                "operationId": "GetRooms",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetRoomsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Rooms not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/hospi/updateHostel": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add/Update a new hostel with the provided details.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Add/Update a new hostel.",
+                "operationId": "AddUpdateHostel",
+                "parameters": [
+                    {
+                        "description": "Add/update hostel request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddUpdateHostelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/hospi/updateRoom": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add/Update a new room with the provided details.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Add/Update a new room.",
+                "operationId": "AddUpdateRoom",
+                "parameters": [
+                    {
+                        "description": "Add/update room request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddUpdateRoomRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/user/dauth/callback": {
             "get": {
                 "description": "Callback url for DAuth, returns JWT token if successful",
@@ -538,6 +761,37 @@
                 }
             }
         },
+        "dto.AddUpdateHostelRequest": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "$ref": "#/definitions/models.Gender"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.AddUpdateRoomRequest": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "hostel_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.AuthAdminRequest": {
             "type": "object",
             "required": [
@@ -680,6 +934,14 @@
                 }
             }
         },
+        "dto.DeleteRoomRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.EventRegistrationRequest": {
             "type": "object",
             "properties": {
@@ -699,6 +961,40 @@
                 }
             }
         },
+        "dto.GetHostelsResponse": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "$ref": "#/definitions/models.Gender"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.GetRoomsResponse": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "$ref": "#/definitions/models.Gender"
+                },
+                "hostel": {
+                    "type": "string"
+                },
+                "hostelID": {
+                    "type": "integer"
+                },
+                "room": {
+                    "type": "string"
+                },
+                "roomID": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.ProfileDetailsResponse": {
             "type": "object",
             "properties": {
@@ -715,6 +1011,19 @@
                     "type": "integer"
                 }
             }
+        },
+        "models.Gender": {
+            "type": "string",
+            "enum": [
+                "MALE",
+                "FEMALE",
+                "OTHER"
+            ],
+            "x-enum-varnames": [
+                "MALE",
+                "FEMALE",
+                "OTHER"
+            ]
         }
     },
     "securityDefinitions": {

@@ -20,3 +20,7 @@ func (r *registry) NewEventRepository() repository.EventRepository {
 func (r *registry) NewCollegeRepository() repository.CollegeRepository {
 	return impl.NewCollegeRepositoryImpl(r.db)
 }
+
+func (r *registry) NewHospiRepository() repository.HospiRepository {
+	return impl.NewHospiRepositoryImpl(r.db)
+}

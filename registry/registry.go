@@ -22,5 +22,6 @@ func (r *registry) NewAppController() app.Controller {
 		User:  r.NewUserController(),
 		Admin: r.NewAdminController(),
 		Event: r.NewEventController(),
+		Hospi: r.NewHospiController(),
 	}
 }

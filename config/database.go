@@ -42,6 +42,11 @@ func createEnums() {
 		fmt.Println(color.RedString("Error creating AdminRoles ENUM"))
 	}
 
+	createConstants := db.Exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'constants') THEN CREATE TYPE constants AS ENUM('OVER_STAY_COST','DAILY_COST','EVENT_PASS_COST','CAUTION_DEPOSIT'); END IF; END$$;")
+	if createConstants.Error != nil {
+		fmt.Println(color.RedString("Error creating Constants ENUM"))
+	}
+
 }
 
 // GetDB returns the database
@@ -60,6 +65,9 @@ func MigrateDB() {
 		&models.Event{},
 		&models.EventRegistration{},
 		&models.EventAbstractDetails{},
+		&models.InformalsDetails{},
+		models.Hostel{},
+		models.Room{},
 	} {
 		if err := db.AutoMigrate(&schema); err != nil {
 			panic(err)

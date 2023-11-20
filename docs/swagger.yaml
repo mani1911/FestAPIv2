@@ -7,6 +7,26 @@ definitions:
       max_participants:
         type: integer
     type: object
+  dto.AddUpdateHostelRequest:
+    properties:
+      gender:
+        $ref: '#/definitions/models.Gender'
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.AddUpdateRoomRequest:
+    properties:
+      capacity:
+        type: integer
+      hostel_id:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   dto.AuthAdminRequest:
     properties:
       admin_password:
@@ -101,6 +121,11 @@ definitions:
       user_year:
         type: integer
     type: object
+  dto.DeleteRoomRequest:
+    properties:
+      id:
+        type: integer
+    type: object
   dto.EventRegistrationRequest:
     properties:
       event_id:
@@ -113,6 +138,28 @@ definitions:
       event_name:
         type: string
     type: object
+  dto.GetHostelsResponse:
+    properties:
+      gender:
+        $ref: '#/definitions/models.Gender'
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.GetRoomsResponse:
+    properties:
+      gender:
+        $ref: '#/definitions/models.Gender'
+      hostel:
+        type: string
+      hostelID:
+        type: integer
+      room:
+        type: string
+      roomID:
+        type: integer
+    type: object
   dto.ProfileDetailsResponse:
     properties:
       user_college:
@@ -124,6 +171,16 @@ definitions:
       user_year:
         type: integer
     type: object
+  models.Gender:
+    enum:
+    - MALE
+    - FEMALE
+    - OTHER
+    type: string
+    x-enum-varnames:
+    - MALE
+    - FEMALE
+    - OTHER
 host: localhost:8000
 info:
   contact:
@@ -288,6 +345,147 @@ paths:
       tags:
       - Event
       - User
+  /api/hospi/deleteRoom:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a room with the provided ID.
+      operationId: DeleteRoom
+      parameters:
+      - description: Delete room request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteRoomRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a room.
+      tags:
+      - Hospi
+  /api/hospi/getHostels:
+    get:
+      description: Retrieve the details of the hostels.
+      operationId: GetHostels
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/dto.GetHostelsResponse'
+        "400":
+          description: Hostels not found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get all the Hostels
+      tags:
+      - Hospi
+  /api/hospi/getRooms:
+    get:
+      description: Retrieve the details of the rooms along with the hostel name.
+      operationId: GetRooms
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/dto.GetRoomsResponse'
+        "400":
+          description: Rooms not found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get all the Rooms
+      tags:
+      - Hospi
+  /api/hospi/updateHostel:
+    post:
+      consumes:
+      - application/json
+      description: Add/Update a new hostel with the provided details.
+      operationId: AddUpdateHostel
+      parameters:
+      - description: Add/update hostel request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddUpdateHostelRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add/Update a new hostel.
+      tags:
+      - Hospi
+  /api/hospi/updateRoom:
+    post:
+      consumes:
+      - application/json
+      description: Add/Update a new room with the provided details.
+      operationId: AddUpdateRoom
+      parameters:
+      - description: Add/update room request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddUpdateRoomRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add/Update a new room.
+      tags:
+      - Hospi
   /api/user/dauth/callback:
     get:
       description: Callback url for DAuth, returns JWT token if successful

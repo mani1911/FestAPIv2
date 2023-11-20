@@ -16,3 +16,7 @@ func (r *registry) NewAdminController() app.AdminController {
 func (r *registry) NewEventController() app.EventController {
 	return impl.NewEventControllerImpl(r.NewEventService())
 }
+
+func (r *registry) NewHospiController() app.HospiController {
+	return impl.NewHospiControllerImpl(r.NewHospiService())
+}

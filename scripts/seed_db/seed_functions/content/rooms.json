@@ -1,0 +1,52 @@
+{
+    "rooms":[
+        {
+            "id":1,
+            "name":"common room",
+            "hostel_id":1,
+            "capacity":15
+        },
+        {
+            "id":2,
+            "name":"room",
+            "hostel_id":2,
+            "capacity":15
+        },
+        {
+            "id":3,
+            "name":"common room",
+            "hostel_id":3,
+            "capacity":15
+        },
+        {
+            "id":4,
+            "name":"common room",
+            "hostel_id":4,
+            "capacity":15
+        },
+        {
+            "id":5,
+            "name":"common room",
+            "hostel_id":5,
+            "capacity":15
+        },
+        {
+            "id":6,
+            "name":"common room",
+            "hostel_id":6,
+            "capacity":15
+        },
+        {
+            "id":7,
+            "name":"common room",
+            "hostel_id":7,
+            "capacity":15
+        },
+        {
+            "id":8,
+            "name":"common room",
+            "hostel_id":8,
+            "capacity":15
+        }
+    ]
+}

@@ -24,3 +24,10 @@ func (r *registry) NewEventService() service.EventService {
 		r.NewUserRepository(),
 	)
 }
+
+func (r *registry) NewHospiService() service.HospiService {
+	return impl.NewHospiServiceImpl(
+		r.NewHospiRepository(),
+		r.NewAdminRepository(),
+	)
+}

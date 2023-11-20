@@ -1,0 +1,44 @@
+{
+    "hostels": [
+        {
+            "id": 1,
+            "name": "Aquamarine",
+            "gender":"MALE"
+        },
+        {
+            "id": 2,
+            "name": "Zircon",
+            "gender":"MALE"
+        },
+        {
+            "id": 3,
+            "name": "Amber",
+            "gender":"MALE"
+        },
+        {
+            "id": 4,
+            "name": "Agate",
+            "gender":"MALE"
+        },
+        {
+            "id": 5,
+            "name": "Garnet",
+            "gender":"MALE"
+        },
+        {
+            "id": 6,
+            "name": "Opal A",
+            "gender":"FEMALE"
+        },
+        {
+            "id": 7,
+            "name": "Opal C",
+            "gender":"FEMALE"
+        },
+        {
+            "id": 8,
+            "name": "Opal D",
+            "gender":"FEMALE"
+        }
+    ]
+}
