@@ -2,215 +2,274 @@
   "events": [
     {
       "id": 1,
-      "event_name": "Debate"
+      "event_name": "Debate",
+      "max_team_size": 4
     },
     {
       "id": 2,
-      "event_name": "What's The Good Word"
+      "event_name": "What's The Good Word",
+      "max_team_size": 4
     },
     {
       "id": 3,
-      "event_name": "Extempore"
+      "event_name": "Extempore",
+      "max_team_size": 4
     },
     {
       "id": 4,
-      "event_name": "PotPourri"
+      "event_name": "PotPourri",
+      "max_team_size": 4
     },
     {
       "id": 5,
-      "event_name": "Cryptic Crossword"
+      "event_name": "Cryptic Crossword",
+      "max_team_size": 4
     },
     {
       "id": 6,
-      "event_name": "SpLitEnt Quiz"
+      "event_name": "SpLitEnt Quiz",
+      "max_team_size": 4
     },
     {
       "id": 7,
-      "event_name": "Spell Bee"
+      "event_name": "Spell Bee",
+      "max_team_size": 4
     },
     {
       "id": 8,
-      "event_name": "Just A Minute"
+      "event_name": "Just A Minute",
+      "max_team_size": 4
     },
     {
       "id": 9,
-      "event_name": "Frankenstein Quiz"
+      "event_name": "Frankenstein Quiz",
+      "max_team_size": 4
     },
     {
       "id": 10,
-      "event_name": "Sorkkanai"
+      "event_name": "Sorkkanai",
+      "max_team_size": 4
     },
     {
       "id": 11,
-      "event_name": "Asatha Povathu Yaaru"
+      "event_name": "Asatha Povathu Yaaru",
+      "max_team_size": 4
     },
     {
       "id": 12,
-      "event_name": "Uyarthani Semmozhi"
+      "event_name": "Uyarthani Semmozhi",
+      "max_team_size": 4
     },
     {
       "id": 13,
-      "event_name": "Padathodu Pesava"
+      "event_name": "Padathodu Pesava",
+      "max_team_size": 4
     },
     {
       "id": 14,
-      "event_name": "Kodambakkam"
+      "event_name": "Kodambakkam",
+      "max_team_size": 4
     },
     {
       "id": 15,
-      "event_name": "Sakalakalaa Vallavan"
+      "event_name": "Sakalakalaa Vallavan",
+      "max_team_size": 4
     },
     {
       "id": 16,
-      "event_name": "Rocket League"
+      "event_name": "Rocket League",
+      "max_team_size": 4
     },
     {
       "id": 17,
-      "event_name": "Valorant"
+      "event_name": "Valorant",
+      "max_team_size": 4
     },
     {
       "id": 18,
-      "event_name": "Splash Spree"
+      "event_name": "Splash Spree",
+      "max_team_size": 4
     },
     {
       "id": 19,
-      "event_name": "Tekken"
+      "event_name": "Tekken",
+      "max_team_size": 4
     },
     {
       "id": 20,
-      "event_name": "Theatrix"
+      "event_name": "Theatrix",
+      "max_team_size": 4
     },
     {
       "id": 21,
-      "event_name": "Mime"
+      "event_name": "Mime",
+      "max_team_size": 4
     },
     {
       "id": 22,
-      "event_name": "Monoacting"
+      "event_name": "Monoacting",
+      "max_team_size": 4
     },
     {
       "id": 23,
-      "event_name": "Picture interlinking"
+      "event_name": "Picture interlinking",
+      "max_team_size": 4
     },
     {
       "id": 24,
-      "event_name": "Treasure hunt"
+      "event_name": "Treasure hunt",
+      "max_team_size": 4
     },
     {
       "id": 25,
-      "event_name": "Fashionista"
+      "event_name": "Fashionista",
+      "max_team_size": 4
     },
     {
       "id": 26,
-      "event_name": "Mr & Ms Festember"
+      "event_name": "Mr & Ms Festember",
+      "max_team_size": 4
     },
     {
       "id": 27,
-      "event_name": "Rochak Mantara"
+      "event_name": "Rochak Mantara",
+      "max_team_size": 4
     },
     {
       "id": 28,
-      "event_name": "Parliamentary Debate"
+      "event_name": "Parliamentary Debate",
+      "max_team_size": 4
     },
     {
       "id": 29,
-      "event_name": "Extempore"
+      "event_name": "Extempore",
+      "max_team_size": 4
     },
     {
       "id": 30,
-      "event_name": "Cricket quiz"
+      "event_name": "Cricket quiz",
+      "max_team_size": 4
     },
     {
       "id": 31,
-      "event_name": "Titanic safari"
+      "event_name": "Titanic safari",
+      "max_team_size": 4
     },
     {
       "id": 32,
-      "event_name": "Solo Western"
+      "event_name": "Solo Western",
+      "max_team_size": 4
     },
     {
       "id": 33,
-      "event_name": "Gigahertz"
+      "event_name": "Gigahertz",
+      "max_team_size": 4
     },
     {
       "id": 34,
-      "event_name": "Upbeat"
+      "event_name": "Upbeat",
+      "max_team_size": 4
     },
     {
       "id": 35,
-      "event_name": "Acoustics"
+      "event_name": "Acoustics",
+      "max_team_size": 4
     },
     {
       "id": 36,
-      "event_name": "Tarangini"
+      "event_name": "Tarangini",
+      "max_team_size": 4
     },
     {
       "id": 37,
-      "event_name": "Reel Live It"
+      "event_name": "Reel Live It",
+      "max_team_size": 4
     },
     {
       "id": 38,
-      "event_name": "Portrait Photography"
+      "event_name": "Portrait Photography",
+      "max_team_size": 4
     },
     {
       "id": 39,
-      "event_name": "Live Photography"
+      "event_name": "Live Photography",
+      "max_team_size": 4
     },
     {
       "id": 40,
-      "event_name": "Conceptual Photography"
+      "event_name": "Conceptual Photography",
+      "max_team_size": 4
     },
     {
       "id": 41,
-      "event_name": "Reel Live It"
+      "event_name": "Reel Live It",
+      "max_team_size": 4
     },
     {
       "id": 42,
-      "event_name": "Portrait Photography"
+      "event_name": "Portrait Photography",
+      "max_team_size": 4
     },
     {
       "id": 43,
-      "event_name": "Live Photography"
+      "event_name": "Live Photography",
+      "max_team_size": 4
     },
     {
       "id": 44,
-      "event_name": "Conceptual Photography"
+      "event_name": "Conceptual Photography",
+      "max_team_size": 4
     },
     {
       "id": 45,
-      "event_name": "Classic Solo Instrumentals - Percussion"
+      "event_name": "Classic Solo Instrumentals - Percussion",
+      "max_team_size": 4
     },
     {
       "id": 46,
-      "event_name": "Classic Solo Vocals"
+      "event_name": "Classic Solo Vocals",
+      "max_team_size": 4
     },
     {
       "id": 47,
-      "event_name": "Classic Solo Instrumentals - Non - Percussion"
+      "event_name": "Classic Solo Instrumentals - Non - Percussion",
+      "max_team_size": 4
     },
     {
       "id": 48,
-      "event_name": "The Shrutilaya Quiz"
+      "event_name": "The Shrutilaya Quiz",
+      "max_team_size": 4
     },
     {
       "id": 49,
-      "event_name": "Choreonite Eastern"
+      "event_name": "Choreonite Eastern",
+      "max_team_size": 4
     },
     {
       "id": 50,
-      "event_name": "Choreonite Western"
+      "event_name": "Choreonite Western",
+      "max_team_size": 4
     },
     {
       "id": 51,
-      "event_name": "Eastern Solo"
+      "event_name": "Eastern Solo",
+      "max_team_size": 4
     },
     {
       "id": 52,
-      "event_name": "Western Solo"
+      "event_name": "Western Solo",
+      "max_team_size": 4
     },
     {
       "id": 53,
-      "event_name": "Duet Freestyle"
+      "event_name": "Duet Freestyle",
+      "max_team_size": 4
+    },
+    {
+      "id": 54,
+      "event_name": "Sample Team Event",
+      "is_team": true,
+      "max_team_size": 4
     }
   ]
 }

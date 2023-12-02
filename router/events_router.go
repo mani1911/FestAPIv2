@@ -13,4 +13,5 @@ func NewEventRouter(e *echo.Group, controller app.EventController) {
 	eventsRoutes.GET("/abstract/details/:event_id", controller.AbstractDetails)
 	eventsRoutes.POST("/register", controller.Register)
 	eventsRoutes.GET("/user/registered", controller.UserEventDetails)
+	eventsRoutes.GET("/status/:event_id", controller.Status)
 }

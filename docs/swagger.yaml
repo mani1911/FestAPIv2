@@ -130,6 +130,12 @@ definitions:
     properties:
       event_id:
         type: integer
+      team_members:
+        items:
+          type: string
+        type: array
+      team_name:
+        type: string
     type: object
   dto.GetEventDetailsResponse:
     properties:

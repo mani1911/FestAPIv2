@@ -31,7 +31,7 @@ func (repository *eventRepositoryImpl) Register(details models.EventRegistration
 
 	// Register User for Event
 	if err := repository.DB.Create(&details).Error; err != nil {
-		return fmt.Errorf("Error creating User")
+		return fmt.Errorf("error creating User")
 	}
 	return nil
 }
@@ -76,4 +76,136 @@ func (repository *eventRepositoryImpl) GetUserRegisteredEvents(userID uint) ([]*
 	}
 	return res, err
 
+}
+
+func (repository *eventRepositoryImpl) IsTeamEvent(eventID uint) bool {
+	var event models.Event
+
+	// Find event by Id
+	if err := repository.DB.Where("id = ?", eventID).First(&event).Error; err != nil {
+		return false
+	}
+
+	return event.IsTeam
+}
+
+func (repository *eventRepositoryImpl) AddTeam(eventID uint, members []uint, teamName string, teamLeaderID uint) error {
+	tx := repository.DB.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	// Create the team
+	team := models.EventTeam{
+		EventID:      eventID,
+		TeamName:     teamName,
+		TeamLeaderID: teamLeaderID,
+	}
+
+	if err := tx.Create(&team).Error; err != nil {
+		// Rollback the transaction if there's an error
+		tx.Rollback()
+		return err
+	}
+
+	// Add team members
+	for _, member := range members {
+		teamMember := models.EventTeamMember{
+			TeamID: team.ID,
+			UserID: member,
+		}
+		if err := tx.Create(&teamMember).Error; err != nil {
+			// Rollback the transaction if there's an error
+			tx.Rollback()
+			return err
+		}
+	}
+
+	// Commit the transaction
+	err := tx.Commit().Error
+
+	return err
+}
+
+func (repository *eventRepositoryImpl) AreUsersInTeam(eventID uint, userIDList []uint) bool {
+	// Check if user is in a team whose event id is the same as
+	// the given event id
+
+	// Get all the teams in which a user inside userIDList is present
+	var teamIDs []uint
+
+	err := repository.DB.Model(&models.EventTeamMember{}).
+		Where("user_id IN (?)", userIDList).
+		Pluck("DISTINCT team_id", &teamIDs).
+		Error
+
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return false
+		}
+		fmt.Println("AreUsersInTeam: ", err.Error())
+		return true
+
+	}
+
+	var team models.EventTeam
+
+	err = repository.DB.Model(&models.EventTeam{}).
+		Where("team_id IN (?)", teamIDs).
+		Where("event_id = ?", eventID).
+		First(&team).
+		Error
+
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			// No matching team found
+			return false
+		}
+		// Handle the error
+		fmt.Println("AreUsersInTeam: ", err.Error())
+		return true
+
+	}
+	// A team with the same EventID exists
+	return true
+
+}
+
+func (repository *eventRepositoryImpl) GetTeamID(eventID uint, userID uint) (*uint, error) {
+	var team models.EventTeam
+	result := repository.DB.Joins("JOIN event_team_members on event_team_members.team_id = event_teams.team_id").
+		Where("event_team_members.user_id = ? AND event_teams.event_id = ?", userID, eventID).
+		First(&team)
+
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, result.Error
+
+	}
+
+	teamID := team.TeamID
+
+	return &teamID, nil
+}
+
+func (repository *eventRepositoryImpl) GetTeamMembers(teamID uint) ([]uint, error) {
+	var teamMembers []models.EventTeamMember
+	var teamMemberIDs []uint
+
+	result := repository.DB.Where("team_id = ?", teamID).Find(&teamMembers)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, result.Error
+
+	}
+
+	for _, member := range teamMembers {
+		teamMemberIDs = append(teamMemberIDs, member.UserID)
+	}
+
+	return teamMemberIDs, nil
 }

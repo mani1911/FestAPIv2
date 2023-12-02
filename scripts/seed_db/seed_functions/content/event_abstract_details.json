@@ -317,6 +317,12 @@
             "event_id": 53,
             "forward_email": "pragyan.duetfreestyle@gmail.com",
             "max_participants": 6
+        },
+        {
+            "id": 54,
+            "event_id": 54,
+            "forward_email": "pragyran.sample_team_event@gmail.com",
+            "max_participants": 6
         }
     ]
 }

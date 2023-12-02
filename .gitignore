@@ -2,4 +2,4 @@
 server
 .vscode
 postgres-data
-
+.test-script.py

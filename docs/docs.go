@@ -953,6 +953,15 @@ const docTemplate = `{
             "properties": {
                 "event_id": {
                     "type": "integer"
+                },
+                "team_members": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "team_name": {
+                    "type": "string"
                 }
             }
         },

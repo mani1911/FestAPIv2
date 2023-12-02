@@ -42,9 +42,12 @@ func (impl *eventControllerImpl) Register(c echo.Context) error {
 	userID := claims.UserID
 
 	res := impl.eventService.Register(dto.EventRegistrationDTO{
-		EventID: req.EventID,
-		UserID:  userID,
+		EventID:     req.EventID,
+		UserID:      userID,
+		TeamMembers: req.TeamMembers,
+		TeamName:    req.TeamName,
 	})
+
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
@@ -89,6 +92,33 @@ func (impl *eventControllerImpl) UserEventDetails(c echo.Context) error {
 	userID := claims.UserID
 
 	res := impl.eventService.UserEventDetails(userID)
+
+	return utils.SendResponse(c, res.Code, res.Message)
+}
+
+// @Summary Get event status
+// @Description Get the registration status of an event for the given user
+// @Tags Events
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "JWT token"
+// @Param eventStatusRequest body dto.EventStatusRequest true "Event status request object"
+// @Success 200 {object} dto.EventStatusResponse
+// @Failure 400 {string} string "Invalid Request"
+// @Failure 500 {string} string "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /api/events/status/:event_id [get]
+func (impl *eventControllerImpl) Status(c echo.Context) error {
+	var req dto.EventStatusRequest
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*utils.JWTCustomClaims)
+	userID := claims.UserID
+
+	res := impl.eventService.Status(req.EventID, userID)
 
 	return utils.SendResponse(c, res.Code, res.Message)
 }
