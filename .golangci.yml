@@ -1,3 +1,7 @@
+run:
+  skip-dirs:
+    - /postgres-data
+
 output:
   format: colored-line-number
   print-issued-lines: true

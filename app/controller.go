@@ -5,4 +5,5 @@ type Controller struct {
 	Event EventController
 	Admin AdminController
 	Hospi HospiController
+	CMS   CMSController
 }

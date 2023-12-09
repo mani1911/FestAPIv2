@@ -15,4 +15,5 @@ type EventRepository interface {
 	AreUsersInTeam(eventID uint, userIDList []uint) bool
 	GetTeamID(eventID uint, userID uint) (*uint, error)
 	GetTeamMembers(teamID uint) ([]uint, error)
+	AddEvent(models.Event, models.EventAbstractDetails) error
 }

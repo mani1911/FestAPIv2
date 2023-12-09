@@ -23,6 +23,7 @@ var DAuthCallbackURL string
 var AdminToken string
 var DAuthUserPassword string
 var Target string
+var CMSToken string
 
 func InitConfig() {
 	err := godotenv.Load()
@@ -42,4 +43,5 @@ func InitConfig() {
 	DAuthCallbackURL = os.Getenv("DAUTH_CALLBACK_URL")
 	DAuthUserPassword = os.Getenv("DAUTH_USER_PASSWORD")
 	Target = os.Getenv("TARGET")
+	CMSToken = os.Getenv("CMS_TOKEN")
 }

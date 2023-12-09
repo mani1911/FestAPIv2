@@ -20,3 +20,7 @@ func (r *registry) NewEventController() app.EventController {
 func (r *registry) NewHospiController() app.HospiController {
 	return impl.NewHospiControllerImpl(r.NewHospiService())
 }
+
+func (r *registry) NewCMSController() app.CMSController {
+	return impl.NewCMSControllerImpl(r.NewCMSService())
+}

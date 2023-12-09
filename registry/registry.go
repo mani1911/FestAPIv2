@@ -23,5 +23,6 @@ func (r *registry) NewAppController() app.Controller {
 		Admin: r.NewAdminController(),
 		Event: r.NewEventController(),
 		Hospi: r.NewHospiController(),
+		CMS:   r.NewCMSController(),
 	}
 }

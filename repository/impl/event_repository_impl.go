@@ -209,3 +209,25 @@ func (repository *eventRepositoryImpl) GetTeamMembers(teamID uint) ([]uint, erro
 
 	return teamMemberIDs, nil
 }
+
+func (repository *eventRepositoryImpl) AddEvent(event models.Event, eventAbstractDetails models.EventAbstractDetails) error {
+
+	tx := repository.DB.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	if err := tx.Create(&event).Error; err != nil {
+		tx.Rollback()
+		return fmt.Errorf("error creating event")
+	}
+
+	if err := tx.Create(&eventAbstractDetails).Error; err != nil {
+		tx.Rollback()
+		return fmt.Errorf("error creating event abstract details")
+	}
+
+	err := tx.Commit().Error
+
+	return err
+}

@@ -31,3 +31,9 @@ func (r *registry) NewHospiService() service.HospiService {
 		r.NewAdminRepository(),
 	)
 }
+
+func (r *registry) NewCMSService() service.CMSService {
+	return impl.NewCMSServiceImpl(
+		r.NewEventRepository(),
+	)
+}

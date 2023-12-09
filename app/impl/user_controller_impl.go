@@ -101,6 +101,12 @@ func (impl *userControllerImpl) Register(c echo.Context) error {
 	}
 
 	res := impl.userService.Register(req)
+
+	if res.Code == http.StatusOK {
+		cookie := utils.GenerateCookie(res.Message.(string))
+		c.SetCookie(cookie)
+	}
+
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 

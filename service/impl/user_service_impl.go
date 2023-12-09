@@ -198,7 +198,13 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		}
 
 		// User Created
-		return dto.Response{Code: http.StatusOK, Message: "Account Created"}
+		jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
+
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
+		}
+
+		return dto.Response{Code: http.StatusOK, Message: jwtToken}
 	} else if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Error Creating User. Try Later"}
 	}
