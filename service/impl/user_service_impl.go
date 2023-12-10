@@ -197,6 +197,10 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to create user"}
 		}
 
+		userDetails, err := impl.userRepository.FindByEmail(req.Email)
+		if userDetails == nil && err == nil {
+			return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+		}
 		// User Created
 		jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 

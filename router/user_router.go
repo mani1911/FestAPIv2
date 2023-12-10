@@ -10,7 +10,7 @@ func NewUserRouter(e *echo.Group, controller app.UserController) {
 
 	userRoutes := e.Group("/user")
 	// Public Routes
-	userRoutes.GET("/dauth/callback/", controller.DAuthLogin)
+	userRoutes.GET("/dauth/callback", controller.DAuthLogin)
 	userRoutes.POST("/register", controller.Register)
 	userRoutes.POST("/login", controller.Login)
 	//Protected Routes

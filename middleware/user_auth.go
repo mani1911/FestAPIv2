@@ -11,10 +11,10 @@ import (
 )
 
 func UserAuth() echo.MiddlewareFunc {
-	TokenLookupString := "cookie:token"
-	if config.Target == "dev" {
-		TokenLookupString = "cookie:token,header:Authorization:Bearer "
-	}
+	TokenLookupString := "cookie:token,header:Authorization:Bearer "
+	// if config.Target == "dev" {
+	// 	TokenLookupString = "cookie:token,header:Authorization:Bearer "
+	// }
 	return echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(config.JWTSecret),
 		TokenLookup: TokenLookupString,

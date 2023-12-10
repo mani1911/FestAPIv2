@@ -35,12 +35,17 @@ import (
 func main() {
 
 	server := echo.New()
-	server.Use(middleware.CORS())
 	server.Use(middleware.Recover())
 
 	config.InitConfig()
 	config.ConnectDB()
 	config.MigrateDB()
+
+	server.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     []string{config.FrontendURL},
+		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowCredentials: true,
+	}))
 
 	db := config.GetDB()
 

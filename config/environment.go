@@ -24,6 +24,8 @@ var AdminToken string
 var DAuthUserPassword string
 var Target string
 var CMSToken string
+var FrontendURL string
+var CookieDomain string
 
 func InitConfig() {
 	err := godotenv.Load()
@@ -44,4 +46,6 @@ func InitConfig() {
 	DAuthUserPassword = os.Getenv("DAUTH_USER_PASSWORD")
 	Target = os.Getenv("TARGET")
 	CMSToken = os.Getenv("CMS_TOKEN")
+	FrontendURL = os.Getenv("FRONTEND_URL")
+	CookieDomain = os.Getenv("COOKIE_DOMAIN")
 }
