@@ -102,6 +102,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/colleges": {
+            "get": {
+                "description": "Fetches colleges Id and name of all colleges.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Public"
+                ],
+                "summary": "Get details of all colleges",
+                "operationId": "Colleges",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CollegeResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error fetching colleges",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/events/abstract/details/{event_id}": {
             "get": {
                 "security": [
@@ -203,6 +233,64 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/status/:event_id": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get the registration status of an event for the given user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get event status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Event status request object",
+                        "name": "eventStatusRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EventStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.EventStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
                         "schema": {
                             "type": "string"
                         }
@@ -940,6 +1028,17 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.CollegeResponse": {
+            "type": "object",
+            "properties": {
+                "college_id": {
+                    "type": "integer"
+                },
+                "college_name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.DeleteRoomRequest": {
             "type": "object",
             "properties": {
@@ -962,6 +1061,34 @@ const docTemplate = `{
                 },
                 "team_name": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.EventStatusRequest": {
+            "type": "object",
+            "properties": {
+                "eventID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.EventStatusResponse": {
+            "type": "object",
+            "properties": {
+                "is_registered": {
+                    "type": "boolean"
+                },
+                "is_team": {
+                    "type": "boolean"
+                },
+                "team_id": {
+                    "type": "integer"
+                },
+                "team_members": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

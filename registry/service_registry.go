@@ -37,3 +37,9 @@ func (r *registry) NewCMSService() service.CMSService {
 		r.NewEventRepository(),
 	)
 }
+
+func (r *registry) NewPublicService() service.PublicService {
+	return impl.NewPublicServiceImpl(
+		r.NewCollegeRepository(),
+	)
+}

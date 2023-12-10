@@ -48,3 +48,11 @@ func (repository *collegeRepositoryImpl) Exists(collegeName string) error {
 	}
 	return nil
 }
+
+func (repository *collegeRepositoryImpl) GetAllColleges() ([]models.College, error) {
+	var colleges []models.College
+	if err := repository.DB.Find(&colleges).Error; err != nil {
+		return nil, errors.New("Cannot fetch all colleges")
+	}
+	return colleges, nil
+}

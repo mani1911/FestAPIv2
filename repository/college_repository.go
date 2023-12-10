@@ -9,4 +9,5 @@ type CollegeRepository interface {
 	Delete(college models.College) error
 	FindByName(collegeName string) (*models.College, error)
 	Exists(collegeName string) error
+	GetAllColleges() ([]models.College, error)
 }

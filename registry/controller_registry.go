@@ -24,3 +24,7 @@ func (r *registry) NewHospiController() app.HospiController {
 func (r *registry) NewCMSController() app.CMSController {
 	return impl.NewCMSControllerImpl(r.NewCMSService())
 }
+
+func (r *registry) NewPublicController() app.PublicController {
+	return impl.NewPublicControllerImpl(r.NewPublicService())
+}

@@ -121,6 +121,13 @@ definitions:
       user_year:
         type: integer
     type: object
+  dto.CollegeResponse:
+    properties:
+      college_id:
+        type: integer
+      college_name:
+        type: string
+    type: object
   dto.DeleteRoomRequest:
     properties:
       id:
@@ -136,6 +143,24 @@ definitions:
         type: array
       team_name:
         type: string
+    type: object
+  dto.EventStatusRequest:
+    properties:
+      eventID:
+        type: integer
+    type: object
+  dto.EventStatusResponse:
+    properties:
+      is_registered:
+        type: boolean
+      is_team:
+        type: boolean
+      team_id:
+        type: integer
+      team_members:
+        items:
+          type: string
+        type: array
     type: object
   dto.GetEventDetailsResponse:
     properties:
@@ -251,6 +276,26 @@ paths:
       summary: Verify Admin status.
       tags:
       - Admin
+  /api/colleges:
+    get:
+      description: Fetches colleges Id and name of all colleges.
+      operationId: Colleges
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.CollegeResponse'
+            type: array
+        "500":
+          description: Error fetching colleges
+          schema:
+            type: string
+      summary: Get details of all colleges
+      tags:
+      - Public
   /api/events/abstract/details/{event_id}:
     get:
       description: Retrieve the details of the abstract for the specified event.
@@ -324,6 +369,43 @@ paths:
       summary: Register the user for an event.
       tags:
       - Event
+  /api/events/status/:event_id:
+    get:
+      consumes:
+      - application/json
+      description: Get the registration status of an event for the given user
+      parameters:
+      - description: JWT token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Event status request object
+        in: body
+        name: eventStatusRequest
+        required: true
+        schema:
+          $ref: '#/definitions/dto.EventStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EventStatusResponse'
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get event status
+      tags:
+      - Events
   /api/events/user/registered:
     get:
       description: Retrieve a list of events registered by the user.
