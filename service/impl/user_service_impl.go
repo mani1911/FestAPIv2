@@ -3,6 +3,8 @@ package impl
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
+	"errors"
 	"image"
 	"image/png"
 	"net/http"
@@ -132,6 +134,42 @@ func (impl *userServiceImpl) Login(req dto.AuthUserLoginRequest) dto.Response {
 	return dto.Response{Code: http.StatusOK, Message: jwtToken}
 }
 
+func CheckRecaptcha(response string) error {
+
+	const siteVerifyURL = "https://www.google.com/recaptcha/api/siteverify"
+
+	req, err := http.NewRequest(http.MethodPost, siteVerifyURL, nil)
+	if err != nil {
+		return err
+	}
+
+	// Add necessary request parameters.
+	q := req.URL.Query()
+	q.Add("secret", config.RecaptchaSecret)
+	q.Add("response", response)
+	req.URL.RawQuery = q.Encode()
+
+	// Make request
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Decode response.
+	var body dto.SiteVerifyResponse
+	if err = json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		return err
+	}
+
+	// Check recaptcha verification success.
+	if !body.Success {
+		return errors.New("unsuccessful recaptcha verify request")
+	}
+
+	return nil
+}
+
 func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Response {
 	// checking if required fields are present
 	if len(req.Username) == 0 ||
@@ -147,6 +185,7 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		len(req.Phone) == 0 ||
 		len(req.Degree) == 0 ||
 		req.Year == 0 ||
+		len(req.RecaptchaCode) == 0 ||
 		len(req.College) == 0 {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
 	}
@@ -158,6 +197,10 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		passwordHash, err := utils.GenerateHashPassword(req.Password)
 		if err != nil {
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server error"}
+		}
+
+		if CheckRecaptcha(req.RecaptchaCode) != nil {
+			return dto.Response{Code: http.StatusBadRequest, Message: "ReCaptcha failed"}
 		}
 
 		// Invalid College Name

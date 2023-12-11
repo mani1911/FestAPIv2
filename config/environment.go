@@ -26,6 +26,7 @@ var Target string
 var CMSToken string
 var FrontendURL string
 var CookieDomain string
+var RecaptchaSecret string
 
 func InitConfig() {
 	err := godotenv.Load()
@@ -48,4 +49,5 @@ func InitConfig() {
 	CMSToken = os.Getenv("CMS_TOKEN")
 	FrontendURL = os.Getenv("FRONTEND_URL")
 	CookieDomain = os.Getenv("COOKIE_DOMAIN")
+	RecaptchaSecret = os.Getenv("RECAPTCHA_SECRET_KEY")
 }

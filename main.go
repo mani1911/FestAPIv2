@@ -36,6 +36,7 @@ func main() {
 
 	server := echo.New()
 	server.Use(middleware.Recover())
+	server.Use(middleware.Gzip())
 
 	config.InitConfig()
 	config.ConnectDB()

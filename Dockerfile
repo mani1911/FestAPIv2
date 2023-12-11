@@ -22,7 +22,6 @@ RUN go install github.com/cespare/reflex@latest
 ENTRYPOINT ["./entry.sh"]
 CMD ["make watch"]
 
-
 ## Prod
 FROM alpine:latest AS prod
 

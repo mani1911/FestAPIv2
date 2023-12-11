@@ -958,6 +958,9 @@ const docTemplate = `{
                 "user_pincode": {
                     "type": "string"
                 },
+                "user_recaptcha_code": {
+                    "type": "string"
+                },
                 "user_referral_code": {
                     "type": "string"
                 },
