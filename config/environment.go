@@ -26,6 +26,7 @@ var Target string
 var CMSToken string
 var FrontendURL string
 var CookieDomain string
+var CmsURL string
 var RecaptchaSecret string
 
 func InitConfig() {

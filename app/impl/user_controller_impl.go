@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/delta/FestAPI/app"
-	"github.com/delta/FestAPI/config"
 	"github.com/delta/FestAPI/dto"
 	"github.com/delta/FestAPI/service"
 	"github.com/delta/FestAPI/utils"
@@ -38,17 +37,12 @@ func (impl *userControllerImpl) DAuthLogin(c echo.Context) error {
 
 	res := impl.userService.DAuthLogin(req)
 
-	message := "User Authenticated Successfully"
-	if config.Target == "dev" {
-		message = res.Message.(string)
-	}
-
 	if res.Code == http.StatusOK {
 		cookie := utils.GenerateCookie(res.Message.(string))
 		c.SetCookie(cookie)
 	}
 
-	return utils.SendResponse(c, res.Code, message)
+	return utils.SendResponse(c, res.Code, res.Message)
 }
 
 // @Summary		Authenticate and log in a user.
@@ -70,17 +64,12 @@ func (impl *userControllerImpl) Login(c echo.Context) error {
 
 	res := impl.userService.Login(req)
 
-	message := "User Authenticated Successfully"
-	if config.Target == "dev" {
-		message = res.Message.(string)
-	}
-
 	if res.Code == http.StatusOK {
 		cookie := utils.GenerateCookie(res.Message.(string))
 		c.SetCookie(cookie)
 	}
 
-	return utils.SendResponse(c, res.Code, message)
+	return utils.SendResponse(c, res.Code, res.Message.(string))
 }
 
 // @Summary		Register a new user.

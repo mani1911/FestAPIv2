@@ -9,9 +9,10 @@ import (
 
 func GenerateCookie(message string) *http.Cookie {
 	// Creating HTTPOnly Cookie
+	_ = message
 	cookie := new(http.Cookie)
 	cookie.Name = "token"
-	cookie.Value = message
+	cookie.Value = ""
 	cookie.Expires = time.Now().Add(24 * time.Hour)
 	cookie.HttpOnly = true
 	cookie.Path = "/"
