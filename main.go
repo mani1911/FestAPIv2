@@ -54,7 +54,7 @@ func main() {
 
 	router.NewRouter(server, registry)
 
-	utils.InitLogger(server)
+	utils.InitLogger()
 
 	server.Logger.Fatal(server.Start(":" + config.ServerPort))
 

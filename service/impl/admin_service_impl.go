@@ -20,6 +20,10 @@ func NewAdminServiceImpl(adminRepository repository.AdminRepository) service.Adm
 }
 
 func (impl *adminServiceImpl) Login(req dto.AuthAdminRequest) dto.Response {
+
+	// Initialize Logger
+	log := utils.GetServiceLogger("AdminService Login")
+
 	// Checking if both email and password are present
 	if len(req.Username) == 0 || len(req.Password) == 0 {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Username / Password cannot be empty"}
@@ -31,6 +35,7 @@ func (impl *adminServiceImpl) Login(req dto.AuthAdminRequest) dto.Response {
 	if adminDetails == nil && err == nil {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Username or Password is Incorrect"}
 	} else if err != nil {
+		log.Error("Error fetching Admin Details. Error : ", err)
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in searching for admins"}
 	}
 
@@ -43,6 +48,7 @@ func (impl *adminServiceImpl) Login(req dto.AuthAdminRequest) dto.Response {
 	// Creating JWT for the user along with role
 	jwtToken, err := utils.GenerateToken(adminDetails.ID, true, adminDetails.Role)
 	if err != nil {
+		log.Error("Error Generating Token. Error : ", err)
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
 	}
 
