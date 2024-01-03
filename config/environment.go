@@ -48,6 +48,7 @@ func InitConfig() {
 	DAuthUserPassword = os.Getenv("DAUTH_USER_PASSWORD")
 	Target = os.Getenv("TARGET")
 	CMSToken = os.Getenv("CMS_TOKEN")
+	CmsURL = os.Getenv("CMS_URL")
 	FrontendURL = os.Getenv("FRONTEND_URL")
 	CookieDomain = os.Getenv("COOKIE_DOMAIN")
 	RecaptchaSecret = os.Getenv("RECAPTCHA_SECRET_KEY")

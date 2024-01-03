@@ -15,7 +15,7 @@ type User struct {
 	Country      string  `gorm:"size:255;not null"`
 	State        string  `gorm:"size:255;not null"`
 	City         string  `gorm:"size:255;not null"`
-	Address      string  `gorm:"size:255;not null"`
+	Address      string  `gorm:"size:650;not null"`
 	Pincode      string  `gorm:"size:255;not null"`
 	Phone        string  `gorm:"size:255;not null"`
 	Password     []byte  `gorm:"size:255;not null"`
