@@ -38,6 +38,11 @@ func main() {
 	server.Use(middleware.Recover())
 	server.Use(middleware.Gzip())
 
+	// remove after debugging
+	server.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
+
 	config.InitConfig()
 	config.ConnectDB()
 	config.MigrateDB()

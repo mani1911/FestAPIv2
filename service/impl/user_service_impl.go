@@ -35,12 +35,15 @@ func NewUserServiceImpl(
 
 func (impl *userServiceImpl) DAuthLogin(req dto.AuthUserRequest) dto.Response {
 
+	log := utils.GetServiceLogger("UserService DAuthLogin")
+
 	// Fetching code from header
 	code := req.Code
 
 	// Obtaining access token from dauth server
 	token, err := utils.GetDAuthToken(code)
 	if err != nil {
+		log.Error("Error getting Auth Token", err.Error())
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in Authenticating user"}
 	}
 
@@ -171,6 +174,9 @@ func CheckRecaptcha(response string) error {
 }
 
 func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Response {
+
+	log := utils.GetServiceLogger("UserService Register")
+
 	// checking if required fields are present
 	if len(req.Username) == 0 ||
 		len(req.Email) == 0 ||
@@ -187,6 +193,7 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		req.Year == 0 ||
 		len(req.RecaptchaCode) == 0 ||
 		len(req.College) == 0 {
+		log.Error("User Registration Check Fail")
 		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
 	}
 	// Checking if user exists in the database or not
@@ -196,21 +203,25 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		// Creating password hash
 		passwordHash, err := utils.GenerateHashPassword(req.Password)
 		if err != nil {
+			log.Error("Error Generating Hash. Error", err.Error())
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server error"}
 		}
 
 		if CheckRecaptcha(req.RecaptchaCode) != nil {
+			log.Error("ReCaptcha failed")
 			return dto.Response{Code: http.StatusBadRequest, Message: "ReCaptcha failed"}
 		}
 
 		// Invalid College Name
 		if err = impl.collegeRepository.Exists(req.College); err != nil {
+			log.Error("Invalid College Name")
 			return dto.Response{Code: http.StatusBadRequest, Message: "Invalid College Name"}
 		}
 
 		// Fetch College details
 		collegeDetails, err := impl.collegeRepository.FindByName(req.College)
 		if err != nil {
+			log.Error("Error findind college detail. Error : ", err.Error())
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Error finding College"}
 		}
 		// Creating new user
@@ -237,26 +248,33 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		}
 
 		if err = impl.userRepository.CreateUser(&userReg); err != nil {
+			log.Error("Failed to create user. Error : ", err.Error())
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to create user"}
 		}
 
 		userDetails, err := impl.userRepository.FindByEmail(req.Email)
 		if userDetails == nil && err == nil {
+			log.Error("User not found")
 			return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
 		}
 		// User Created
 		jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 
 		if err != nil {
+			log.Error("Token Not generated. Error : ", err.Error())
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
 		}
 
+		log.Info("User Registered Successfully")
+
 		return dto.Response{Code: http.StatusOK, Message: jwtToken}
 	} else if err != nil {
+		log.Error("Error Creating User. Error : ", err.Error())
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Error Creating User. Try Later"}
 	}
 
 	// User already exists
+	log.Error("User already exists")
 	return dto.Response{Code: http.StatusBadRequest, Message: "User already exists"}
 }
 

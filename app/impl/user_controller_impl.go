@@ -84,11 +84,14 @@ func (impl *userControllerImpl) Login(c echo.Context) error {
 // @Failure		500		{object}	string						"Internal Server Error"
 // @Router			/api/user/register [post]
 func (impl *userControllerImpl) Register(c echo.Context) error {
+
+	log := utils.GetControllerLogger("UserController Register")
 	var req dto.AuthUserRegisterRequest
 	if err := c.Bind(&req); err != nil {
+		// remove after debugging
+		log.Error("Error Binding Request. Error : ", err.Error())
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
-
 	res := impl.userService.Register(req)
 
 	if res.Code == http.StatusOK {

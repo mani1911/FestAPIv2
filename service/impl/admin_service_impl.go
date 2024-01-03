@@ -35,7 +35,7 @@ func (impl *adminServiceImpl) Login(req dto.AuthAdminRequest) dto.Response {
 	if adminDetails == nil && err == nil {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Username or Password is Incorrect"}
 	} else if err != nil {
-		log.Error("Error fetching Admin Details. Error : ", err)
+		log.Error("Error fetching Admin Details. Error : ", err.Error())
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in searching for admins"}
 	}
 
@@ -48,7 +48,7 @@ func (impl *adminServiceImpl) Login(req dto.AuthAdminRequest) dto.Response {
 	// Creating JWT for the user along with role
 	jwtToken, err := utils.GenerateToken(adminDetails.ID, true, adminDetails.Role)
 	if err != nil {
-		log.Error("Error Generating Token. Error : ", err)
+		log.Error("Error Generating Token. Error : ", err.Error())
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
 	}
 

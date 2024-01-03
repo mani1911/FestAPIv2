@@ -7,6 +7,7 @@ import (
 	"github.com/delta/FestAPI/models"
 	"github.com/delta/FestAPI/repository"
 	"github.com/delta/FestAPI/service"
+	"github.com/delta/FestAPI/utils"
 )
 
 type eventServiceImpl struct {
@@ -25,11 +26,13 @@ func NewEventServiceImpl(
 
 func (impl *eventServiceImpl) Register(req dto.EventRegistrationDTO) dto.Response {
 
+	log := utils.GetServiceLogger("EventService Register")
 	event, err := impl.eventRepository.FindEventByID(req.EventID)
 
 	if event == nil && err == nil {
 		return dto.Response{Code: http.StatusNotFound, Message: "Event Not Found"}
 	} else if err != nil {
+		log.Error("Error finding Event by ID. Error : ", err.Error())
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
@@ -46,6 +49,7 @@ func (impl *eventServiceImpl) Register(req dto.EventRegistrationDTO) dto.Respons
 
 		err = impl.eventRepository.Register(eventRegistrationDetails)
 		if err != nil {
+			log.Error("Error registering User for Event. Error : ", err.Error())
 			return dto.Response{
 				Code:    http.StatusInternalServerError,
 				Message: "Internal Server Error",
@@ -75,6 +79,7 @@ func (impl *eventServiceImpl) Register(req dto.EventRegistrationDTO) dto.Respons
 	for i, member := range req.TeamMembers {
 		user, err := impl.userRepository.FindByEmail(member)
 		if err != nil {
+			log.Error("Error finding user by email. Error : ", err.Error())
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 		}
 
@@ -118,6 +123,7 @@ func (impl *eventServiceImpl) Register(req dto.EventRegistrationDTO) dto.Respons
 		})
 
 		if err != nil {
+			log.Error("Error registering User for Team Event. Error : ", err.Error())
 			return dto.Response{
 				Code:    http.StatusInternalServerError,
 				Message: "Internal Server Error",
@@ -127,6 +133,7 @@ func (impl *eventServiceImpl) Register(req dto.EventRegistrationDTO) dto.Respons
 
 	err = impl.eventRepository.AddTeam(req.EventID, userIDs, req.TeamName, req.UserID)
 	if err != nil {
+		log.Error("Error creating Team. Error : ", err.Error())
 		return dto.Response{
 			Code:    http.StatusInternalServerError,
 			Message: "Internal Server Error",
