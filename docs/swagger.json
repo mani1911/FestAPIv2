@@ -971,7 +971,7 @@
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1021,7 +1021,7 @@
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1147,7 +1147,7 @@
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },

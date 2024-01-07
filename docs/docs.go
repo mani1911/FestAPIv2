@@ -977,7 +977,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1027,7 +1027,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -1153,7 +1153,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },

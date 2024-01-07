@@ -190,7 +190,7 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		len(req.City) == 0 ||
 		len(req.Phone) == 0 ||
 		len(req.Degree) == 0 ||
-		req.Year == 0 ||
+		len(req.Year) == 0 ||
 		len(req.RecaptchaCode) == 0 ||
 		len(req.College) == 0 {
 		log.Error("User Registration Check Fail")

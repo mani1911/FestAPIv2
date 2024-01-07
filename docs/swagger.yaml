@@ -88,7 +88,7 @@ definitions:
       user_voucher_name:
         type: string
       user_year:
-        type: integer
+        type: string
     type: object
   dto.AuthUserUpdateRequest:
     properties:
@@ -121,7 +121,7 @@ definitions:
       user_voucher_name:
         type: string
       user_year:
-        type: integer
+        type: string
     type: object
   dto.CollegeResponse:
     properties:
@@ -202,7 +202,7 @@ definitions:
       user_fullname:
         type: string
       user_year:
-        type: integer
+        type: string
     type: object
   models.Gender:
     enum:
