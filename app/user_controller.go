@@ -9,4 +9,6 @@ type UserController interface {
 	Update(c echo.Context) error
 	ProfileDetails(c echo.Context) error
 	QRgeneration(c echo.Context) error
+	VerifyEmail(c echo.Context) error
+	ChangePassword(c echo.Context) error
 }

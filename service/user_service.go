@@ -11,4 +11,6 @@ type UserService interface {
 	Update(dto.AuthUserUpdateRequest, uint) dto.Response
 	ProfileDetails(uint) dto.Response
 	QRgeneration(uint) dto.Response
+	VerifyEmail(email string) dto.Response
+	ChangePassword(details dto.ChangePasswordRequest) dto.Response
 }

@@ -28,6 +28,9 @@ var FrontendURL string
 var CookieDomain string
 var CmsURL string
 var RecaptchaSecret string
+var SendgridAPIKey string
+var SenderEmail string
+var SenderName string
 
 func InitConfig() {
 	err := godotenv.Load()
@@ -52,4 +55,8 @@ func InitConfig() {
 	FrontendURL = os.Getenv("FRONTEND_URL")
 	CookieDomain = os.Getenv("COOKIE_DOMAIN")
 	RecaptchaSecret = os.Getenv("RECAPTCHA_SECRET_KEY")
+	SendgridAPIKey = os.Getenv("SENDGRID_API_KEY")
+	SenderEmail = os.Getenv("SENDER_EMAIL")
+	SenderName = os.Getenv("SENDER_NAME")
+
 }

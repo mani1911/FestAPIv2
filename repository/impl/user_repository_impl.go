@@ -1,8 +1,6 @@
 package impl
 
 import (
-	"errors"
-
 	"github.com/delta/FestAPI/models"
 	"github.com/delta/FestAPI/repository"
 	"gorm.io/gorm"
@@ -20,7 +18,7 @@ func (repository *userRepositoryImpl) CreateUser(user *models.User) error {
 
 	// Storing new user in the database
 	if err := repository.DB.Create(&user).Error; err != nil {
-		return errors.New("Error creating user")
+		return err
 	}
 	return nil
 }
@@ -33,7 +31,7 @@ func (repository *userRepositoryImpl) FindByEmail(email string) (*models.User, e
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
 		}
-		return nil, errors.New("Cannot find User")
+		return nil, err
 	}
 	return &userDetail, nil
 }
@@ -46,7 +44,7 @@ func (repository *userRepositoryImpl) FindByID(id uint) (*models.User, error) {
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
 		}
-		return nil, errors.New("Cannot find User")
+		return nil, err
 	}
 	return &userDetail, nil
 }
@@ -59,7 +57,7 @@ func (repository *userRepositoryImpl) FindByCollegeID(id uint) (*models.College,
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
 		}
-		return nil, errors.New("Cannot find College")
+		return nil, err
 	}
 	return &collegeDetail, nil
 }
@@ -68,7 +66,29 @@ func (repository *userRepositoryImpl) Update(userDetails *models.User) error {
 
 	// Update User
 	if err := repository.DB.Save(&userDetails).Error; err != nil {
-		return errors.New("Cannot update user details")
+		return err
 	}
 	return nil
+}
+
+func (repository *userRepositoryImpl) CreateForgotPasswordUser(user *models.ForgotPasswordUser) error {
+
+	// Create Forgot Password User
+	if err := repository.DB.Save(&user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *userRepositoryImpl) FindForgotPasswordUserByEmail(email string) (*models.ForgotPasswordUser, error) {
+	var userDetail models.ForgotPasswordUser
+
+	// Find Forgot User by Email
+	if err := repository.DB.Where("Email = ? ", email).Last(&userDetail).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &userDetail, nil
 }

@@ -8,4 +8,6 @@ type UserRepository interface {
 	FindByID(id uint) (*models.User, error)
 	Update(user *models.User) error
 	FindByCollegeID(id uint) (*models.College, error)
+	CreateForgotPasswordUser(user *models.ForgotPasswordUser) error
+	FindForgotPasswordUserByEmail(email string) (*models.ForgotPasswordUser, error)
 }

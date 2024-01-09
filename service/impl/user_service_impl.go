@@ -5,9 +5,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"image"
 	"image/png"
 	"net/http"
+	"time"
 
 	"github.com/delta/FestAPI/config"
 	dto "github.com/delta/FestAPI/dto"
@@ -383,4 +385,101 @@ func (impl *userServiceImpl) QRgeneration(userID uint) dto.Response {
 	}
 
 	return dto.Response{Code: http.StatusOK, Message: "data:image/png;base64," + base64Image}
+}
+
+func (impl *userServiceImpl) VerifyEmail(email string) dto.Response {
+
+	log := utils.GetServiceLogger("UserService VerifyEmail")
+
+	// Checking if user exists in DB
+	userDetails, err := impl.userRepository.FindByEmail(email)
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found with provided Email"}
+	} else if err != nil {
+		log.Error("Failed to find user. Error : ", err.Error())
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	code, err := utils.GenerateHashPassword(email)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	forgotPasswordUser := models.ForgotPasswordUser{Email: email, Code: string(code), ExpirationDate: time.Now().Add(24 * time.Hour)}
+	err = impl.userRepository.CreateForgotPasswordUser(&forgotPasswordUser)
+
+	if err != nil {
+		log.Error("Failed to create forgot password user. Error : ", err.Error())
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	content := fmt.Sprintf("Reset your password by clikcing on the following link %s/forgotPassword?code=%s&email=%s", config.FrontendURL, string(code), email)
+
+	// Send Email
+	err = utils.SendEmail(
+		userDetails.Name,
+		userDetails.Email,
+		"Reset Password Verification",
+		content,
+		"",
+	)
+
+	if err != nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Unable to send verification email"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: "Email Sent. Check your registered Email"}
+
+}
+
+func (impl *userServiceImpl) ChangePassword(details dto.ChangePasswordRequest) dto.Response {
+
+	log := utils.GetServiceLogger("UserService ChangePassword")
+
+	// Checking if forgot user exists in DB
+	forgotUserDetails, err := impl.userRepository.FindForgotPasswordUserByEmail(details.Email)
+	if forgotUserDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Forgot User not found with provided Email"}
+	} else if err != nil {
+		log.Error("Failed to find forgot user. Error : ", err.Error())
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	// Check Expiration Date
+	if time.Now().After(forgotUserDetails.ExpirationDate) {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Password Reset Request Expired"}
+	}
+
+	// Check code matches with the DB code
+	if details.Code != forgotUserDetails.Code {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Unauthorised Change Password Request"}
+	}
+
+	// Checking if forgot user exists in DB
+	userDetails, err := impl.userRepository.FindByEmail(details.Email)
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found with provided Email"}
+	} else if err != nil {
+		log.Error("Failed to find user. Error : ", err.Error())
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	// Creating password hash
+	passwordHash, err := utils.GenerateHashPassword(details.Password) // change password
+	if err != nil {
+		log.Error("Error Generating Hash. Error", err.Error())
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server error"}
+	}
+
+	// Update Password
+	userDetails.Password = passwordHash
+
+	// Error Updating User
+	err = impl.userRepository.Update(userDetails)
+	if err != nil {
+		log.Error("Error Updating User Password. Error", err.Error())
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to update user"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: "Updated Password Successfully."}
 }

@@ -175,3 +175,26 @@ func (impl *userControllerImpl) QRgeneration(c echo.Context) error {
 
 	return utils.SendResponse(c, res.Code, res.Message)
 }
+
+func (impl *userControllerImpl) VerifyEmail(c echo.Context) error {
+
+	var req dto.VerifyEmailRequest
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+
+	res := impl.userService.VerifyEmail(req.Email)
+	return utils.SendResponse(c, res.Code, res.Message)
+
+}
+
+func (impl *userControllerImpl) ChangePassword(c echo.Context) error {
+
+	var req dto.ChangePasswordRequest
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+
+	res := impl.userService.ChangePassword(req)
+	return utils.SendResponse(c, res.Code, res.Message)
+}

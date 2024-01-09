@@ -13,6 +13,8 @@ func NewUserRouter(e *echo.Group, controller app.UserController) {
 	userRoutes.GET("/dauth/callback", controller.DAuthLogin)
 	userRoutes.POST("/register", controller.Register)
 	userRoutes.POST("/login", controller.Login)
+	userRoutes.POST("/verify", controller.VerifyEmail)
+	userRoutes.POST("/changePassword", controller.ChangePassword)
 	//Protected Routes
 	userRoutes.Use(middleware.UserAuth())
 	userRoutes.GET("/details", controller.ProfileDetails)

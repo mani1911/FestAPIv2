@@ -69,3 +69,13 @@ type ProfileDetailsResponse struct {
 	Degree   string `json:"user_degree"`
 	Year     string `json:"user_year"`
 }
+
+type VerifyEmailRequest struct {
+	Email string `json:"user_email"`
+}
+
+type ChangePasswordRequest struct {
+	Email    string `json:"user_email"`
+	Code     string `json:"user_code"`
+	Password string `json:"user_password"`
+}
