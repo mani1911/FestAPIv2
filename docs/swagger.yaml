@@ -123,6 +123,15 @@ definitions:
       user_year:
         type: string
     type: object
+  dto.ChangePasswordRequest:
+    properties:
+      user_code:
+        type: string
+      user_email:
+        type: string
+      user_password:
+        type: string
+    type: object
   dto.CollegeResponse:
     properties:
       college_id:
@@ -202,6 +211,11 @@ definitions:
       user_fullname:
         type: string
       user_year:
+        type: string
+    type: object
+  dto.VerifyEmailRequest:
+    properties:
+      user_email:
         type: string
     type: object
   models.Gender:
@@ -750,6 +764,37 @@ paths:
       - middleware.UserAuth: []
       - ApiKeyAuth: []
       summary: Update user information.
+      tags:
+      - User
+  /api/user/verify:
+    post:
+      consumes:
+      - application/json
+      description: Reset User Password
+      operationId: ChangePassword
+      parameters:
+      - description: Change User Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Reset Password.
       tags:
       - User
 securityDefinitions:

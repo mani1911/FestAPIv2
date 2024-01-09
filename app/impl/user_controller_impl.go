@@ -19,16 +19,16 @@ func NewUserControllerImpl(userService service.UserService) app.UserController {
 	return &userControllerImpl{userService: userService}
 }
 
-// @Summary		Authenticate user with DAuth
-// @Description	Callback url for DAuth, returns JWT token if successful
-// @ID				DAuthUserLogin
-// @Tags			User
-// @Produce		json
-// @Param			code	query		string	true	"DAuth code"
-// @Success		200		{object}	string	"Success"
-// @Failure		400		{object}	string	"Invalid Request"
-// @Failure		500		{object}	string	"Internal Server Error"
-// @Router			/api/user/dauth/callback [get]
+//	@Summary		Authenticate user with DAuth
+//	@Description	Callback url for DAuth, returns JWT token if successful
+//	@ID				DAuthUserLogin
+//	@Tags			User
+//	@Produce		json
+//	@Param			code	query		string	true	"DAuth code"
+//	@Success		200		{object}	string	"Success"
+//	@Failure		400		{object}	string	"Invalid Request"
+//	@Failure		500		{object}	string	"Internal Server Error"
+//	@Router			/api/user/dauth/callback [get]
 func (impl *userControllerImpl) DAuthLogin(c echo.Context) error {
 	var req dto.AuthUserRequest
 	if err := c.Bind(&req); err != nil {
@@ -45,17 +45,17 @@ func (impl *userControllerImpl) DAuthLogin(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
-// @Summary		Authenticate and log in a user.
-// @Description	Authenticates a user using email and password.
-// @ID				AuthUserLogin
-// @Tags			User
-// @Accept			json
-// @Produce		json
-// @Param			request	body		dto.AuthUserLoginRequest	true	"User authentication request"
-// @Success		200		{object}	string						"Success"
-// @Failure		400		{object}	string						"Invalid Request"
-// @Failure		500		{object}	string						"Internal Server Error"
-// @Router			/api/user/login [post]
+//	@Summary		Authenticate and log in a user.
+//	@Description	Authenticates a user using email and password.
+//	@ID				AuthUserLogin
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		dto.AuthUserLoginRequest	true	"User authentication request"
+//	@Success		200		{object}	string						"Success"
+//	@Failure		400		{object}	string						"Invalid Request"
+//	@Failure		500		{object}	string						"Internal Server Error"
+//	@Router			/api/user/login [post]
 func (impl *userControllerImpl) Login(c echo.Context) error {
 	var req dto.AuthUserLoginRequest
 	if err := c.Bind(&req); err != nil {
@@ -72,17 +72,17 @@ func (impl *userControllerImpl) Login(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message.(string))
 }
 
-// @Summary		Register a new user.
-// @Description	Register a new user with the provided details.
-// @ID				AuthUserRegister
-// @Tags			User
-// @Accept			json
-// @Produce		json
-// @Param			request	body		dto.AuthUserRegisterRequest	true	"User registration request"
-// @Success		200		{object}	string						"Success"
-// @Failure		400		{object}	string						"Invalid Request"
-// @Failure		500		{object}	string						"Internal Server Error"
-// @Router			/api/user/register [post]
+//	@Summary		Register a new user.
+//	@Description	Register a new user with the provided details.
+//	@ID				AuthUserRegister
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		dto.AuthUserRegisterRequest	true	"User registration request"
+//	@Success		200		{object}	string						"Success"
+//	@Failure		400		{object}	string						"Invalid Request"
+//	@Failure		500		{object}	string						"Internal Server Error"
+//	@Router			/api/user/register [post]
 func (impl *userControllerImpl) Register(c echo.Context) error {
 
 	log := utils.GetControllerLogger("UserController Register")
@@ -102,20 +102,20 @@ func (impl *userControllerImpl) Register(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
-// @Summary		Update user information.
-// @Description	Update user information with the provided details.
-// @ID				AuthUserUpdate
-// @Tags			User
-// @Accept			json
-// @Produce		json
-// @Security		middleware.UserAuth
-// @Param			request	body		dto.AuthUserUpdateRequest	true	"User update request"
-// @Success		200		{object}	string						"Success"
-// @Failure		400		{object}	string						"Invalid Request"
-// @Failure		401		{object}	string						"Unauthorized"
-// @Failure		500		{object}	string						"Internal Server Error"
-// @Security		ApiKeyAuth
-// @Router			/api/user/update [patch]
+//	@Summary		Update user information.
+//	@Description	Update user information with the provided details.
+//	@ID				AuthUserUpdate
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Security		middleware.UserAuth
+//	@Param			request	body		dto.AuthUserUpdateRequest	true	"User update request"
+//	@Success		200		{object}	string						"Success"
+//	@Failure		400		{object}	string						"Invalid Request"
+//	@Failure		401		{object}	string						"Unauthorized"
+//	@Failure		500		{object}	string						"Internal Server Error"
+//	@Security		ApiKeyAuth
+//	@Router			/api/user/update [patch]
 func (impl *userControllerImpl) Update(c echo.Context) error {
 
 	// obtaining user id from jwt
@@ -132,16 +132,16 @@ func (impl *userControllerImpl) Update(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
-// @Summary		Profile information.
-// @Description	profile information to be displayed.
-// @ID				ProfileDetails
-// @Tags			Profile
-// @Produce		json
-// @Security		middleware.UserAuth
-// @Success		200	{object}	dto.ProfileDetailsResponse
-// @Failure		400	{object}	string	"User not found"
-// @Failure		500	{object}	string	"Internal Server Error"
-// @Router			/api/user/details [get]
+//	@Summary		Profile information.
+//	@Description	profile information to be displayed.
+//	@ID				ProfileDetails
+//	@Tags			Profile
+//	@Produce		json
+//	@Security		middleware.UserAuth
+//	@Success		200	{object}	dto.ProfileDetailsResponse
+//	@Failure		400	{object}	string	"User not found"
+//	@Failure		500	{object}	string	"Internal Server Error"
+//	@Router			/api/user/details [get]
 func (impl *userControllerImpl) ProfileDetails(c echo.Context) error {
 
 	// obtaining user id from jwt
@@ -154,16 +154,16 @@ func (impl *userControllerImpl) ProfileDetails(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
-// @Summary		QR Generation.
-// @Description	QR for the profile page.
-// @ID				ProfileQR
-// @Tags			Profile
-// @Produce		json
-// @Security		middleware.UserAuth
-// @Success		200	{object}	string
-// @Failure		400	{object}	string	"User not found"
-// @Failure		500	{object}	string	"Internal Server Error"
-// @Router			/api/user/qr [get]
+//	@Summary		QR Generation.
+//	@Description	QR for the profile page.
+//	@ID				ProfileQR
+//	@Tags			Profile
+//	@Produce		json
+//	@Security		middleware.UserAuth
+//	@Success		200	{object}	string
+//	@Failure		400	{object}	string	"User not found"
+//	@Failure		500	{object}	string	"Internal Server Error"
+//	@Router			/api/user/qr [get]
 func (impl *userControllerImpl) QRgeneration(c echo.Context) error {
 
 	// obtaining user id from jwt
@@ -176,6 +176,17 @@ func (impl *userControllerImpl) QRgeneration(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
+//	@Summary		Email Verification.
+//	@Description	Verify Email for Password Reset.
+//	@ID				VerifyEmail
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		dto.VerifyEmailRequest	true	"User Email Verification Request"
+//	@Success		200		{object}	string					"Success"
+//	@Failure		400		{object}	string					"Invalid Request"
+//	@Failure		500		{object}	string					"Internal Server Error"
+//	@Router			/api/user/verify [post]
 func (impl *userControllerImpl) VerifyEmail(c echo.Context) error {
 
 	var req dto.VerifyEmailRequest
@@ -188,6 +199,17 @@ func (impl *userControllerImpl) VerifyEmail(c echo.Context) error {
 
 }
 
+//	@Summary		Reset Password.
+//	@Description	Reset User Password
+//	@ID				ChangePassword
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		dto.ChangePasswordRequest	true	"Change User Password Request"
+//	@Success		200		{object}	string						"Success"
+//	@Failure		400		{object}	string						"Invalid Request"
+//	@Failure		500		{object}	string						"Internal Server Error"
+//	@Router			/api/user/verify [post]
 func (impl *userControllerImpl) ChangePassword(c echo.Context) error {
 
 	var req dto.ChangePasswordRequest

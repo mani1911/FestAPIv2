@@ -841,6 +841,53 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/user/verify": {
+            "post": {
+                "description": "Reset User Password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Reset Password.",
+                "operationId": "ChangePassword",
+                "parameters": [
+                    {
+                        "description": "Change User Password Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChangePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1031,6 +1078,20 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.ChangePasswordRequest": {
+            "type": "object",
+            "properties": {
+                "user_code": {
+                    "type": "string"
+                },
+                "user_email": {
+                    "type": "string"
+                },
+                "user_password": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.CollegeResponse": {
             "type": "object",
             "properties": {
@@ -1153,6 +1214,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.VerifyEmailRequest": {
+            "type": "object",
+            "properties": {
+                "user_email": {
                     "type": "string"
                 }
             }
