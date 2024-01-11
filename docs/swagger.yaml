@@ -690,7 +690,7 @@ paths:
       description: Register a new user with the provided details.
       operationId: AuthUserRegister
       parameters:
-      - description: User registration request
+      - description: User registration Request
         in: body
         name: request
         required: true
