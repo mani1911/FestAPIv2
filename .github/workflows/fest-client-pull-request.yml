@@ -1,7 +1,7 @@
 on:
     push:
       branches:
-        - main
+        - workflow-test
       paths: 
         - docs/**
   
@@ -29,7 +29,6 @@ jobs:
           # Clone the remote repository and change working directory to the
           # folder it was cloned to.
           git clone \
-          --depth=1 \
           --branch=main \
           https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/$REPOSITORY \
           $FOLDER
