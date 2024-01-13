@@ -22,7 +22,7 @@ jobs:
       - name: Send PR
         run: |
           LATEST_TAG=$(git describe --tags --always --abbrev=0)
-          REPOSITORY="delta/fest-web-client"
+          REPOSITORY="delta/fest-web-client.git"
           FOLDER="bin/$REPOSITORY"
           BRANCH_NAME="docs-pr"
 
