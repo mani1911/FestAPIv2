@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"time"
 
 	"github.com/delta/FestAPI/config"
@@ -39,6 +40,22 @@ func GenerateToken(userID uint, Admin bool, AdminRole models.AdminRole) (string,
 		return "", err
 	}
 	return t, nil
+}
+
+func ParseToken(tokenString string) (*JWTCustomClaimsforQR, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &JWTCustomClaimsforQR{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(config.JWTSecret), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+	if claims, ok := token.Claims.(*JWTCustomClaimsforQR); ok {
+		return claims, nil
+	}
+	return nil, errors.New("could not extract claims from token")
 }
 
 func GenerateTokenforQR(userEmail string) (string, error) {

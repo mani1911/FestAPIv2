@@ -2,6 +2,8 @@ package dto
 
 import (
 	"time"
+
+	"github.com/delta/FestAPI/models"
 )
 
 type AuthUserRequest struct {
@@ -68,4 +70,28 @@ type ProfileDetailsResponse struct {
 	College  string `json:"user_college"`
 	Degree   string `json:"user_degree"`
 	Year     string `json:"user_year"`
+}
+
+type UserInfoResponse struct {
+	ID           uint
+	Name         string
+	FullName     string
+	CollegeID    uint
+	OtherCollege string
+	Email        string
+	College      CollegeResponse
+	Gender       models.Gender
+	Country      string
+	State        string
+	City         string
+	Address      string
+	Pincode      string
+	Phone        string
+	Password     []byte
+	Sponsor      string
+	VoucherName  string
+	ReferralCode string
+	Degree       string
+	Year         string
+	Nationality  string
 }

@@ -52,11 +52,27 @@ func (impl *adminControllerImpl) Login(c echo.Context) error {
 
 	message := res.Message.(string)
 
-	if res.Code == http.StatusOK {
-		message = "User Authenticated"
-		cookie := utils.GenerateCookie(res.Message.(string))
-		c.SetCookie(cookie)
+	return utils.SendResponse(c, res.Code, message)
+}
+
+// @Summary		Get the User details.
+// @Description	If providing emailid, info_type should be "email" or "jwt" for QR.
+// @ID				VerifyUser
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Param			request	body		dto.UserInfoRequest	true	"User Info request"
+// @Success		200		{object}	dto.UserInfoResponse
+// @Failure		400		{object}	string	"Invalid Request"
+// @Failure		500		{object}	string	"Internal Server Error"
+// @Router			/api/admin/verify_user [post]
+func (impl *adminControllerImpl) VerifyUser(c echo.Context) error {
+	var req dto.UserInfoRequest
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 
-	return utils.SendResponse(c, res.Code, message)
+	res := impl.adminService.VerifyUser(req)
+
+	return utils.SendResponse(c, res.Code, res.Message)
 }

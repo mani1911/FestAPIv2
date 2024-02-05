@@ -102,6 +102,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/admin/verify_user": {
+            "post": {
+                "description": "If providing emailid, info_type should be \"email\" or \"jwt\" for QR.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get the User details.",
+                "operationId": "VerifyUser",
+                "parameters": [
+                    {
+                        "description": "User Info request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserInfoRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserInfoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/colleges": {
             "get": {
                 "description": "Fetches colleges Id and name of all colleges.",
@@ -1153,6 +1200,92 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_year": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserInfoRequest": {
+            "type": "object",
+            "required": [
+                "info_type",
+                "user_info"
+            ],
+            "properties": {
+                "info_type": {
+                    "type": "string"
+                },
+                "user_info": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserInfoResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "college": {
+                    "$ref": "#/definitions/dto.CollegeResponse"
+                },
+                "collegeID": {
+                    "type": "integer"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "degree": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "gender": {
+                    "$ref": "#/definitions/models.Gender"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nationality": {
+                    "type": "string"
+                },
+                "otherCollege": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "pincode": {
+                    "type": "string"
+                },
+                "referralCode": {
+                    "type": "string"
+                },
+                "sponsor": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "voucherName": {
+                    "type": "string"
+                },
+                "year": {
                     "type": "string"
                 }
             }

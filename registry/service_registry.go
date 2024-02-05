@@ -15,6 +15,7 @@ func (r *registry) NewUserService() service.UserService {
 func (r *registry) NewAdminService() service.AdminService {
 	return impl.NewAdminServiceImpl(
 		r.NewAdminRepository(),
+		r.NewUserRepository(),
 	)
 }
 

@@ -15,4 +15,6 @@ func NewAdminRouter(e *echo.Group, controller app.AdminController) {
 	//Protected Routes
 	adminRoutes.Use(middleware.UserAuth(), middleware.AdminRoleAuth(models.ADMIN))
 	adminRoutes.GET("/verify", controller.Verify)
+	adminRoutes.POST("/verify_user", controller.VerifyUser)
+
 }

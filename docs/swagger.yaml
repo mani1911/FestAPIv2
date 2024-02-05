@@ -204,6 +204,63 @@ definitions:
       user_year:
         type: string
     type: object
+  dto.UserInfoRequest:
+    properties:
+      info_type:
+        type: string
+      user_info:
+        type: string
+    required:
+    - info_type
+    - user_info
+    type: object
+  dto.UserInfoResponse:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      college:
+        $ref: '#/definitions/dto.CollegeResponse'
+      collegeID:
+        type: integer
+      country:
+        type: string
+      degree:
+        type: string
+      email:
+        type: string
+      fullName:
+        type: string
+      gender:
+        $ref: '#/definitions/models.Gender'
+      id:
+        type: integer
+      name:
+        type: string
+      nationality:
+        type: string
+      otherCollege:
+        type: string
+      password:
+        items:
+          type: integer
+        type: array
+      phone:
+        type: string
+      pincode:
+        type: string
+      referralCode:
+        type: string
+      sponsor:
+        type: string
+      state:
+        type: string
+      voucherName:
+        type: string
+      year:
+        type: string
+    type: object
   models.Gender:
     enum:
     - MALE
@@ -276,6 +333,38 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Verify Admin status.
+      tags:
+      - Admin
+  /api/admin/verify_user:
+    post:
+      consumes:
+      - application/json
+      description: If providing emailid, info_type should be "email" or "jwt" for
+        QR.
+      operationId: VerifyUser
+      parameters:
+      - description: User Info request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserInfoResponse'
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get the User details.
       tags:
       - Admin
   /api/colleges:
@@ -690,7 +779,7 @@ paths:
       description: Register a new user with the provided details.
       operationId: AuthUserRegister
       parameters:
-      - description: User registration Request
+      - description: User registration request
         in: body
         name: request
         required: true

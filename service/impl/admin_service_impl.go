@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/delta/FestAPI/dto"
+	"github.com/delta/FestAPI/models"
 	"github.com/delta/FestAPI/repository"
 	"github.com/delta/FestAPI/service"
 	"github.com/delta/FestAPI/utils"
@@ -11,11 +12,13 @@ import (
 
 type adminServiceImpl struct {
 	adminRepository repository.AdminRepository
+	userRepository  repository.UserRepository
 }
 
-func NewAdminServiceImpl(adminRepository repository.AdminRepository) service.AdminService {
+func NewAdminServiceImpl(adminRepository repository.AdminRepository, userRepository repository.UserRepository) service.AdminService {
 	return &adminServiceImpl{
 		adminRepository: adminRepository,
+		userRepository:  userRepository,
 	}
 }
 
@@ -53,4 +56,33 @@ func (impl *adminServiceImpl) Login(req dto.AuthAdminRequest) dto.Response {
 	}
 
 	return dto.Response{Code: http.StatusOK, Message: jwtToken}
+}
+
+func (impl *adminServiceImpl) VerifyUser(req dto.UserInfoRequest) dto.Response {
+	if len(req.InfoType) == 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Info Type cannot be empty"}
+	}
+
+	var userDetails *models.User
+	var err error
+
+	switch req.InfoType {
+	case "jwt":
+		claims, parseErr := utils.ParseToken(req.Info)
+		if parseErr != nil {
+			return dto.Response{Code: http.StatusBadRequest, Message: err.Error()}
+		}
+		userDetails, err = impl.userRepository.FindByEmail(claims.UserEmail)
+	case "email":
+		userDetails, err = impl.userRepository.FindByEmail(req.Info)
+	}
+
+	if err != nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: err.Error()}
+	}
+
+	college, _ := impl.userRepository.FindByCollegeID(userDetails.CollegeID)
+	userDetails.College = *college
+
+	return dto.Response{Code: http.StatusOK, Message: userDetails}
 }
