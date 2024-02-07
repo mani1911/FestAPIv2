@@ -23,9 +23,9 @@ func NewHospiControllerImpl(hospiService service.HospiService) app.HospiControll
 // @ID				GetHostels
 // @Tags			Hospi
 // @Produce		json
-// @Success		200	{object}	dto.GetHostelsResponse	"Success"
-// @Failure		400	{string}	string					"Hostels not found"
-// @Failure		500	{string}	string					"Internal Server Error"
+// @Success		200	{array}		dto.GetHostelsResponse[]	"Success"
+// @Failure		400	{string}	string						"Hostels not found"
+// @Failure		500	{string}	string						"Internal Server Error"
 // @Security		ApiKeyAuth
 // @Router			/api/hospi/getHostels [get]
 func (impl *hospiControllerImpl) GetHostels(c echo.Context) error {
@@ -60,7 +60,7 @@ func (impl *hospiControllerImpl) AddUpdateHostel(c echo.Context) error {
 // @ID				GetRooms
 // @Tags			Hospi
 // @Produce		json
-// @Success		200	{object}	dto.GetRoomsResponse	"Success"
+// @Success		200	{array}		dto.GetRoomsResponse[]	"Success"
 // @Failure		400	{string}	string					"Rooms not found"
 // @Failure		500	{string}	string					"Internal Server Error"
 // @Security		ApiKeyAuth

@@ -20,6 +20,7 @@ type GetRoomsResponse struct {
 	Hostel   string
 	HostelID uint
 	Gender   models.Gender
+	Capacity uint
 }
 
 type AddUpdateRoomRequest struct {

@@ -182,6 +182,8 @@ definitions:
     type: object
   dto.GetRoomsResponse:
     properties:
+      capacity:
+        type: integer
       gender:
         $ref: '#/definitions/models.Gender'
       hostel:
@@ -565,7 +567,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/dto.GetHostelsResponse'
+            items:
+              $ref: '#/definitions/dto.GetHostelsResponse'
+            type: array
         "400":
           description: Hostels not found
           schema:
@@ -589,7 +593,9 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/dto.GetRoomsResponse'
+            items:
+              $ref: '#/definitions/dto.GetRoomsResponse'
+            type: array
         "400":
           description: Rooms not found
           schema:

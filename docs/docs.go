@@ -462,7 +462,10 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/dto.GetHostelsResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.GetHostelsResponse"
+                            }
                         }
                     },
                     "400": {
@@ -500,7 +503,10 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/dto.GetRoomsResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.GetRoomsResponse"
+                            }
                         }
                     },
                     "400": {
@@ -1170,6 +1176,9 @@ const docTemplate = `{
         "dto.GetRoomsResponse": {
             "type": "object",
             "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
                 "gender": {
                     "$ref": "#/definitions/models.Gender"
                 },

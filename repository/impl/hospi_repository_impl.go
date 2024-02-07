@@ -62,7 +62,7 @@ func (repository *hospiRepositoryImpl) GetRooms() ([]*dto.GetRoomsResponse, erro
 
 	if err := repository.DB.
 		Model(&models.Hostel{}).
-		Select("rooms.id as room_id, rooms.name as room, hostels.id as hostel_id, hostels.name as hostel, hostels.gender as gender").
+		Select("rooms.id as room_id, rooms.name as room, hostels.id as hostel_id, hostels.name as hostel, hostels.gender as gender, rooms.Capacity").
 		Joins("RIGHT JOIN rooms ON hostels.id = rooms.hostel_id").
 		Find(&res).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
