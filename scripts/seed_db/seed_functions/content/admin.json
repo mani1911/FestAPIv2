@@ -4,13 +4,13 @@
       "id": 1,
       "username": "john_doe",
       "password": "password",
-      "role": "ADMIN"
+      "role": "ADMIN,PR,CORE"
     },
     {
       "id": 2,
       "username": "jane_doe",
       "password": "password",
-      "role": "ADMIN"
+      "role": "ADMIN,PR"
     },
     {
       "id": 3,

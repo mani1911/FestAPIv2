@@ -33,8 +33,8 @@ func AdminSeeder() {
 					fmt.Println("\n", color.RedString("Error:"), err)
 					return
 				}
-				adminRole := models.AdminRole(role)
-				if len(adminRole) == 0 {
+
+				if len(role) == 0 {
 					PrintSeededRow(name, "error in creating", element)
 					fmt.Println("\n", color.RedString("Error:"), "no Admin Role provided")
 					return
@@ -42,7 +42,7 @@ func AdminSeeder() {
 				adminReg := models.Admin{
 					Username: username,
 					Password: passwordHash,
-					Role:     adminRole,
+					Role:     role,
 				}
 				if err := db.Create(&adminReg).Error; err != nil {
 					PrintSeededRow(name, "error in creating", element)
@@ -50,7 +50,7 @@ func AdminSeeder() {
 					return
 				}
 				PrintSeededRow(name, "created", element)
-				fmt.Println('\n')
+				fmt.Print("\n")
 				continue
 			}
 		}
@@ -62,22 +62,20 @@ func AdminSeeder() {
 			fmt.Println("\n", color.RedString("Error:"), err)
 			return
 		}
-		adminRole := models.AdminRole(role)
-		if len(adminRole) == 0 {
+		if len(role) == 0 {
 			PrintSeededRow(name, "error in updating", element)
 			fmt.Println("\n", color.RedString("Error:"), "no Admin Role provided")
 			continue
 		}
 		adminDetails.Password = passwordHash
-		adminDetails.Role = adminRole
+		adminDetails.Role = role
 		if err := db.Save(&adminDetails).Error; err != nil {
 			PrintSeededRow(name, "error in updating", element)
 			fmt.Println("\n", color.RedString("Error:"), err)
 			return
 		}
 		PrintSeededRow(name, "updated", element)
-		fmt.Println('\n')
-
+		fmt.Print("\n")
 	}
 
 }

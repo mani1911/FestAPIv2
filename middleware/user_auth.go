@@ -18,10 +18,10 @@ func UserAuth() echo.MiddlewareFunc {
 	return echojwt.WithConfig(echojwt.Config{
 		SigningKey:  []byte(config.JWTSecret),
 		TokenLookup: TokenLookupString,
-		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+		NewClaimsFunc: func(_ echo.Context) jwt.Claims {
 			return new(utils.JWTCustomClaims)
 		},
-		ErrorHandler: func(c echo.Context, err error) error {
+		ErrorHandler: func(c echo.Context, _ error) error {
 			return utils.SendResponse(c, http.StatusUnauthorized, "Prohibited")
 		},
 	})

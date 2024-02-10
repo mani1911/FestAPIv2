@@ -37,7 +37,7 @@ func createEnums() {
 		fmt.Println(color.RedString("Error creating Gender ENUM"))
 	}
 
-	createAdminRoles := db.Exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'admin_roles') THEN CREATE TYPE admin_roles AS ENUM('ADMIN'); END IF; END$$;")
+	createAdminRoles := db.Exec("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'admin_roles') THEN CREATE TYPE admin_roles AS ENUM('ADMIN','PR','OC','TREZ','CORE'); END IF; END$$;")
 	if createAdminRoles.Error != nil {
 		fmt.Println(color.RedString("Error creating AdminRoles ENUM"))
 	}

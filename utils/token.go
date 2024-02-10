@@ -5,14 +5,13 @@ import (
 	"time"
 
 	"github.com/delta/FestAPI/config"
-	"github.com/delta/FestAPI/models"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type JWTCustomClaims struct {
-	UserID uint             `json:"name"`
-	Admin  bool             `json:"admin"`
-	Role   models.AdminRole `json:"role"`
+	UserID uint   `json:"name"`
+	Admin  bool   `json:"admin"`
+	Role   string `json:"role"`
 	jwt.RegisteredClaims
 }
 
@@ -21,7 +20,7 @@ type JWTCustomClaimsforQR struct {
 	jwt.RegisteredClaims
 }
 
-func GenerateToken(userID uint, Admin bool, AdminRole models.AdminRole) (string, error) {
+func GenerateToken(userID uint, Admin bool, AdminRole string) (string, error) {
 	claims := &JWTCustomClaims{
 		userID,
 		Admin,
@@ -43,7 +42,7 @@ func GenerateToken(userID uint, Admin bool, AdminRole models.AdminRole) (string,
 }
 
 func ParseToken(tokenString string) (*JWTCustomClaimsforQR, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &JWTCustomClaimsforQR{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &JWTCustomClaimsforQR{}, func(_ *jwt.Token) (interface{}, error) {
 		return []byte(config.JWTSecret), nil
 	})
 	if err != nil {

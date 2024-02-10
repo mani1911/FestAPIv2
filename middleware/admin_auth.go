@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/delta/FestAPI/models"
 	"github.com/delta/FestAPI/utils"
@@ -18,14 +19,18 @@ func AdminRoleAuth(roles ...models.AdminRole) echo.MiddlewareFunc {
 			if !claims.Admin {
 				return utils.SendResponse(c, http.StatusForbidden, "Prohibited")
 			}
+
 			// check if user has the appropriate role
+			roleMap := make(map[string]bool)
+			for _, role := range strings.Split(claims.Role, ",") {
+				roleMap[role] = true
+			}
 			for _, requiredRole := range roles {
-				if requiredRole == claims.Role {
-					// User has the required role, allow access
-					return next(c)
+				if foundRole := roleMap[string(requiredRole)]; !foundRole {
+					return utils.SendResponse(c, http.StatusForbidden, "Prohibited")
 				}
 			}
-			return utils.SendResponse(c, http.StatusForbidden, "Prohibited")
+			return next(c)
 		}
 	}
 }

@@ -9,13 +9,13 @@ import (
 
 func NewHospiRouter(e *echo.Group, controller app.HospiController) {
 	hospiRoutes := e.Group("/hospi")
-	// Admin protected Routes
-	hospiRoutes.Use(middleware.UserAuth(), middleware.AdminRoleAuth(models.ADMIN))
-	// Hostel routes
+
+	hospiRoutes.Use(middleware.UserAuth(), middleware.AdminRoleAuth(models.ADMIN, models.PR))
 	hospiRoutes.GET("/getHostels", controller.GetHostels)
-	hospiRoutes.POST("/updateHostel", controller.AddUpdateHostel) // add and update hostel
-	// Room routes
 	hospiRoutes.GET("/getRooms", controller.GetRooms)
-	hospiRoutes.POST("/updateRoom", controller.AddUpdateRoom) // add and update room
+
+	hospiRoutes.Use(middleware.UserAuth(), middleware.AdminRoleAuth(models.ADMIN, models.PR, models.CORE))
+	hospiRoutes.POST("/updateHostel", controller.AddUpdateHostel) // add and update hostel
+	hospiRoutes.POST("/updateRoom", controller.AddUpdateRoom)     // add and update room
 	hospiRoutes.DELETE("/deleteRoom", controller.DeleteRoom)
 }
