@@ -395,6 +395,55 @@
                 }
             }
         },
+        "/api/hospi/checkIn": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "If roomID is zero, visitor is not alloted room.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Check in for the visitors.",
+                "operationId": "CheckIn",
+                "parameters": [
+                    {
+                        "description": "Check in request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CheckInRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/hospi/deleteRoom": {
             "delete": {
                 "security": [
@@ -464,10 +513,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.GetHostelsResponse"
-                            }
+                            "$ref": "#/definitions/dto.GetHostelsResponse"
                         }
                     },
                     "400": {
@@ -505,10 +551,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.GetRoomsResponse"
-                            }
+                            "$ref": "#/definitions/dto.GetRoomsResponse"
                         }
                     },
                     "400": {
@@ -624,6 +667,111 @@
                 }
             }
         },
+        "/api/treasury/addBill": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add a bill with its purpose: checkIn/checkOut/discount/fine/eventPass.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Treasury"
+                ],
+                "summary": "Add a Bill.",
+                "operationId": "AddBill",
+                "parameters": [
+                    {
+                        "description": "Add bill request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddBillRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/treasury/townscript": {
+            "post": {
+                "description": "Make a payment using Townscript.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Treasury"
+                ],
+                "summary": "Make a payment using Townscript.",
+                "operationId": "Townscript",
+                "parameters": [
+                    {
+                        "description": "Townscript request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TownScriptRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Secret Token",
+                        "name": "secret",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/user/dauth/callback": {
             "get": {
                 "description": "Callback url for DAuth, returns JWT token if successful",
@@ -683,12 +831,6 @@
                 "summary": "Profile information.",
                 "operationId": "ProfileDetails",
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.UserInfoResponse"
-                        }
-                    },
                     "400": {
                         "description": "User not found",
                         "schema": {
@@ -910,6 +1052,32 @@
                 }
             }
         },
+        "dto.AddBillRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "mode": {
+                    "type": "string"
+                },
+                "paid_to": {
+                    "$ref": "#/definitions/models.AdminRole"
+                },
+                "ref_id": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.AddUpdateHostelRequest": {
             "type": "object",
             "properties": {
@@ -1086,6 +1254,23 @@
                 }
             }
         },
+        "dto.CheckInRequest": {
+            "type": "object",
+            "properties": {
+                "no_of_days": {
+                    "type": "integer"
+                },
+                "room_id": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.CollegeResponse": {
             "type": "object",
             "properties": {
@@ -1206,6 +1391,67 @@
                 }
             }
         },
+        "dto.TownScriptRequest": {
+            "type": "object",
+            "properties": {
+                "answerList": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "answer": {
+                                "type": "string"
+                            },
+                            "question": {
+                                "type": "string"
+                            },
+                            "uniqueQuestionId": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "customQuestion1": {
+                    "type": "string"
+                },
+                "customQuestion20": {
+                    "type": "string"
+                },
+                "discountAmount": {
+                    "type": "integer"
+                },
+                "discountCode": {
+                    "type": "string"
+                },
+                "eventCode": {
+                    "type": "string"
+                },
+                "eventName": {
+                    "type": "string"
+                },
+                "registrationTimestamp": {
+                    "type": "string"
+                },
+                "ticketName": {
+                    "type": "string"
+                },
+                "ticketPrice": {
+                    "type": "integer"
+                },
+                "uniqueOrderId": {
+                    "type": "string"
+                },
+                "userEmailId": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.UserInfoRequest": {
             "type": "object",
             "required": [
@@ -1297,6 +1543,23 @@
                     "type": "string"
                 }
             }
+        },
+        "models.AdminRole": {
+            "type": "string",
+            "enum": [
+                "ADMIN",
+                "OC",
+                "PR",
+                "TREZ",
+                "CORE"
+            ],
+            "x-enum-varnames": [
+                "ADMIN",
+                "OC",
+                "PR",
+                "TREZ",
+                "CORE"
+            ]
         },
         "models.Gender": {
             "type": "string",

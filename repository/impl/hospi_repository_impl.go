@@ -2,6 +2,7 @@ package impl
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/delta/FestAPI/dto"
 	"github.com/delta/FestAPI/models"
@@ -107,4 +108,38 @@ func (repository *hospiRepositoryImpl) FindRoomByID(id uint) (*models.Room, erro
 	}
 
 	return &res, nil
+}
+
+func (repository *hospiRepositoryImpl) isVacant(id uint) bool {
+	var filled int64
+	if err := repository.DB.Model(&models.RoomReg{}).Where("room_id = ?", id).Count(&filled).Error; err != nil {
+		fmt.Println(err)
+	}
+	var capacity int
+	if err := repository.DB.Model(&models.Room{}).Where("id = ?", id).Select("capacity").First(&capacity).Error; err != nil {
+		fmt.Println(err)
+	}
+	if capacity-int(filled) > 0 {
+		return true
+	}
+	return false
+}
+
+func (repository *hospiRepositoryImpl) RoomReg(req *models.RoomReg) error {
+	vacant := repository.isVacant(req.RoomID)
+	if !vacant {
+		return errors.New("No vacancy")
+	}
+
+	if err := repository.DB.Model(&models.RoomReg{}).Create(&req).Error; err != nil {
+		return errors.New("Error registering room")
+	}
+	return nil
+}
+
+func (repository *hospiRepositoryImpl) AddVisitor(req *models.Visitor) error {
+	if err := repository.DB.Model(&models.Visitor{}).Create(&req).Error; err != nil {
+		return errors.New("Error adding visitor")
+	}
+	return nil
 }

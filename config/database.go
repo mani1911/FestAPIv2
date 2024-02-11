@@ -71,6 +71,9 @@ func MigrateDB() {
 		&models.Hostel{},
 		&models.Room{},
 		&models.TShirts{},
+		&models.RoomReg{},
+		&models.Bill{},
+		&models.Visitor{},
 	} {
 		if err := db.AutoMigrate(&schema); err != nil {
 			panic(err)

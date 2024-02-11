@@ -23,9 +23,9 @@ func NewHospiControllerImpl(hospiService service.HospiService) app.HospiControll
 // @ID				GetHostels
 // @Tags			Hospi
 // @Produce		json
-// @Success		200	{array}		dto.GetHostelsResponse[]	"Success"
-// @Failure		400	{string}	string						"Hostels not found"
-// @Failure		500	{string}	string						"Internal Server Error"
+// @Success		200	{object}	dto.GetHostelsResponse	"Success"
+// @Failure		400	{string}	string					"Hostels not found"
+// @Failure		500	{string}	string					"Internal Server Error"
 // @Security		ApiKeyAuth
 // @Router			/api/hospi/getHostels [get]
 func (impl *hospiControllerImpl) GetHostels(c echo.Context) error {
@@ -60,7 +60,7 @@ func (impl *hospiControllerImpl) AddUpdateHostel(c echo.Context) error {
 // @ID				GetRooms
 // @Tags			Hospi
 // @Produce		json
-// @Success		200	{array}		dto.GetRoomsResponse[]	"Success"
+// @Success		200	{object}	dto.GetRoomsResponse	"Success"
 // @Failure		400	{string}	string					"Rooms not found"
 // @Failure		500	{string}	string					"Internal Server Error"
 // @Security		ApiKeyAuth
@@ -111,5 +111,27 @@ func (impl *hospiControllerImpl) DeleteRoom(c echo.Context) error {
 	}
 
 	res := impl.HospiService.DeleteRoom(req)
+	return utils.SendResponse(c, res.Code, res.Message)
+}
+
+// @Summary		Check in for the visitors.
+// @Description	If roomID is zero, visitor is not alloted room.
+// @ID				CheckIn
+// @Tags			Hospi
+// @Accept			json
+// @Param			request	body		dto.CheckInRequest	true	"Check in request"
+// @Success		200		{object}	string				"Success"
+// @Failure		400		{object}	string				"Invalid Request"
+// @Failure		500		{object}	string				"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/hospi/checkIn [post]
+func (impl *hospiControllerImpl) CheckIn(c echo.Context) error {
+	var req dto.CheckInRequest
+
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+
+	res := impl.HospiService.CheckIn(req)
 	return utils.SendResponse(c, res.Code, res.Message)
 }

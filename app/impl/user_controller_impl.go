@@ -138,7 +138,6 @@ func (impl *userControllerImpl) Update(c echo.Context) error {
 // @Tags			Profile
 // @Produce		json
 // @Security		middleware.UserAuth
-// @Success		200	{object}	dto.UserInfoResponse
 // @Failure		400	{object}	string	"User not found"
 // @Failure		500	{object}	string	"Internal Server Error"
 // @Router			/api/user/details [get]

@@ -51,3 +51,12 @@ func (r *registry) NewTShirtsService() service.TShirtsService {
 		r.NewUserRepository(),
 	)
 }
+
+func (r *registry) NewTreasuryService() service.TreasuryService {
+	return impl.NewTreasuryServiceImpl(
+		r.NewTreasuryRepository(),
+		r.NewAdminRepository(),
+		r.NewUserRepository(),
+		r.NewCollegeRepository(),
+	)
+}

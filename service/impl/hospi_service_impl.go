@@ -2,6 +2,7 @@ package impl
 
 import (
 	"net/http"
+	"time"
 
 	dto "github.com/delta/FestAPI/dto"
 	"github.com/delta/FestAPI/models"
@@ -140,4 +141,45 @@ func (impl *hospiServiceImpl) DeleteRoom(req dto.DeleteRoomRequest) dto.Response
 	}
 
 	return dto.Response{Code: http.StatusOK, Message: "Successfully deleted the room"}
+}
+
+func (impl *hospiServiceImpl) CheckIn(req dto.CheckInRequest) dto.Response {
+	if req.UserID == 0 || (req.RoomID != 0 && req.NoOfDays == 0) {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
+	}
+
+	room := models.RoomReg{
+		RoomID:   req.RoomID,
+		UserID:   req.UserID,
+		NoOfDays: req.NoOfDays,
+	}
+
+	if req.RoomID != 0 {
+		if err := impl.hospiRepository.RoomReg(&room); err != nil {
+			if err.Error() == "No vacancy" {
+				return dto.Response{Code: http.StatusBadRequest, Message: "Room not vacant"}
+			}
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to register room"}
+		}
+	}
+
+	temp := models.Visitor{
+		UserID: req.UserID,
+		RoomID: req.RoomID,
+	}
+	if req.CheckInTime != "" {
+		parsedTime, err := time.Parse(time.RFC3339, req.CheckInTime)
+		if err != nil {
+			return dto.Response{Code: http.StatusBadRequest, Message: "Failed to parse date"}
+		}
+		temp.CheckInTime = parsedTime
+	} else {
+		temp.CheckInTime = time.Now()
+	}
+
+	if err := impl.hospiRepository.AddVisitor(&temp); err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to add visitor"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: "Checked In!"}
 }

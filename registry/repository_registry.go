@@ -28,3 +28,7 @@ func (r *registry) NewHospiRepository() repository.HospiRepository {
 func (r *registry) NewTShirtsRepository() repository.TShirtsRepository {
 	return impl.NewTShirtsRepositoryImpl(r.db)
 }
+
+func (r *registry) NewTreasuryRepository() repository.TreasuryRepository {
+	return impl.NewTreasuryRepositoryImpl(r.db)
+}

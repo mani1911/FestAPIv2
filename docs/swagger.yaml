@@ -7,6 +7,23 @@ definitions:
       max_participants:
         type: integer
     type: object
+  dto.AddBillRequest:
+    properties:
+      amount:
+        type: integer
+      mode:
+        type: string
+      paid_to:
+        $ref: '#/definitions/models.AdminRole'
+      ref_id:
+        type: string
+      time:
+        type: string
+      type:
+        type: string
+      user_id:
+        type: integer
+    type: object
   dto.AddUpdateHostelRequest:
     properties:
       gender:
@@ -123,6 +140,17 @@ definitions:
       user_year:
         type: string
     type: object
+  dto.CheckInRequest:
+    properties:
+      no_of_days:
+        type: integer
+      room_id:
+        type: integer
+      time:
+        type: string
+      user_id:
+        type: integer
+    type: object
   dto.CollegeResponse:
     properties:
       college_id:
@@ -200,6 +228,46 @@ definitions:
       size:
         type: string
     type: object
+  dto.TownScriptRequest:
+    properties:
+      answerList:
+        items:
+          properties:
+            answer:
+              type: string
+            question:
+              type: string
+            uniqueQuestionId:
+              type: integer
+          type: object
+        type: array
+      currency:
+        type: string
+      customQuestion1:
+        type: string
+      customQuestion20:
+        type: string
+      discountAmount:
+        type: integer
+      discountCode:
+        type: string
+      eventCode:
+        type: string
+      eventName:
+        type: string
+      registrationTimestamp:
+        type: string
+      ticketName:
+        type: string
+      ticketPrice:
+        type: integer
+      uniqueOrderId:
+        type: string
+      userEmailId:
+        type: string
+      userName:
+        type: string
+    type: object
   dto.UserInfoRequest:
     properties:
       info_type:
@@ -261,6 +329,20 @@ definitions:
       year:
         type: string
     type: object
+  models.AdminRole:
+    enum:
+    - ADMIN
+    - OC
+    - PR
+    - TREZ
+    - CORE
+    type: string
+    x-enum-varnames:
+    - ADMIN
+    - OC
+    - PR
+    - TREZ
+    - CORE
   models.Gender:
     enum:
     - MALE
@@ -529,6 +611,37 @@ paths:
       tags:
       - Event
       - User
+  /api/hospi/checkIn:
+    post:
+      consumes:
+      - application/json
+      description: If roomID is zero, visitor is not alloted room.
+      operationId: CheckIn
+      parameters:
+      - description: Check in request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CheckInRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Check in for the visitors.
+      tags:
+      - Hospi
   /api/hospi/deleteRoom:
     delete:
       consumes:
@@ -570,9 +683,7 @@ paths:
         "200":
           description: Success
           schema:
-            items:
-              $ref: '#/definitions/dto.GetHostelsResponse'
-            type: array
+            $ref: '#/definitions/dto.GetHostelsResponse'
         "400":
           description: Hostels not found
           schema:
@@ -596,9 +707,7 @@ paths:
         "200":
           description: Success
           schema:
-            items:
-              $ref: '#/definitions/dto.GetRoomsResponse'
-            type: array
+            $ref: '#/definitions/dto.GetRoomsResponse'
         "400":
           description: Rooms not found
           schema:
@@ -674,6 +783,74 @@ paths:
       summary: Add/Update a new room.
       tags:
       - Hospi
+  /api/treasury/addBill:
+    post:
+      consumes:
+      - application/json
+      description: 'Add a bill with its purpose: checkIn/checkOut/discount/fine/eventPass.'
+      operationId: AddBill
+      parameters:
+      - description: Add bill request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddBillRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add a Bill.
+      tags:
+      - Treasury
+  /api/treasury/townscript:
+    post:
+      consumes:
+      - application/json
+      description: Make a payment using Townscript.
+      operationId: Townscript
+      parameters:
+      - description: Townscript request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TownScriptRequest'
+      - description: Secret Token
+        in: query
+        name: secret
+        type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Make a payment using Townscript.
+      tags:
+      - Treasury
   /api/user/dauth/callback:
     get:
       description: Callback url for DAuth, returns JWT token if successful
@@ -709,10 +886,6 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.UserInfoResponse'
         "400":
           description: User not found
           schema:

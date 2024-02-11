@@ -1,6 +1,8 @@
 package dto
 
-import "github.com/delta/FestAPI/models"
+import (
+	"github.com/delta/FestAPI/models"
+)
 
 type GetHostelsResponse struct {
 	ID     uint
@@ -32,4 +34,11 @@ type AddUpdateRoomRequest struct {
 
 type DeleteRoomRequest struct {
 	ID uint `json:"id"`
+}
+
+type CheckInRequest struct {
+	CheckInTime string `json:"time"`
+	UserID      uint   `json:"user_id"`
+	RoomID      uint   `json:"room_id"`
+	NoOfDays    uint   `json:"no_of_days"`
 }

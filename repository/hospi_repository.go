@@ -11,8 +11,10 @@ type HospiRepository interface {
 	UpdateHostel(*models.Hostel) error
 	FindHostelByID(uint) (*models.Hostel, error)
 	GetRooms() ([]*dto.GetRoomsResponse, error)
-	AddRoom(room *models.Room) error
-	UpdateRoom(room *models.Room) error
-	DeleteRoom(id uint) error
-	FindRoomByID(id uint) (*models.Room, error)
+	AddRoom(*models.Room) error
+	UpdateRoom(*models.Room) error
+	DeleteRoom(uint) error
+	FindRoomByID(uint) (*models.Room, error)
+	RoomReg(*models.RoomReg) error
+	AddVisitor(*models.Visitor) error
 }

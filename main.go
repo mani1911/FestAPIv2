@@ -23,12 +23,12 @@ import (
 //	@license.name	MIT
 //	@license.url	https://opensource.org/licenses/MIT
 
-// @host						localhost:8000
-// @BasePath					/
-// @query.collection.format	multi
+//	@host						localhost:8000
+//	@BasePath					/
+//	@query.collection.format	multi
 
-// @securityDefinitions.apikey	ApiKeyAuth
-// @in							header
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
 //	@name						Authorization
 //	@description				Authorization token
 
