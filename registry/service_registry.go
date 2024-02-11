@@ -44,3 +44,10 @@ func (r *registry) NewPublicService() service.PublicService {
 		r.NewCollegeRepository(),
 	)
 }
+
+func (r *registry) NewTShirtsService() service.TShirtsService {
+	return impl.NewTShirtsServiceImpl(
+		r.NewTShirtsRepository(),
+		r.NewUserRepository(),
+	)
+}

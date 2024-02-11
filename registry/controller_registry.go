@@ -28,3 +28,7 @@ func (r *registry) NewCMSController() app.CMSController {
 func (r *registry) NewPublicController() app.PublicController {
 	return impl.NewPublicControllerImpl(r.NewPublicService())
 }
+
+func (r *registry) NewTShirtsController() app.TShirtsController {
+	return impl.NewTShirtsControllerImpl(r.NewTShirtsService())
+}

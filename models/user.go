@@ -25,4 +25,5 @@ type User struct {
 	Degree       string  `gorm:"size:255;not null"`
 	Year         string  `gorm:"size:255;not null"`
 	Nationality  string  `gorm:"size:255;not null"`
+	IsDauth      bool    `gorm:"not null;default:false"`
 }

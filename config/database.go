@@ -70,6 +70,7 @@ func MigrateDB() {
 		&models.InformalsDetails{},
 		&models.Hostel{},
 		&models.Room{},
+		&models.TShirts{},
 	} {
 		if err := db.AutoMigrate(&schema); err != nil {
 			panic(err)

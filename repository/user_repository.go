@@ -8,4 +8,6 @@ type UserRepository interface {
 	FindByID(id uint) (*models.User, error)
 	Update(user *models.User) error
 	FindByCollegeID(id uint) (*models.College, error)
+	FindTShirtSize(id uint) (*models.TShirts, error)
+	SetDauth(user *models.User) error
 }

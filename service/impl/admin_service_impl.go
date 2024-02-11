@@ -83,6 +83,7 @@ func (impl *adminServiceImpl) VerifyUser(req dto.UserInfoRequest) dto.Response {
 
 	college, _ := impl.userRepository.FindByCollegeID(userDetails.CollegeID)
 	userDetails.College = *college
+	userDetails.Password = nil
 
 	return dto.Response{Code: http.StatusOK, Message: userDetails}
 }

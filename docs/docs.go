@@ -151,27 +151,35 @@ const docTemplate = `{
         },
         "/api/colleges": {
             "get": {
-                "description": "Fetches colleges Id and name of all colleges.",
+                "description": "Update the TShirt size for the user.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Public"
+                    "TShirts"
                 ],
-                "summary": "Get details of all colleges",
-                "operationId": "Colleges",
+                "summary": "TShirt Size Update",
+                "operationId": "TShirts",
+                "parameters": [
+                    {
+                        "description": "Add/update tshirt size",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TShirtsUpdateRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Updated TShirt Size",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.CollegeResponse"
-                            }
+                            "type": "string"
                         }
                     },
                     "500": {
-                        "description": "Error fetching colleges",
+                        "description": "Error Updating TShirt Size",
                         "schema": {
                             "type": "string"
                         }
@@ -684,7 +692,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.ProfileDetailsResponse"
+                            "$ref": "#/definitions/dto.UserInfoResponse"
                         }
                     },
                     "400": {
@@ -1196,19 +1204,10 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ProfileDetailsResponse": {
+        "dto.TShirtsUpdateRequest": {
             "type": "object",
             "properties": {
-                "user_college": {
-                    "type": "string"
-                },
-                "user_degree": {
-                    "type": "string"
-                },
-                "user_fullname": {
-                    "type": "string"
-                },
-                "user_year": {
+                "size": {
                     "type": "string"
                 }
             }
@@ -1261,6 +1260,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "isDauth": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1289,6 +1291,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "state": {
+                    "type": "string"
+                },
+                "tshirtSize": {
                     "type": "string"
                 },
                 "voucherName": {

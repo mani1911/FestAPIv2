@@ -72,3 +72,21 @@ func (repository *userRepositoryImpl) Update(userDetails *models.User) error {
 	}
 	return nil
 }
+
+func (repository *userRepositoryImpl) SetDauth(userDetails *models.User) error {
+
+	userDetails.IsDauth = true
+	userDetails.FullName = userDetails.Name
+	if err := repository.DB.Save(&userDetails).Error; err != nil {
+		return errors.New("Cannot update dauth state of user")
+	}
+	return nil
+}
+
+func (repository *userRepositoryImpl) FindTShirtSize(id uint) (*models.TShirts, error) {
+	var tShirtDetails models.TShirts
+	if err := repository.DB.Where("user_id = ? ", id).First(&tShirtDetails).Error; err != nil {
+		return nil, errors.New("Cannot find t-shirt details")
+	}
+	return &tShirtDetails, nil
+}

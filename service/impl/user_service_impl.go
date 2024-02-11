@@ -84,6 +84,8 @@ func (impl *userServiceImpl) DAuthLogin(req dto.AuthUserRequest) dto.Response {
 			Gender:    models.Gender(Gender),
 			Phone:     Phone,
 			Password:  passHash,
+			IsDauth:   true,
+			FullName:  Name,
 		}
 
 		//Creating new User
@@ -105,6 +107,10 @@ func (impl *userServiceImpl) DAuthLogin(req dto.AuthUserRequest) dto.Response {
 	jwtToken, err := utils.GenerateToken(userDetails.ID, false, "")
 	if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Token Not generated"}
+	}
+	err = impl.userRepository.SetDauth(userDetails)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an issue!"}
 	}
 
 	return dto.Response{Code: http.StatusOK, Message: jwtToken}
@@ -245,6 +251,7 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 			Degree:       req.Degree,
 			Year:         req.Year,
 			Nationality:  req.Nationality,
+			IsDauth:      false,
 		}
 
 		if err = impl.userRepository.CreateUser(&userReg); err != nil {
@@ -336,15 +343,37 @@ func (impl *userServiceImpl) ProfileDetails(userID uint) dto.Response {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 	collegeDetails, _ := impl.userRepository.FindByCollegeID(userDetails.CollegeID)
-
-	profile := dto.ProfileDetailsResponse{
-		Fullname: userDetails.FullName,
-		College:  collegeDetails.Name,
-		Degree:   userDetails.Degree,
-		Year:     userDetails.Year,
+	userDetails.College = *collegeDetails
+	tShirtDetails, errTShirt := impl.userRepository.FindTShirtSize(userID)
+	if errTShirt != nil {
+		tShirtDetails = &models.TShirts{Size: "Not Selected"}
 	}
 
-	return dto.Response{Code: http.StatusOK, Message: profile}
+	res := dto.UserInfoResponse{
+		Name:         userDetails.Name,
+		FullName:     userDetails.FullName,
+		CollegeID:    userDetails.CollegeID,
+		OtherCollege: userDetails.OtherCollege,
+		Email:        userDetails.Email,
+		College:      dto.CollegeResponse{ID: collegeDetails.ID, Name: collegeDetails.Name},
+		Gender:       userDetails.Gender,
+		Country:      userDetails.Country,
+		State:        userDetails.State,
+		City:         userDetails.City,
+		Address:      userDetails.Address,
+		Pincode:      userDetails.Pincode,
+		Phone:        userDetails.Phone,
+		Sponsor:      userDetails.Sponsor,
+		VoucherName:  userDetails.VoucherName,
+		ReferralCode: userDetails.ReferralCode,
+		Degree:       userDetails.Degree,
+		Year:         userDetails.Year,
+		Nationality:  userDetails.Nationality,
+		IsDauth:      userDetails.IsDauth,
+		TShirtSize:   tShirtDetails.Size,
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: res}
 
 }
 

@@ -65,13 +65,6 @@ type AuthUserUpdateRequest struct {
 	Country      string `json:"user_country"`
 }
 
-type ProfileDetailsResponse struct {
-	Fullname string `json:"user_fullname"`
-	College  string `json:"user_college"`
-	Degree   string `json:"user_degree"`
-	Year     string `json:"user_year"`
-}
-
 type UserInfoResponse struct {
 	ID           uint
 	Name         string
@@ -94,4 +87,6 @@ type UserInfoResponse struct {
 	Degree       string
 	Year         string
 	Nationality  string
+	IsDauth      bool
+	TShirtSize   string
 }

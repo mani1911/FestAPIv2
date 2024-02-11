@@ -195,15 +195,9 @@ definitions:
       roomID:
         type: integer
     type: object
-  dto.ProfileDetailsResponse:
+  dto.TShirtsUpdateRequest:
     properties:
-      user_college:
-        type: string
-      user_degree:
-        type: string
-      user_fullname:
-        type: string
-      user_year:
+      size:
         type: string
     type: object
   dto.UserInfoRequest:
@@ -238,6 +232,8 @@ definitions:
         $ref: '#/definitions/models.Gender'
       id:
         type: integer
+      isDauth:
+        type: boolean
       name:
         type: string
       nationality:
@@ -257,6 +253,8 @@ definitions:
       sponsor:
         type: string
       state:
+        type: string
+      tshirtSize:
         type: string
       voucherName:
         type: string
@@ -371,24 +369,29 @@ paths:
       - Admin
   /api/colleges:
     get:
-      description: Fetches colleges Id and name of all colleges.
-      operationId: Colleges
+      description: Update the TShirt size for the user.
+      operationId: TShirts
+      parameters:
+      - description: Add/update tshirt size
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TShirtsUpdateRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/dto.CollegeResponse'
-            type: array
-        "500":
-          description: Error fetching colleges
+          description: Updated TShirt Size
           schema:
             type: string
-      summary: Get details of all colleges
+        "500":
+          description: Error Updating TShirt Size
+          schema:
+            type: string
+      summary: TShirt Size Update
       tags:
-      - Public
+      - TShirts
   /api/events/abstract/details/{event_id}:
     get:
       description: Retrieve the details of the abstract for the specified event.
@@ -709,7 +712,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.ProfileDetailsResponse'
+            $ref: '#/definitions/dto.UserInfoResponse'
         "400":
           description: User not found
           schema:

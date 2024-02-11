@@ -24,3 +24,7 @@ func (r *registry) NewCollegeRepository() repository.CollegeRepository {
 func (r *registry) NewHospiRepository() repository.HospiRepository {
 	return impl.NewHospiRepositoryImpl(r.db)
 }
+
+func (r *registry) NewTShirtsRepository() repository.TShirtsRepository {
+	return impl.NewTShirtsRepositoryImpl(r.db)
+}
