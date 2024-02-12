@@ -13,6 +13,7 @@ services:
       - ${SERVER_PORT}:8000
     volumes:
       - .:/app
+      - ./logs:/logs # Volume map logs in PROD
     depends_on:
       - db
 

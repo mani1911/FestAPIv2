@@ -15,22 +15,19 @@ type AddBillRequest struct {
 }
 
 type TownScriptRequest struct {
-	UserEmailID      string `json:"userEmailId"`
-	UserName         string `json:"userName"`
-	Currency         string `json:"currency"`
-	TicketName       string `json:"ticketName"`
-	EventName        string `json:"eventName"`
-	EventCode        string `json:"eventCode"`
-	TicketPrice      uint   `json:"ticketPrice"`
-	DiscountCode     string `json:"discountCode"`
-	DiscountAmount   uint   `json:"discountAmount"`
-	CustomQuestion1  string `json:"customQuestion1"`
-	CustomQuestion20 string `json:"customQuestion20"`
-	AnswerList       []struct {
-		UniqueQuestionID uint   `json:"uniqueQuestionId"`
-		Question         string `json:"question"`
-		Answer           string `json:"answer"`
-	} `json:"answerList"`
-	UniqueOrderID         string `json:"uniqueOrderId"`
-	RegistrationTimestamp string `json:"registrationTimestamp"`
+	AnswerList            []CustomQuestion `json:"answerList"`
+	RegistrationTimestamp string           `json:"registrationTimestamp"`
+	UserEmailID           string           `json:"userEmailId"`
+	TicketCurrency        string           `json:"ticketCurrency"`
+	RegistrationID        int              `json:"registrationId"`
+	EventName             string           `json:"eventName"`
+	EventCode             string           `json:"eventCode"`
+	Currency              string           `json:"currency"`
+	TotalTicketAmount     string           `json:"totalTicketAmount"`
+}
+
+type CustomQuestion struct {
+	Question         string `json:"question"`
+	Answer           string `json:"answer"`
+	UniqueQuestionID int    `json:"uniqueQuestionId"`
 }

@@ -2,6 +2,8 @@ package impl
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -67,8 +69,12 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 
 	userEmail := req.UserEmailID
 	Mode := "Online"
-	Amount := req.TicketPrice
-	RefID := req.UniqueOrderID
+	Amount, err := strconv.ParseInt(req.TotalTicketAmount, 10, 64)
+	if err == nil {
+		Amount = 0
+	}
+
+	RefID := req.RegistrationID
 	var PaidTo models.AdminRole = models.AdminRole("townScript")
 	var Days uint
 	startDate := ""
@@ -92,8 +98,8 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 	bill := models.Bill{
 		Email:  userEmail,
 		Mode:   Mode,
-		Amount: Amount,
-		RefID:  RefID,
+		Amount: uint(Amount),
+		RefID:  fmt.Sprint(RefID),
 		PaidTo: PaidTo,
 		Time:   time.Now(),
 	}
@@ -103,8 +109,9 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 	}
 
 	var user models.User
-	err := repository.DB.Where(" Email = ? ", userEmail).First(&user).Error
-	if err != gorm.ErrRecordNotFound {
+
+	err1 := repository.DB.Where(" Email = ? ", userEmail).First(&user).Error
+	if err1 != gorm.ErrRecordNotFound {
 		return nil
 	}
 

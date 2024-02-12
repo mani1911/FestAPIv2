@@ -1,6 +1,8 @@
 package impl
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/delta/FestAPI/app"
@@ -32,6 +34,7 @@ func NewTreasuryControllerImpl(treasuryService service.TreasuryService) app.Trea
 // @Router			/api/treasury/addBill [post]
 func (impl *treasuryControllerImpl) AddBill(c echo.Context) error {
 	var req dto.AddBillRequest
+
 	if err := c.Bind(&req); err != nil {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
@@ -45,7 +48,7 @@ func (impl *treasuryControllerImpl) AddBill(c echo.Context) error {
 // @ID				Townscript
 // @Tags			Treasury
 // @Accept			json
-// @Param			request	body		dto.TownScriptRequest	true	"Townscript request"
+// @Param			request	body		string	true	"Townscript request"
 // @Param			secret	query		string					false	"Secret Token"
 // @Success		200		{object}	string					"Success"
 // @Failure		400		{object}	string					"Invalid Request"
@@ -53,14 +56,27 @@ func (impl *treasuryControllerImpl) AddBill(c echo.Context) error {
 // @Failure		500		{object}	string					"Internal Server Error"
 // @Router			/api/treasury/townscript [post]
 func (impl *treasuryControllerImpl) Townscript(c echo.Context) error {
+	log := utils.GetControllerLogger("TreasuryController TownScript")
+	err := c.Request().ParseForm()
+	if err != nil {
+		log.Fatal(fmt.Sprintf("Invalid Request: %s", err.Error()))
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+	reqData := c.Request().PostForm.Get("data")
 
 	var req dto.TownScriptRequest
-	if err := c.Bind(&req); err != nil {
+	if err := json.Unmarshal([]byte(reqData), &req); err != nil {
+		log.Fatal(fmt.Sprintf("Invalid Request: %s", reqData))
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 
+	if err := c.Bind(&req); err != nil {
+		log.Fatal(fmt.Sprintf("Invalid Request: %s", reqData))
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
 	token := c.Request().URL.Query().Get("secret")
 	if token != config.JWTSecret {
+		log.Fatal(fmt.Sprintf("Unauthorized : %s", reqData))
 		return utils.SendResponse(c, http.StatusUnauthorized, "Unauthorized")
 	}
 	res := impl.treasuryService.Townscript(req)

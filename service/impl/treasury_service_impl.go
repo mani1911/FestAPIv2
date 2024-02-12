@@ -1,12 +1,14 @@
 package impl
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	dto "github.com/delta/FestAPI/dto"
 	"github.com/delta/FestAPI/repository"
 	"github.com/delta/FestAPI/service"
+	"github.com/delta/FestAPI/utils"
 )
 
 type treasuryServiceImpl struct {
@@ -45,11 +47,15 @@ func (impl *treasuryServiceImpl) AddBill(req dto.AddBillRequest) dto.Response {
 }
 
 func (impl *treasuryServiceImpl) Townscript(req dto.TownScriptRequest) dto.Response {
-	if req.UserEmailID == "" || req.UserName == "" || req.Currency == "" || req.TicketName == "" || req.EventName == "" || req.EventCode == "" || req.TicketPrice == 0 || req.UniqueOrderID == "" || req.RegistrationTimestamp == "" {
-		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
+	log := utils.GetControllerLogger("TreasuryController TownScript")
+	if req.UserEmailID == "" || req.Currency == "" || req.EventName == "" || req.EventCode == "" || req.TotalTicketAmount == "" {
+		log.Fatal("Malformed Request", fmt.Sprint(req))
+		return dto.Response{Code: http.StatusBadRequest, Message: "Malformed Request"}
 	}
+
 	if err := impl.treasuryRepository.Townscript(&req); err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to register payment"}
 	}
+	log.Println("Payment made!", req.UserEmailID, req.TotalTicketAmount, req.EventName, req.EventCode, req.RegistrationID, req.RegistrationTimestamp)
 	return dto.Response{Code: http.StatusOK, Message: "Payment made!"}
 }

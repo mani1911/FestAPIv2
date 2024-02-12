@@ -741,7 +741,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.TownScriptRequest"
+                            "type": "string"
                         }
                     },
                     {
@@ -1394,67 +1394,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "size": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.TownScriptRequest": {
-            "type": "object",
-            "properties": {
-                "answerList": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "answer": {
-                                "type": "string"
-                            },
-                            "question": {
-                                "type": "string"
-                            },
-                            "uniqueQuestionId": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "customQuestion1": {
-                    "type": "string"
-                },
-                "customQuestion20": {
-                    "type": "string"
-                },
-                "discountAmount": {
-                    "type": "integer"
-                },
-                "discountCode": {
-                    "type": "string"
-                },
-                "eventCode": {
-                    "type": "string"
-                },
-                "eventName": {
-                    "type": "string"
-                },
-                "registrationTimestamp": {
-                    "type": "string"
-                },
-                "ticketName": {
-                    "type": "string"
-                },
-                "ticketPrice": {
-                    "type": "integer"
-                },
-                "uniqueOrderId": {
-                    "type": "string"
-                },
-                "userEmailId": {
-                    "type": "string"
-                },
-                "userName": {
                     "type": "string"
                 }
             }

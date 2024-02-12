@@ -228,46 +228,6 @@ definitions:
       size:
         type: string
     type: object
-  dto.TownScriptRequest:
-    properties:
-      answerList:
-        items:
-          properties:
-            answer:
-              type: string
-            question:
-              type: string
-            uniqueQuestionId:
-              type: integer
-          type: object
-        type: array
-      currency:
-        type: string
-      customQuestion1:
-        type: string
-      customQuestion20:
-        type: string
-      discountAmount:
-        type: integer
-      discountCode:
-        type: string
-      eventCode:
-        type: string
-      eventName:
-        type: string
-      registrationTimestamp:
-        type: string
-      ticketName:
-        type: string
-      ticketPrice:
-        type: integer
-      uniqueOrderId:
-        type: string
-      userEmailId:
-        type: string
-      userName:
-        type: string
-    type: object
   dto.UserInfoRequest:
     properties:
       info_type:
@@ -826,7 +786,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.TownScriptRequest'
+          type: string
       - description: Secret Token
         in: query
         name: secret
