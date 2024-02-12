@@ -3,6 +3,7 @@ version: "3.9"
 services:
   server:
     container_name: "festapi_server"
+    restart: always
     image: "festapi_server"
     build:
       context: .
@@ -19,6 +20,7 @@ services:
 
   db:
     container_name: "festapi_db"
+    restart: always
     image: "postgres:14-alpine"
     ports:
       - ${POSTGRES_PORT}:5432
@@ -29,6 +31,7 @@ services:
 
   adminer:
     container_name: "festapi_adminer"
+    restart: always
     image: "adminer"
     ports:
       - ${ADMINER_PORT}:8080

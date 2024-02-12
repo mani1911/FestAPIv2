@@ -59,24 +59,24 @@ func (impl *treasuryControllerImpl) Townscript(c echo.Context) error {
 	log := utils.GetControllerLogger("TreasuryController TownScript")
 	err := c.Request().ParseForm()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Invalid Request: %s", err.Error()))
+		log.Error(fmt.Sprintf("Invalid Request: %s", err.Error()))
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 	reqData := c.Request().PostForm.Get("data")
 
 	var req dto.TownScriptRequest
 	if err := json.Unmarshal([]byte(reqData), &req); err != nil {
-		log.Fatal(fmt.Sprintf("Invalid Request: %s", reqData))
+		log.Error(fmt.Sprintf("Invalid Request: %s", reqData))
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 
 	if err := c.Bind(&req); err != nil {
-		log.Fatal(fmt.Sprintf("Invalid Request: %s", reqData))
+		log.Error(fmt.Sprintf("Invalid Request: %s", reqData))
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 	token := c.Request().URL.Query().Get("secret")
 	if token != config.JWTSecret {
-		log.Fatal(fmt.Sprintf("Unauthorized : %s", reqData))
+		log.Error(fmt.Sprintf("Unauthorized : %s", reqData))
 		return utils.SendResponse(c, http.StatusUnauthorized, "Unauthorized")
 	}
 	res := impl.treasuryService.Townscript(req)
