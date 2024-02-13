@@ -23,7 +23,7 @@ type TownScriptRequest struct {
 	EventName             string           `json:"eventName"`
 	EventCode             string           `json:"eventCode"`
 	Currency              string           `json:"currency"`
-	TotalTicketAmount     string           `json:"totalTicketAmount"`
+	TicketPrice           string           `json:"ticketPrice"`
 }
 
 type CustomQuestion struct {

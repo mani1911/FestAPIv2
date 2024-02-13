@@ -48,7 +48,7 @@ func (impl *treasuryServiceImpl) AddBill(req dto.AddBillRequest) dto.Response {
 
 func (impl *treasuryServiceImpl) Townscript(req dto.TownScriptRequest) dto.Response {
 	log := utils.GetControllerLogger("TreasuryController TownScript")
-	if req.UserEmailID == "" || req.Currency == "" || req.EventName == "" || req.EventCode == "" || req.TotalTicketAmount == "" {
+	if req.UserEmailID == "" || req.Currency == "" || req.EventName == "" || req.EventCode == "" || req.TicketPrice == "" {
 		log.Fatal("Malformed Request", fmt.Sprint(req))
 		return dto.Response{Code: http.StatusBadRequest, Message: "Malformed Request"}
 	}
@@ -56,6 +56,6 @@ func (impl *treasuryServiceImpl) Townscript(req dto.TownScriptRequest) dto.Respo
 	if err := impl.treasuryRepository.Townscript(&req); err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to register payment"}
 	}
-	log.Println("Payment made!", req.UserEmailID, req.TotalTicketAmount, req.EventName, req.EventCode, req.RegistrationID, req.RegistrationTimestamp)
+	log.Println("Payment made!", req.UserEmailID, req.TicketPrice, req.EventName, req.EventCode, req.RegistrationID, req.RegistrationTimestamp)
 	return dto.Response{Code: http.StatusOK, Message: "Payment made!"}
 }
