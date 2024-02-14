@@ -33,4 +33,9 @@ func main() {
 		seeder.DBSeeder()
 	}
 
+	// seeding townscript
+	if args[1] == "townscript" {
+		seeder.TownScriptSeeder()
+	}
+
 }

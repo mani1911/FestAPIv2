@@ -49,11 +49,11 @@ func (impl *treasuryControllerImpl) AddBill(c echo.Context) error {
 // @Tags			Treasury
 // @Accept			json
 // @Param			request	body		string	true	"Townscript request"
-// @Param			secret	query		string					false	"Secret Token"
-// @Success		200		{object}	string					"Success"
-// @Failure		400		{object}	string					"Invalid Request"
-// @Failure		401		{object}	string					"Unauthorized"
-// @Failure		500		{object}	string					"Internal Server Error"
+// @Param			secret	query		string	false	"Secret Token"
+// @Success		200		{object}	string	"Success"
+// @Failure		400		{object}	string	"Invalid Request"
+// @Failure		401		{object}	string	"Unauthorized"
+// @Failure		500		{object}	string	"Internal Server Error"
 // @Router			/api/treasury/townscript [post]
 func (impl *treasuryControllerImpl) Townscript(c echo.Context) error {
 	log := utils.GetControllerLogger("TreasuryController TownScript")

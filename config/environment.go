@@ -28,6 +28,8 @@ var FrontendURL string
 var CookieDomain string
 var CmsURL string
 var RecaptchaSecret string
+var TownScriptToken string
+var TownScriptEventCodes string
 
 func InitConfig() {
 	err := godotenv.Load()
@@ -52,4 +54,6 @@ func InitConfig() {
 	FrontendURL = os.Getenv("FRONTEND_URL")
 	CookieDomain = os.Getenv("COOKIE_DOMAIN")
 	RecaptchaSecret = os.Getenv("RECAPTCHA_SECRET_KEY")
+	TownScriptToken = os.Getenv("TOWNSCRIPT_API_KEY")
+	TownScriptEventCodes = os.Getenv("TOWNSCRIPT_EVENT_CODES")
 }

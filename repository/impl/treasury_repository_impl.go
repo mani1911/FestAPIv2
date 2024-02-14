@@ -69,8 +69,9 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 
 	userEmail := req.UserEmailID
 	Mode := "Online"
-	Amount, err := strconv.ParseInt(req.TicketPrice, 10, 64)
-	if err == nil {
+
+	Amount, err := strconv.ParseInt(fmt.Sprint(req.TicketPrice), 10, 64)
+	if err != nil {
 		Amount = 0
 	}
 

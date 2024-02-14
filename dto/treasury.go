@@ -18,12 +18,10 @@ type TownScriptRequest struct {
 	AnswerList            []CustomQuestion `json:"answerList"`
 	RegistrationTimestamp string           `json:"registrationTimestamp"`
 	UserEmailID           string           `json:"userEmailId"`
-	TicketCurrency        string           `json:"ticketCurrency"`
 	RegistrationID        int              `json:"registrationId"`
 	EventName             string           `json:"eventName"`
 	EventCode             string           `json:"eventCode"`
-	Currency              string           `json:"currency"`
-	TicketPrice           string           `json:"ticketPrice"`
+	TicketPrice           float32          `json:"ticketPrice"`
 }
 
 type CustomQuestion struct {

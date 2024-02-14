@@ -48,7 +48,7 @@ func (impl *treasuryServiceImpl) AddBill(req dto.AddBillRequest) dto.Response {
 
 func (impl *treasuryServiceImpl) Townscript(req dto.TownScriptRequest) dto.Response {
 	log := utils.GetControllerLogger("TreasuryController TownScript")
-	if req.UserEmailID == "" || req.Currency == "" || req.EventName == "" || req.EventCode == "" || req.TicketPrice == "" {
+	if req.UserEmailID == "" || req.EventName == "" || req.EventCode == "" || req.TicketPrice == 0 {
 		log.Fatal("Malformed Request", fmt.Sprint(req))
 		return dto.Response{Code: http.StatusBadRequest, Message: "Malformed Request"}
 	}
