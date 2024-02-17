@@ -26,14 +26,20 @@ type DAuthUser struct {
 	Phone  string
 }
 
-func GetDAuthToken(code string) (*DAuthToken, error) {
+func GetDAuthToken(code string, site string) (*DAuthToken, error) {
 	tokenEndpoint := "https://auth.delta.nitt.edu/api/oauth/token"
 	values := url.Values{}
-	values.Add("client_id", config.DAuthClientID)
-	values.Add("client_secret", config.DAuthClientSecret)
+	if site == "tshirt" {
+		values.Add("client_id", config.TshirtDAuthClientID)
+		values.Add("client_secret", config.TshirtDAuthClientSecret)
+		values.Add("redirect_uri", config.TshirtDAuthCallbackURL)
+	} else {
+		values.Add("client_id", config.DAuthClientID)
+		values.Add("client_secret", config.DAuthClientSecret)
+		values.Add("redirect_uri", config.DAuthCallbackURL)
+	}
 	values.Add("grant_type", "authorization_code")
 	values.Add("code", code)
-	values.Add("redirect_uri", config.DAuthCallbackURL)
 	query := values.Encode()
 
 	req, err := http.NewRequest("POST", tokenEndpoint, bytes.NewBufferString(query))

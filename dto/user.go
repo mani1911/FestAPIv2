@@ -8,6 +8,7 @@ import (
 
 type AuthUserRequest struct {
 	Code string `query:"code"`
+	Site string `query:"site"`
 }
 
 type AuthUserLoginRequest struct {

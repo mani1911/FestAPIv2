@@ -41,8 +41,11 @@ func (impl *tshirtsControllerImpl) UpdateSize(c echo.Context) error {
 	userID := claims.UserID
 
 	res := impl.tShirtsService.UpdateSize(dto.TShirtsUpdateDTO{
-		UserID: userID,
-		Size:   req.Size,
+		UserID:         userID,
+		Size:           req.Size,
+		Code:           req.Code,
+		ScreenshotLink: req.ScreenshotLink,
+		RecaptchaCode:  req.RecaptchaCode,
 	})
 
 	return utils.SendResponse(c, res.Code, res.Message)

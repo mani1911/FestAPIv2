@@ -904,6 +904,13 @@ const docTemplate = `{
                         "name": "code",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "type of site",
+                        "name": "site",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1558,6 +1565,15 @@ const docTemplate = `{
         "dto.TShirtsUpdateRequest": {
             "type": "object",
             "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "recaptchaCode": {
+                    "type": "string"
+                },
+                "screenshotLink": {
+                    "type": "string"
+                },
                 "size": {
                     "type": "string"
                 }

@@ -16,7 +16,7 @@ type tshirtsRepositoryImpl struct {
 	*gorm.DB
 }
 
-func (repository *tshirtsRepositoryImpl) UpdateSize(userID uint, size string, rollNo string) error {
+func (repository *tshirtsRepositoryImpl) UpdateSize(userID uint, size string, rollNo string, code string, screenshotLink string) error {
 	var tshirtsDetails models.TShirts
 
 	if err := repository.DB.Where("user_id = ?", userID).First(&tshirtsDetails).Error; err != nil {
@@ -24,6 +24,8 @@ func (repository *tshirtsRepositoryImpl) UpdateSize(userID uint, size string, ro
 			tshirtsDetails.UserID = userID
 			tshirtsDetails.Size = size
 			tshirtsDetails.RollNo = rollNo
+			tshirtsDetails.Code = code
+			tshirtsDetails.ScreenshotLink = screenshotLink
 			if errSave := repository.DB.Save(&tshirtsDetails).Error; errSave != nil {
 				return errors.New("Cannot update t-shirt details")
 			}
@@ -32,6 +34,8 @@ func (repository *tshirtsRepositoryImpl) UpdateSize(userID uint, size string, ro
 		}
 	} else {
 		tshirtsDetails.Size = size
+		tshirtsDetails.Code = code
+		tshirtsDetails.ScreenshotLink = screenshotLink
 		if errSave := repository.DB.Save(&tshirtsDetails).Where("user_id = ?", tshirtsDetails.UserID).Error; errSave != nil {
 			return errors.New("Cannot update t-shirt details")
 		}

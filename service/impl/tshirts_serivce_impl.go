@@ -30,7 +30,7 @@ func (impl *tShirtsServiceImpl) UpdateSize(req dto.TShirtsUpdateDTO) dto.Respons
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Invalid User"}
 	}
 
-	err = impl.tShirtsRepository.UpdateSize(req.UserID, req.Size, strings.Split(userDetails.Email, "@")[0])
+	err = impl.tShirtsRepository.UpdateSize(req.UserID, req.Size, strings.Split(userDetails.Email, "@")[0], req.Code, req.ScreenshotLink)
 	if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an issue updating the t-shirt size"}
 	}

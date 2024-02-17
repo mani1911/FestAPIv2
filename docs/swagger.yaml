@@ -238,6 +238,12 @@ definitions:
     type: object
   dto.TShirtsUpdateRequest:
     properties:
+      code:
+        type: string
+      recaptchaCode:
+        type: string
+      screenshotLink:
+        type: string
       size:
         type: string
     type: object
@@ -902,6 +908,11 @@ paths:
       - description: DAuth code
         in: query
         name: code
+        required: true
+        type: string
+      - description: type of site
+        in: query
+        name: site
         required: true
         type: string
       produces:

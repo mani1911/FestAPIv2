@@ -39,9 +39,10 @@ func (impl *userServiceImpl) DAuthLogin(req dto.AuthUserRequest) dto.Response {
 
 	// Fetching code from header
 	code := req.Code
+	site := req.Site
 
 	// Obtaining access token from dauth server
-	token, err := utils.GetDAuthToken(code)
+	token, err := utils.GetDAuthToken(code, site)
 	if err != nil {
 		log.Error("Error getting Auth Token", err.Error())
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Error in Authenticating user"}
@@ -172,8 +173,9 @@ func CheckRecaptcha(response string) error {
 	}
 
 	// Check recaptcha verification success.
+
 	if !body.Success {
-		return errors.New("unsuccessful recaptcha verify request")
+		return errors.New("Unsuccessful Recaptcha Verify Request")
 	}
 
 	return nil

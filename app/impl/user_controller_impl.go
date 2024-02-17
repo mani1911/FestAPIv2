@@ -25,6 +25,7 @@ func NewUserControllerImpl(userService service.UserService) app.UserController {
 // @Tags			User
 // @Produce		json
 // @Param			code	query		string	true	"DAuth code"
+// @Param			site	query		string	true	"type of site"
 // @Success		200		{object}	string	"Success"
 // @Failure		400		{object}	string	"Invalid Request"
 // @Failure		500		{object}	string	"Internal Server Error"

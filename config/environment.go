@@ -20,6 +20,9 @@ var TokenHourLifeSpan string
 var DAuthClientID string
 var DAuthClientSecret string
 var DAuthCallbackURL string
+var TshirtDAuthClientID string
+var TshirtDAuthClientSecret string
+var TshirtDAuthCallbackURL string
 var AdminToken string
 var DAuthUserPassword string
 var Target string
@@ -47,6 +50,9 @@ func InitConfig() {
 	DAuthClientID = os.Getenv("DAUTH_CLIENT_ID")
 	DAuthClientSecret = os.Getenv("DAUTH_CLIENT_SECRET")
 	DAuthCallbackURL = os.Getenv("DAUTH_CALLBACK_URL")
+	TshirtDAuthClientID = os.Getenv("TSHIRT_DAUTH_CLIENT_ID")
+	TshirtDAuthClientSecret = os.Getenv("TSHIRT_DAUTH_CLIENT_SECRET")
+	TshirtDAuthCallbackURL = os.Getenv("TSHIRT_DAUTH_CALLBACK_URL")
 	DAuthUserPassword = os.Getenv("DAUTH_USER_PASSWORD")
 	Target = os.Getenv("TARGET")
 	CMSToken = os.Getenv("CMS_TOKEN")
