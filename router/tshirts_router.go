@@ -8,9 +8,9 @@ import (
 
 func NewTShirtsRouter(e *echo.Group, controller app.TShirtsController) {
 
-	userRoutes := e.Group("/tshirt")
+	tshirtRoutes := e.Group("/tshirt")
 
 	//Protected Routes
-	userRoutes.Use(middleware.UserAuth())
-	userRoutes.POST("/updateSize", controller.UpdateSize)
+	tshirtRoutes.Use(middleware.UserAuth())
+	tshirtRoutes.POST("/updateSize", controller.UpdateSize)
 }

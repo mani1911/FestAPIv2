@@ -229,6 +229,13 @@ definitions:
       roomID:
         type: integer
     type: object
+  dto.RegisterRequest:
+    properties:
+      reg_amount:
+        type: string
+      user_id:
+        type: integer
+    type: object
   dto.TShirtsUpdateRequest:
     properties:
       size:
@@ -417,29 +424,24 @@ paths:
       - Admin
   /api/colleges:
     get:
-      description: Update the TShirt size for the user.
-      operationId: TShirts
-      parameters:
-      - description: Add/update tshirt size
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/dto.TShirtsUpdateRequest'
+      description: Fetches colleges Id and name of all colleges.
+      operationId: Colleges
       produces:
       - application/json
       responses:
         "200":
-          description: Updated TShirt Size
+          description: OK
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/dto.CollegeResponse'
+            type: array
         "500":
-          description: Error Updating TShirt Size
+          description: Error fetching colleges
           schema:
             type: string
-      summary: TShirt Size Update
+      summary: Get details of all colleges
       tags:
-      - TShirts
+      - Public
   /api/events/abstract/details/{event_id}:
     get:
       description: Retrieve the details of the abstract for the specified event.
@@ -762,6 +764,68 @@ paths:
       summary: Add/Update a new room.
       tags:
       - Hospi
+  /api/pr/register:
+    post:
+      consumes:
+      - application/json
+      description: Register PR for a person who has just arrived on campus
+      operationId: Register
+      parameters:
+      - description: PR Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Register PR
+      tags:
+      - PR
+  /api/pr/registerStatus:
+    get:
+      consumes:
+      - application/json
+      description: Check the PR Registration Status of a person who has just arrived
+        on campus
+      operationId: RegisterStatus
+      parameters:
+      - description: User Email
+        in: query
+        name: user_email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Check PR Registration Status.
+      tags:
+      - PR
   /api/treasury/addBill:
     post:
       consumes:
@@ -1002,6 +1066,31 @@ paths:
       summary: Update user information.
       tags:
       - User
+  /tshirt/updateSize:
+    post:
+      description: Update the TShirt size for the user.
+      operationId: TShirts
+      parameters:
+      - description: Add/update tshirt size
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TShirtsUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated TShirt Size
+          schema:
+            type: string
+        "500":
+          description: Error Updating TShirt Size
+          schema:
+            type: string
+      summary: TShirt Size Update
+      tags:
+      - TShirts
 securityDefinitions:
   ApiKeyAuth:
     description: Authorization token

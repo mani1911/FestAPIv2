@@ -32,6 +32,11 @@ func (r *registry) NewPublicController() app.PublicController {
 func (r *registry) NewTShirtsController() app.TShirtsController {
 	return impl.NewTShirtsControllerImpl(r.NewTShirtsService())
 }
+
 func (r *registry) NewTreasuryController() app.TreasuryController {
 	return impl.NewTreasuryControllerImpl(r.NewTreasuryService())
+}
+
+func (r *registry) NewPRControllerImpl() app.PRController {
+	return impl.NewPRControllerImpl(r.NewPRService())
 }

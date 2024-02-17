@@ -60,3 +60,11 @@ func (r *registry) NewTreasuryService() service.TreasuryService {
 		r.NewCollegeRepository(),
 	)
 }
+
+func (r *registry) NewPRService() service.PRService {
+	return impl.NewPRServiceImpl(
+		r.NewUserRepository(),
+		r.NewTreasuryRepository(),
+		r.NewHospiRepository(),
+	)
+}

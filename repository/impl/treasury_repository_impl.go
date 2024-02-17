@@ -21,12 +21,24 @@ type treasuryRepositoryImpl struct {
 	*gorm.DB
 }
 
-func (repository *treasuryRepositoryImpl) AddBill(req *dto.AddBillRequest) error {
-	parsedTime, err := time.Parse(time.RFC3339, req.Time)
+func (repository *treasuryRepositoryImpl) GetBillByEmailAndPaidTo(UserEmail string, PaidTo string) *models.Bill {
+	var bill models.Bill
+	err := repository.DB.Model(&models.Bill{}).Where("paid_to = ? ", PaidTo).Where("email = ? ", UserEmail).First(&bill).Error
 	if err != nil {
-		return errors.New("Failed to parse date")
+		return nil
 	}
+	return &bill
+}
 
+func (repository *treasuryRepositoryImpl) UpdateBillWithUserID(UserEmail string, UserID uint) error {
+	err := repository.DB.Model(&models.Bill{}).Where("email = ? ", UserEmail).Update("user_id", UserID).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *treasuryRepositoryImpl) AddBill(req *dto.AddBillRequest) error {
 	var user models.User
 	if err := repository.DB.Where("ID = ? ", req.UserID).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -38,7 +50,7 @@ func (repository *treasuryRepositoryImpl) AddBill(req *dto.AddBillRequest) error
 	bill := models.Bill{
 		UserID: req.UserID,
 		Email:  user.Email,
-		Time:   parsedTime,
+		Time:   req.Time,
 		Mode:   req.Mode,
 		Amount: req.Amount,
 		RefID:  req.RefID,

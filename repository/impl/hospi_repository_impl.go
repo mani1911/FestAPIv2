@@ -139,6 +139,15 @@ func (repository *hospiRepositoryImpl) isVacant(id uint) bool {
 	return false
 }
 
+func (repository *hospiRepositoryImpl) FindRoomRegByID(userID uint) *models.RoomReg {
+	var roomReg models.RoomReg
+	err := repository.DB.Model(&models.RoomReg{}).Where("user_id = ? ", userID).First(&roomReg).Error
+	if err != nil {
+		return nil
+	}
+	return &roomReg
+}
+
 func (repository *hospiRepositoryImpl) RoomReg(req *models.RoomReg) error {
 	vacant := repository.isVacant(req.RoomID)
 	if !vacant {
@@ -147,6 +156,13 @@ func (repository *hospiRepositoryImpl) RoomReg(req *models.RoomReg) error {
 
 	if err := repository.DB.Model(&models.RoomReg{}).Create(&req).Error; err != nil {
 		return errors.New("Error registering room")
+	}
+	return nil
+}
+
+func (repository *hospiRepositoryImpl) UpdateRoomRegWithUserID(userEmail string, userID uint) error {
+	if err := repository.DB.Model(&models.RoomReg{}).Where("email = ? ", userEmail).Update("user_id", userID).Error; err != nil {
+		return errors.New("Error updating room registration")
 	}
 	return nil
 }

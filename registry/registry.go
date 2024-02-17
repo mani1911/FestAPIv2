@@ -27,5 +27,6 @@ func (r *registry) NewAppController() app.Controller {
 		Public:   r.NewPublicController(),
 		TShirts:  r.NewTShirtsController(),
 		Treasury: r.NewTreasuryController(),
+		PR:       r.NewPRControllerImpl(),
 	}
 }

@@ -1,12 +1,14 @@
 package dto
 
 import (
+	"time"
+
 	"github.com/delta/FestAPI/models"
 )
 
 type AddBillRequest struct {
 	UserID uint             `json:"user_id"`
-	Time   string           `json:"time"`
+	Time   time.Time        `json:"time"`
 	Mode   string           `json:"mode"`
 	Amount uint             `json:"amount"`
 	RefID  string           `json:"ref_id"`

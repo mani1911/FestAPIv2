@@ -3,7 +3,6 @@ package impl
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	dto "github.com/delta/FestAPI/dto"
 	"github.com/delta/FestAPI/repository"
@@ -36,8 +35,6 @@ func (impl *treasuryServiceImpl) AddBill(req dto.AddBillRequest) dto.Response {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
 	} else if req.Type == "" {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Purpose of payment not found"}
-	} else if req.Time == "" {
-		req.Time = time.Now().Format("2006-01-02 15:04:05")
 	}
 
 	if err := impl.treasuryRepository.AddBill(&req); err != nil {

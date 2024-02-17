@@ -28,4 +28,5 @@ func NewRouter(e *echo.Echo, registry registry.Registry) {
 	NewPublicRouter(apiRouter, registry.NewAppController().Public)
 	NewTShirtsRouter(apiRouter, registry.NewAppController().TShirts)
 	NewTreasuryRouter(apiRouter, registry.NewAppController().Treasury)
+	NewPRRouter(apiRouter, registry.NewAppController().PR)
 }

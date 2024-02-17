@@ -151,35 +151,27 @@ const docTemplate = `{
         },
         "/api/colleges": {
             "get": {
-                "description": "Update the TShirt size for the user.",
+                "description": "Fetches colleges Id and name of all colleges.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "TShirts"
+                    "Public"
                 ],
-                "summary": "TShirt Size Update",
-                "operationId": "TShirts",
-                "parameters": [
-                    {
-                        "description": "Add/update tshirt size",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.TShirtsUpdateRequest"
-                        }
-                    }
-                ],
+                "summary": "Get details of all colleges",
+                "operationId": "Colleges",
                 "responses": {
                     "200": {
-                        "description": "Updated TShirt Size",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CollegeResponse"
+                            }
                         }
                     },
                     "500": {
-                        "description": "Error Updating TShirt Size",
+                        "description": "Error fetching colleges",
                         "schema": {
                             "type": "string"
                         }
@@ -693,6 +685,102 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/pr/register": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Register PR for a person who has just arrived on campus",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PR"
+                ],
+                "summary": "Register PR",
+                "operationId": "Register",
+                "parameters": [
+                    {
+                        "description": "PR Register Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pr/registerStatus": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Check the PR Registration Status of a person who has just arrived on campus",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PR"
+                ],
+                "summary": "Check PR Registration Status.",
+                "operationId": "RegisterStatus",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User Email",
+                        "name": "user_email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/treasury/addBill": {
             "post": {
                 "security": [
@@ -1064,6 +1152,44 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/tshirt/updateSize": {
+            "post": {
+                "description": "Update the TShirt size for the user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TShirts"
+                ],
+                "summary": "TShirt Size Update",
+                "operationId": "TShirts",
+                "parameters": [
+                    {
+                        "description": "Add/update tshirt size",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TShirtsUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated TShirt Size",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Updating TShirt Size",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1414,6 +1540,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "roomID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.RegisterRequest": {
+            "type": "object",
+            "properties": {
+                "reg_amount": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "integer"
                 }
             }

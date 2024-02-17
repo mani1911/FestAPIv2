@@ -9,4 +9,5 @@ type Controller struct {
 	Public   PublicController
 	TShirts  TShirtsController
 	Treasury TreasuryController
+	PR       PRController
 }

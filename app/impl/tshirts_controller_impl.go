@@ -27,7 +27,7 @@ func NewTShirtsControllerImpl(tShirtsService service.TShirtsService) app.TShirts
 // @Produce		json
 // @Success		200	{object}	string	"Updated TShirt Size"
 // @Failure		500	{object}	string	"Error Updating TShirt Size"
-// @Router			/api/colleges [get]
+// @Router			/tshirt/updateSize [post]
 func (impl *tshirtsControllerImpl) UpdateSize(c echo.Context) error {
 
 	var req dto.TShirtsUpdateRequest
