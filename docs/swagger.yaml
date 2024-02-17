@@ -37,6 +37,8 @@ definitions:
     properties:
       capacity:
         type: integer
+      floor:
+        type: integer
       hostel_id:
         type: integer
       id:
@@ -212,11 +214,15 @@ definitions:
     properties:
       capacity:
         type: integer
+      floor:
+        type: integer
       gender:
         $ref: '#/definitions/models.Gender'
       hostel:
         type: string
       hostelID:
+        type: integer
+      occupied:
         type: integer
       room:
         type: string
@@ -661,6 +667,19 @@ paths:
     get:
       description: Retrieve the details of the rooms along with the hostel name.
       operationId: GetRooms
+      parameters:
+      - description: Hostel ID
+        in: query
+        name: hostel_id
+        type: string
+      - description: Floor Number
+        in: query
+        name: floor
+        type: string
+      - description: If 0, returns only free rooms. If 1, returns all.
+        in: query
+        name: is_filled
+        type: string
       produces:
       - application/json
       responses:

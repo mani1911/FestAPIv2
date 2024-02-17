@@ -58,17 +58,31 @@ func (repository *hospiRepositoryImpl) FindHostelByID(id uint) (*models.Hostel, 
 	return &res, nil
 }
 
-func (repository *hospiRepositoryImpl) GetRooms() ([]*dto.GetRoomsResponse, error) {
+func (repository *hospiRepositoryImpl) GetRooms(hostelID int, floor int, isFilled int) ([]*dto.GetRoomsResponse, error) {
 	var res []*dto.GetRoomsResponse
 
-	if err := repository.DB.
+	var query = repository.DB.
 		Model(&models.Hostel{}).
-		Select("rooms.id as room_id, rooms.name as room, hostels.id as hostel_id, hostels.name as hostel, hostels.gender as gender, rooms.Capacity").
-		Joins("RIGHT JOIN rooms ON hostels.id = rooms.hostel_id").
-		Find(&res).Error; err != nil {
+		Select("rooms.id as room_id, rooms.name as room, hostels.id as hostel_id, hostels.name as hostel, hostels.gender as gender, rooms.capacity as capacity, rooms.occupied as occupied, rooms.floor as floor").
+		Joins("RIGHT JOIN rooms ON hostels.id = rooms.hostel_id")
+
+	if hostelID > 0 {
+		query.Where("hostel_id = ?", hostelID)
+	}
+
+	if floor >= 0 {
+		query.Where("floor = ?", floor)
+	}
+
+	if isFilled == 0 {
+		query.Where("occupied < capacity")
+	}
+
+	if err := query.Find(&res).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
+
 		return nil, err
 	}
 

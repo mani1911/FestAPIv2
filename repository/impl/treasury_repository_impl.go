@@ -112,12 +112,18 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 	var user models.User
 
 	err1 := repository.DB.Where(" Email = ? ", userEmail).First(&user).Error
-	if err1 != gorm.ErrRecordNotFound {
-		return nil
+	var userID uint
+
+	if err1 != nil && err1 != gorm.ErrRecordNotFound {
+		return err1
+	}
+
+	if err1 == nil {
+		userID = user.ID
 	}
 
 	if err := repository.DB.Model(&models.RoomReg{}).Create(&models.RoomReg{
-		UserID:     user.ID,
+		UserID:     userID,
 		Email:      userEmail,
 		NoOfDays:   Days,
 		StartDate:  startDate,

@@ -10,4 +10,6 @@ type Room struct {
 	Name     string `gorm:"size:255;not null;index"`
 	HostelID uint   `gorm:"not null"`
 	Capacity uint   `gorm:"not null"`
+	Floor    uint   `gorm:"not null"`
+	Occupied uint   `gorm:"not null"`
 }

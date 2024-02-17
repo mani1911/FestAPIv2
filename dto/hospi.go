@@ -23,6 +23,14 @@ type GetRoomsResponse struct {
 	HostelID uint
 	Gender   models.Gender
 	Capacity uint
+	Occupied uint
+	Floor    uint
+}
+
+type GetRoomRequest struct {
+	HostelID int `json:"hostel_id"`
+	Floor    int `json:"floor"`
+	IsFilled int `json:"is_filled"`
 }
 
 type AddUpdateRoomRequest struct {
@@ -30,6 +38,7 @@ type AddUpdateRoomRequest struct {
 	Name     string `json:"name"`
 	HostelID uint   `json:"hostel_id"`
 	Capacity uint   `json:"capacity"`
+	Floor    uint   `json:"floor"`
 }
 
 type DeleteRoomRequest struct {

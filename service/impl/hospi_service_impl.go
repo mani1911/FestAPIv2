@@ -74,9 +74,9 @@ func (impl *hospiServiceImpl) AddUpdateHostel(req dto.AddUpdateHostelRequest) dt
 	return dto.Response{Code: http.StatusOK, Message: "Successfully updated the hostel"}
 }
 
-func (impl *hospiServiceImpl) GetRooms() dto.Response {
+func (impl *hospiServiceImpl) GetRooms(req dto.GetRoomRequest) dto.Response {
+	res, err := impl.hospiRepository.GetRooms(req.HostelID, req.Floor, req.IsFilled)
 
-	res, err := impl.hospiRepository.GetRooms()
 	if res == nil && err == nil {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Rooms not found"}
 	} else if err != nil {
@@ -89,42 +89,47 @@ func (impl *hospiServiceImpl) GetRooms() dto.Response {
 func (impl *hospiServiceImpl) AddUpdateRoom(req dto.AddUpdateRoomRequest) dto.Response {
 	var roomDetails models.Room
 
-	if req.ID == 0 {
-		if len(req.Name) == 0 ||
-			(req.Capacity) == 0 ||
-			(req.HostelID) == 0 {
-			return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
-		}
+	if len(req.Name) == 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Room Name"}
+	}
 
-		roomDetails.Name = req.Name
-		roomDetails.Capacity = req.Capacity
-		roomDetails.HostelID = req.HostelID
+	if req.Capacity == 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Human require space bro :)"}
+	}
 
-		if err := impl.hospiRepository.AddRoom(&roomDetails); err != nil {
-			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to add room"}
-		}
-	} else {
+	if req.HostelID == 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "How they gonna have room without hostel?"}
+	}
+
+	if req.ID != 0 {
 		room, err := impl.hospiRepository.FindRoomByID(req.ID)
 		if room == nil && err == nil {
-			return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
+			return dto.Response{Code: http.StatusBadRequest, Message: "Room not found.."}
 		} else if err != nil {
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 		}
 
-		if len(req.Name) == 0 ||
-			(req.Capacity) == 0 {
-			return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
+		if req.Capacity < room.Occupied {
+			return dto.Response{Code: http.StatusBadRequest, Message: "Capacity can't reduce capacity if room is already occupied"}
 		}
 
-		roomDetails.ID = req.ID
-		roomDetails.Name = req.Name
-		roomDetails.Capacity = req.Capacity
-		roomDetails.HostelID = room.HostelID
+		roomDetails = *room
+	}
+	roomDetails.Name = req.Name
+	roomDetails.Capacity = req.Capacity
+	roomDetails.HostelID = req.HostelID
+	roomDetails.Floor = req.Floor
 
+	if req.ID == 0 {
+		if err := impl.hospiRepository.AddRoom(&roomDetails); err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to add room"}
+		}
+	} else {
 		if err := impl.hospiRepository.UpdateRoom(&roomDetails); err != nil {
-			return dto.Response{Code: http.StatusInternalServerError, Message: "failed to update room"}
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to update room"}
 		}
 	}
+
 	return dto.Response{Code: http.StatusOK, Message: "Successfully updated the room"}
 }
 

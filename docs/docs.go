@@ -553,6 +553,26 @@ const docTemplate = `{
                 ],
                 "summary": "Get all the Rooms",
                 "operationId": "GetRooms",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Hostel ID",
+                        "name": "hostel_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Floor Number",
+                        "name": "floor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "If 0, returns only free rooms. If 1, returns all.",
+                        "name": "is_filled",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1104,6 +1124,9 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "floor": {
+                    "type": "integer"
+                },
                 "hostel_id": {
                     "type": "integer"
                 },
@@ -1372,6 +1395,9 @@ const docTemplate = `{
                 "capacity": {
                     "type": "integer"
                 },
+                "floor": {
+                    "type": "integer"
+                },
                 "gender": {
                     "$ref": "#/definitions/models.Gender"
                 },
@@ -1379,6 +1405,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "hostelID": {
+                    "type": "integer"
+                },
+                "occupied": {
                     "type": "integer"
                 },
                 "room": {

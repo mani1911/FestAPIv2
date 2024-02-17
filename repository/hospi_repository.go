@@ -10,7 +10,7 @@ type HospiRepository interface {
 	AddHostel(*models.Hostel) error
 	UpdateHostel(*models.Hostel) error
 	FindHostelByID(uint) (*models.Hostel, error)
-	GetRooms() ([]*dto.GetRoomsResponse, error)
+	GetRooms(int, int, int) ([]*dto.GetRoomsResponse, error)
 	AddRoom(*models.Room) error
 	UpdateRoom(*models.Room) error
 	DeleteRoom(uint) error

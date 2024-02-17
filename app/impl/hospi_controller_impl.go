@@ -2,6 +2,7 @@ package impl
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/delta/FestAPI/app"
 	"github.com/delta/FestAPI/dto"
@@ -60,13 +61,46 @@ func (impl *hospiControllerImpl) AddUpdateHostel(c echo.Context) error {
 // @ID				GetRooms
 // @Tags			Hospi
 // @Produce		json
-// @Success		200	{object}	dto.GetRoomsResponse	"Success"
-// @Failure		400	{string}	string					"Rooms not found"
-// @Failure		500	{string}	string					"Internal Server Error"
+// @Param			hostel_id	query		string					false	"Hostel ID"
+// @Param			floor		query		string					false	"Floor Number"
+// @Param			is_filled	query		string					false	"If 0, returns only free rooms. If 1, returns all."
+// @Success		200			{object}	dto.GetRoomsResponse	"Success"
+// @Failure		400			{string}	string					"Rooms not found"
+// @Failure		500			{string}	string					"Internal Server Error"
 // @Security		ApiKeyAuth
 // @Router			/api/hospi/getRooms [get]
 func (impl *hospiControllerImpl) GetRooms(c echo.Context) error {
-	res := impl.HospiService.GetRooms()
+	var hostelID int64 = -1
+	var floor int64 = -1
+	var isFilled int64 = -1
+
+	var err error
+
+	if c.QueryParams().Has("hostel_id") {
+		if hostelID, err = strconv.ParseInt(c.QueryParams().Get("hostel_id"), 10, 32); err != nil {
+			return utils.SendResponse(c, http.StatusBadRequest, "Invalid hostel id")
+		}
+	}
+
+	if c.QueryParams().Has("floor") {
+		if floor, err = strconv.ParseInt(c.QueryParams().Get("floor"), 10, 32); err != nil {
+			return utils.SendResponse(c, http.StatusBadRequest, "Invalid floor")
+		}
+	}
+
+	if c.QueryParams().Has("is_filled") {
+		if isFilled, err = strconv.ParseInt(c.QueryParams().Get("is_filled"), 10, 32); err != nil {
+			return utils.SendResponse(c, http.StatusBadRequest, "Invalid isFilled field")
+		}
+	}
+
+	req := dto.GetRoomRequest{
+		HostelID: int(hostelID),
+		Floor:    int(floor),
+		IsFilled: int(isFilled),
+	}
+
+	res := impl.HospiService.GetRooms(req)
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
