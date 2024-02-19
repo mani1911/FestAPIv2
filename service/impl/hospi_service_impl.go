@@ -183,6 +183,7 @@ func (impl *hospiServiceImpl) CheckInStatus(req dto.CheckInStatusRequest) dto.Re
 		NoOfDays:   roomReg.NoOfDays,
 		StartDate:  roomReg.StartDate,
 		CheckedOut: roomReg.CheckedOut,
+		RoomID:     roomReg.RoomID,
 	}}
 }
 
@@ -195,6 +196,14 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
+	visitor, err := impl.hospiRepository.FindVisitorByUserID(user.ID)
+
+	if visitor == nil && err == nil {
+		return dto.Response{Code: http.StatusBadGateway, Message: "Go back to pr desk"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
 	room, err := impl.hospiRepository.FindRoomByID(req.RoomID)
 
 	if room == nil && err == nil {
@@ -202,14 +211,19 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 	} else if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
-
 	if room.Occupied >= room.Capacity {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Room is already filled!"}
 	}
 
-	bill, err := impl.treasuryRepository.GetBillByUserIDAndPaidTo(user.ID, "townScript")
-	var roomReg *models.RoomReg
+	roomReg, err := impl.hospiRepository.FindRoomRegByUserID(user.ID)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+	if roomReg.RoomID != 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Room already Allocated to User."}
+	}
 
+	bill, err := impl.treasuryRepository.GetBillByUserIDAndPaidTo(user.ID, "townScript")
 	if bill == nil && err == nil {
 		// room registration not found
 		bill = &models.Bill{
@@ -243,8 +257,6 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 	} else if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	} else {
-		roomReg, err = impl.hospiRepository.FindRoomRegByUserID(user.ID)
-
 		if roomReg == nil && err == nil {
 			return dto.Response{Code: http.StatusBadRequest, Message: "Room registration not found for townscript user!"}
 		} else if err != nil {
@@ -259,14 +271,6 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to update room, Internal Server Error"}
 	}
 
-	visitor, err := impl.hospiRepository.FindVisitorByUserID(user.ID)
-
-	if visitor == nil && err == nil {
-		return dto.Response{Code: http.StatusBadGateway, Message: "Go back to pr desk"}
-	} else if err != nil {
-		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
-	}
-
 	visitor.CheckInTime = time.Now()
 	visitor.CheckInBillID = bill.ID
 	visitor.RoomRegID = roomReg.ID
@@ -275,6 +279,11 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 
 	if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to add visitor"}
+	}
+
+	err = impl.hospiRepository.UpdateRoomRegWithRoomID(user.Email, room.ID)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
 	return dto.Response{Code: http.StatusOK, Message: "Room allocated!"}

@@ -34,7 +34,7 @@ func (impl *prServiceImpl) RegisterStatus(userEmail string) dto.Response {
 		return dto.Response{Code: http.StatusBadRequest, Message: "User not found. Ask user to register on the Pragyan Site with the same email as Townscript Payments"}
 	}
 
-	roomReg, err := impl.hospiRepository.FindRoomRegByUserID(user.ID)
+	roomReg, err := impl.hospiRepository.FindRoomRegByUserEmail(userEmail)
 
 	if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal server error"}
@@ -62,8 +62,8 @@ func (impl *prServiceImpl) Register(userID uint, registerAmount string) dto.Resp
 	if visitor != nil {
 		return dto.Response{Code: http.StatusBadRequest, Message: "User already registered."}
 	}
-	bill := impl.treasuryRepository.GetBillByEmailAndPaidTo(user.Email, "townScript")
-	if bill != nil {
+	checkInBill := impl.treasuryRepository.GetBillByEmailAndPaidTo(user.Email, "townScript")
+	if checkInBill != nil {
 		err := impl.treasuryRepository.UpdateBillWithUserID(user.Email, user.ID)
 		if err != nil {
 			logger.Warn("Couldnt Update Bill for User : ", user.Email)
@@ -74,6 +74,8 @@ func (impl *prServiceImpl) Register(userID uint, registerAmount string) dto.Resp
 			logger.Warn("Couldnt Update RoomReg for User : ", user.Email)
 			return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 		}
+	} else {
+		checkInBill = &models.Bill{ID: 0}
 	}
 	parsedAmount, err := strconv.ParseFloat(registerAmount, 32)
 	if err != nil {
@@ -86,6 +88,7 @@ func (impl *prServiceImpl) Register(userID uint, registerAmount string) dto.Resp
 		Amount: float32(parsedAmount),
 		RefID:  "",
 		PaidTo: models.PR,
+		Mode:   "Offline",
 		Type:   "eventPass",
 	})
 	if err != nil {
@@ -93,8 +96,12 @@ func (impl *prServiceImpl) Register(userID uint, registerAmount string) dto.Resp
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
+	prBill := impl.treasuryRepository.GetBillByEmailAndPaidTo(user.Email, "PR")
+
 	err = impl.hospiRepository.AddVisitor(&models.Visitor{
-		UserID: user.ID,
+		UserID:          user.ID,
+		CheckInBillID:   checkInBill.ID,
+		EventPassBillID: prBill.ID,
 	})
 
 	if err != nil {

@@ -10,7 +10,7 @@ type Bill struct {
 	gorm.Model
 	ID     uint `gorm:"not null;primarykey;autoIncrement"`
 	UserID uint
-	Email  string    `gorm:"not null"`
+	Email  string    `gorm:"not null,index"`
 	User   User      `gorm:"foreignkey:ID;references:UserID"`
 	Time   time.Time `gorm:"not null"`
 	Mode   string    `gorm:"not null"`

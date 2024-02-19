@@ -154,9 +154,9 @@ func (impl *hospiControllerImpl) DeleteRoom(c echo.Context) error {
 // @Tags			Hospi
 // @Accept			json
 // @Param			request	body		dto.CheckInStatusRequest	true	"Check in status request"
-// @Success		200		{object}	dto.CheckInStatusResponse				"Success"
-// @Failure		400		{object}	string				"Invalid Request"
-// @Failure		500		{object}	string				"Internal Server Error"
+// @Success		200		{object}	dto.CheckInStatusResponse	"Success"
+// @Failure		400		{object}	string						"Invalid Request"
+// @Failure		500		{object}	string						"Internal Server Error"
 // @Security		ApiKeyAuth
 // @Router			/api/hospi/checkInStatus [post]
 func (impl *hospiControllerImpl) CheckInStatus(c echo.Context) error {
@@ -176,9 +176,9 @@ func (impl *hospiControllerImpl) CheckInStatus(c echo.Context) error {
 // @Tags			Hospi
 // @Accept			json
 // @Param			request	body		dto.AllocateRoomRequest	true	"Room allocation request"
-// @Success		200		{object}	string				"Success"
-// @Failure		400		{object}	string				"Invalid Request"
-// @Failure		500		{object}	string				"Internal Server Error"
+// @Success		200		{object}	string					"Success"
+// @Failure		400		{object}	string					"Invalid Request"
+// @Failure		500		{object}	string					"Internal Server Error"
 // @Security		ApiKeyAuth
 // @Router			/api/hospi/allocate/room [post]
 func (impl *hospiControllerImpl) AllocateRoom(c echo.Context) error {

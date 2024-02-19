@@ -8,7 +8,7 @@ type RoomReg struct {
 	gorm.Model
 	ID         uint `gorm:"not null;primarykey;autoIncrement"`
 	RoomID     uint
-	Email      string
+	Email      string `gorm:"index"`
 	UserID     uint
 	EventCode  string `gorm:"not null"`
 	NoOfDays   uint   `gorm:"not null"`

@@ -1499,6 +1499,9 @@ const docTemplate = `{
                 "noOfDays": {
                     "type": "integer"
                 },
+                "roomID": {
+                    "type": "integer"
+                },
                 "startDate": {
                     "type": "string"
                 }

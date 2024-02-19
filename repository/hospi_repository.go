@@ -17,8 +17,10 @@ type HospiRepository interface {
 	FindRoomByID(uint) (*models.Room, error)
 	AddRoomReg(*models.RoomReg) error
 	UpdateRoomRegWithUserID(string, uint) error
+	UpdateRoomRegWithRoomID(string, uint) error
 	AddVisitor(*models.Visitor) error
 	UpdateVisitor(*models.Visitor) error
 	FindVisitorByUserID(uint) (*models.Visitor, error)
 	FindRoomRegByUserID(uint) (*models.RoomReg, error)
+	FindRoomRegByUserEmail(string) (*models.RoomReg, error)
 }

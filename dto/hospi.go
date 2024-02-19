@@ -60,6 +60,7 @@ type CheckInStatusResponse struct {
 	NoOfDays   uint
 	StartDate  string
 	CheckedOut bool
+	RoomID     uint
 }
 
 type AllocateRoomRequest struct {

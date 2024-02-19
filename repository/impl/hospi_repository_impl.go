@@ -138,6 +138,13 @@ func (repository *hospiRepositoryImpl) UpdateRoomRegWithUserID(userEmail string,
 	return nil
 }
 
+func (repository *hospiRepositoryImpl) UpdateRoomRegWithRoomID(userEmail string, roomID uint) error {
+	if err := repository.DB.Model(&models.RoomReg{}).Where("email = ? ", userEmail).Update("room_id", roomID).Error; err != nil {
+		return errors.New("Error updating room registration")
+	}
+	return nil
+}
+
 func (repository *hospiRepositoryImpl) AddVisitor(req *models.Visitor) error {
 	if err := repository.DB.Model(&models.Visitor{}).Create(&req).Error; err != nil {
 		return errors.New("Error adding visitor")
@@ -157,6 +164,20 @@ func (repository *hospiRepositoryImpl) FindRoomRegByUserID(userID uint) (*models
 	var roomReg models.RoomReg
 
 	if err := repository.DB.Model(&models.RoomReg{}).Where("user_id = ?", userID).First(&roomReg).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return &roomReg, nil
+}
+
+func (repository *hospiRepositoryImpl) FindRoomRegByUserEmail(userEmail string) (*models.RoomReg, error) {
+	var roomReg models.RoomReg
+
+	if err := repository.DB.Model(&models.RoomReg{}).Where("email = ?", userEmail).First(&roomReg).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
