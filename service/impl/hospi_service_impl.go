@@ -219,7 +219,7 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 	if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
-	if roomReg.RoomID != 0 {
+	if roomReg != nil && roomReg.RoomID != 0 {
 		return dto.Response{Code: http.StatusBadRequest, Message: "Room already Allocated to User."}
 	}
 

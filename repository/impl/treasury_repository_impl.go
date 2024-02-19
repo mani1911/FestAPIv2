@@ -30,6 +30,19 @@ func (repository *treasuryRepositoryImpl) GetBillByEmailAndPaidTo(UserEmail stri
 	return &bill
 }
 
+func (repository *treasuryRepositoryImpl) GetBillArrayByUserIDAndPaidTo(userID uint, PaidTo string) (*[]models.Bill, error) {
+	var bills []models.Bill
+	err := repository.DB.Model(&models.Bill{}).Where("paid_to = ? ", PaidTo).Where("user_id = ? ", userID).Find(&bills).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+	return &bills, nil
+}
+
 func (repository *treasuryRepositoryImpl) GetBillByUserIDAndPaidTo(userID uint, PaidTo string) (*models.Bill, error) {
 	var bill models.Bill
 	err := repository.DB.Model(&models.Bill{}).Where("paid_to = ? ", PaidTo).Where("user_id = ? ", userID).First(&bill).Error

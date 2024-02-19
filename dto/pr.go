@@ -8,6 +8,7 @@ type RegisterRequest struct {
 }
 
 type RegisterStatusResponse struct {
-	User    models.User    `json:"user"`
-	RoomReg models.RoomReg `json:"roomReg"`
+	User            models.User    `json:"user"`
+	RoomReg         models.RoomReg `json:"roomReg"`
+	TownScriptBills []models.Bill  `json:"townscriptBills"`
 }

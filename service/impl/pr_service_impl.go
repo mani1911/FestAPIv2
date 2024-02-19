@@ -41,10 +41,17 @@ func (impl *prServiceImpl) RegisterStatus(userEmail string) dto.Response {
 	} else if roomReg == nil {
 		roomReg = &models.RoomReg{}
 	}
+
+	bills, err := impl.treasuryRepository.GetBillArrayByUserIDAndPaidTo(user.ID, "townScript")
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal server error"}
+	}
+
 	user.Password = []byte{}
 	return dto.Response{Code: http.StatusAccepted, Message: dto.RegisterStatusResponse{
-		User:    *user,
-		RoomReg: *roomReg,
+		User:            *user,
+		RoomReg:         *roomReg,
+		TownScriptBills: *bills,
 	}}
 }
 
