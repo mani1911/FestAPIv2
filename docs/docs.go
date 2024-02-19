@@ -1001,6 +1001,12 @@ const docTemplate = `{
                 "summary": "Profile information.",
                 "operationId": "ProfileDetails",
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserInfoResponse"
+                        }
+                    },
                     "400": {
                         "description": "User not found",
                         "schema": {
