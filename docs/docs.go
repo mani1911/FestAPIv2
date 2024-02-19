@@ -393,30 +393,30 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/hospi/checkIn": {
+        "/api/hospi/allocate/room": {
             "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "If roomID is zero, visitor is not alloted room.",
+                "description": "Allocates room for a given user if available",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Hospi"
                 ],
-                "summary": "Check in for the visitors.",
-                "operationId": "CheckIn",
+                "summary": "Allocate room for user",
+                "operationId": "AllocateRoom",
                 "parameters": [
                     {
-                        "description": "Check in request",
+                        "description": "Room allocation request",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CheckInRequest"
+                            "$ref": "#/definitions/dto.AllocateRoomRequest"
                         }
                     }
                 ],
@@ -425,6 +425,55 @@ const docTemplate = `{
                         "description": "Success",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/hospi/checkInStatus": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "returns check-details of user if they've paid online",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Check-In status of a visitor.",
+                "operationId": "CheckInStatus",
+                "parameters": [
+                    {
+                        "description": "Check in status request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CheckInStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CheckInStatusResponse"
                         }
                     },
                     "400": {
@@ -1215,7 +1264,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "amount": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "mode": {
                     "type": "string"
@@ -1268,6 +1317,23 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.AllocateRoomRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "number_of_days": {
+                    "type": "integer"
+                },
+                "room_id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -1416,20 +1482,25 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CheckInRequest": {
+        "dto.CheckInStatusRequest": {
             "type": "object",
             "properties": {
-                "no_of_days": {
-                    "type": "integer"
-                },
-                "room_id": {
-                    "type": "integer"
-                },
-                "time": {
+                "email_id": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.CheckInStatusResponse": {
+            "type": "object",
+            "properties": {
+                "checkedOut": {
+                    "type": "boolean"
                 },
-                "user_id": {
+                "noOfDays": {
                     "type": "integer"
+                },
+                "startDate": {
+                    "type": "string"
                 }
             }
         },
@@ -1678,14 +1749,16 @@ const docTemplate = `{
                 "OC",
                 "PR",
                 "TREZ",
-                "CORE"
+                "CORE",
+                "HOSPI"
             ],
             "x-enum-varnames": [
                 "ADMIN",
                 "OC",
                 "PR",
                 "TREZ",
-                "CORE"
+                "CORE",
+                "HOSPI"
             ]
         },
         "models.Gender": {

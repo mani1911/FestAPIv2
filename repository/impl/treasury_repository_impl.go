@@ -30,6 +30,21 @@ func (repository *treasuryRepositoryImpl) GetBillByEmailAndPaidTo(UserEmail stri
 	return &bill
 }
 
+func (repository *treasuryRepositoryImpl) GetBillByUserIDAndPaidTo(userID uint, PaidTo string) (*models.Bill, error) {
+	var bill models.Bill
+	err := repository.DB.Model(&models.Bill{}).Where("paid_to = ? ", PaidTo).Where("user_id = ? ", userID).First(&bill).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return &bill, nil
+}
+
 func (repository *treasuryRepositoryImpl) UpdateBillWithUserID(UserEmail string, UserID uint) error {
 	err := repository.DB.Model(&models.Bill{}).Where("email = ? ", UserEmail).Update("user_id", UserID).Error
 	if err != nil {
@@ -82,7 +97,7 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 	userEmail := req.UserEmailID
 	Mode := "Online"
 
-	Amount, err := strconv.ParseInt(fmt.Sprint(req.TicketPrice), 10, 64)
+	Amount, err := strconv.ParseFloat(fmt.Sprint(req.TicketPrice), 32)
 	if err != nil {
 		Amount = 0
 	}
@@ -111,7 +126,7 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 	bill := models.Bill{
 		Email:  userEmail,
 		Mode:   Mode,
-		Amount: uint(Amount),
+		Amount: float32(Amount),
 		RefID:  fmt.Sprint(RefID),
 		PaidTo: PaidTo,
 		Time:   time.Now(),
@@ -144,5 +159,13 @@ func (repository *treasuryRepositoryImpl) Townscript(req *dto.TownScriptRequest)
 	}).Error; err != nil {
 		return errors.New("Error registering room")
 	}
+	return nil
+}
+
+func (repository *treasuryRepositoryImpl) AddBillByModel(bill *models.Bill) error {
+	if err := repository.DB.Model(&models.Bill{}).Create(&bill).Error; err != nil {
+		return errors.New("Error saving payment bill")
+	}
+
 	return nil
 }

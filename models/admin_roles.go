@@ -8,4 +8,5 @@ const (
 	PR    AdminRole = "PR"
 	TREZ  AdminRole = "TREZ"
 	CORE  AdminRole = "CORE"
+	HOSPI AdminRole = "HOSPI"
 )

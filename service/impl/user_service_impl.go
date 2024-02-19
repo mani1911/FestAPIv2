@@ -200,7 +200,7 @@ func (impl *userServiceImpl) Register(req dto.AuthUserRegisterRequest) dto.Respo
 		len(req.Degree) == 0 ||
 		len(req.Year) == 0 ||
 		len(req.RecaptchaCode) == 0 ||
-		len(req.College) == 0 {
+		(len(req.College) == 0 && len(req.OtherCollege) == 0) {
 		log.Error("User Registration Check Fail")
 		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
 	}

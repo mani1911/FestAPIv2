@@ -10,7 +10,7 @@ definitions:
   dto.AddBillRequest:
     properties:
       amount:
-        type: integer
+        type: number
       mode:
         type: string
       paid_to:
@@ -45,6 +45,17 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  dto.AllocateRoomRequest:
+    properties:
+      amount:
+        type: number
+      number_of_days:
+        type: integer
+      room_id:
+        type: integer
+      user_id:
+        type: integer
     type: object
   dto.AuthAdminRequest:
     properties:
@@ -142,16 +153,19 @@ definitions:
       user_year:
         type: string
     type: object
-  dto.CheckInRequest:
+  dto.CheckInStatusRequest:
     properties:
-      no_of_days:
-        type: integer
-      room_id:
-        type: integer
-      time:
+      email_id:
         type: string
-      user_id:
+    type: object
+  dto.CheckInStatusResponse:
+    properties:
+      checkedOut:
+        type: boolean
+      noOfDays:
         type: integer
+      startDate:
+        type: string
     type: object
   dto.CollegeResponse:
     properties:
@@ -315,6 +329,7 @@ definitions:
     - PR
     - TREZ
     - CORE
+    - HOSPI
     type: string
     x-enum-varnames:
     - ADMIN
@@ -322,6 +337,7 @@ definitions:
     - PR
     - TREZ
     - CORE
+    - HOSPI
   models.Gender:
     enum:
     - MALE
@@ -585,19 +601,19 @@ paths:
       tags:
       - Event
       - User
-  /api/hospi/checkIn:
+  /api/hospi/allocate/room:
     post:
       consumes:
       - application/json
-      description: If roomID is zero, visitor is not alloted room.
-      operationId: CheckIn
+      description: Allocates room for a given user if available
+      operationId: AllocateRoom
       parameters:
-      - description: Check in request
+      - description: Room allocation request
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.CheckInRequest'
+          $ref: '#/definitions/dto.AllocateRoomRequest'
       responses:
         "200":
           description: Success
@@ -613,7 +629,38 @@ paths:
             type: string
       security:
       - ApiKeyAuth: []
-      summary: Check in for the visitors.
+      summary: Allocate room for user
+      tags:
+      - Hospi
+  /api/hospi/checkInStatus:
+    post:
+      consumes:
+      - application/json
+      description: returns check-details of user if they've paid online
+      operationId: CheckInStatus
+      parameters:
+      - description: Check in status request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CheckInStatusRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/dto.CheckInStatusResponse'
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Check-In status of a visitor.
       tags:
       - Hospi
   /api/hospi/deleteRoom:

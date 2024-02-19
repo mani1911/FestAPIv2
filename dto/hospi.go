@@ -51,3 +51,20 @@ type CheckInRequest struct {
 	RoomID      uint   `json:"room_id"`
 	NoOfDays    uint   `json:"no_of_days"`
 }
+
+type CheckInStatusRequest struct {
+	EmailID string `json:"email_id"`
+}
+
+type CheckInStatusResponse struct {
+	NoOfDays   uint
+	StartDate  string
+	CheckedOut bool
+}
+
+type AllocateRoomRequest struct {
+	UserID       uint    `json:"user_id"`
+	RoomID       uint    `json:"room_id"`
+	NumberOfDays uint    `json:"number_of_days"`
+	Amount       float32 `json:"amount"`
+}

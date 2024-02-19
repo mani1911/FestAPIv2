@@ -148,24 +148,46 @@ func (impl *hospiControllerImpl) DeleteRoom(c echo.Context) error {
 	return utils.SendResponse(c, res.Code, res.Message)
 }
 
-// @Summary		Check in for the visitors.
-// @Description	If roomID is zero, visitor is not alloted room.
-// @ID				CheckIn
+// @Summary		Check-In status of a visitor.
+// @Description	returns check-details of user if they've paid online
+// @ID				CheckInStatus
 // @Tags			Hospi
 // @Accept			json
-// @Param			request	body		dto.CheckInRequest	true	"Check in request"
-// @Success		200		{object}	string				"Success"
+// @Param			request	body		dto.CheckInStatusRequest	true	"Check in status request"
+// @Success		200		{object}	dto.CheckInStatusResponse				"Success"
 // @Failure		400		{object}	string				"Invalid Request"
 // @Failure		500		{object}	string				"Internal Server Error"
 // @Security		ApiKeyAuth
-// @Router			/api/hospi/checkIn [post]
-func (impl *hospiControllerImpl) CheckIn(c echo.Context) error {
-	var req dto.CheckInRequest
+// @Router			/api/hospi/checkInStatus [post]
+func (impl *hospiControllerImpl) CheckInStatus(c echo.Context) error {
+	var req dto.CheckInStatusRequest
 
 	if err := c.Bind(&req); err != nil {
 		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
 	}
 
-	res := impl.HospiService.CheckIn(req)
+	res := impl.HospiService.CheckInStatus(req)
+	return utils.SendResponse(c, res.Code, res.Message)
+}
+
+// @Summary		Allocate room for user
+// @Description	Allocates room for a given user if available
+// @ID				AllocateRoom
+// @Tags			Hospi
+// @Accept			json
+// @Param			request	body		dto.AllocateRoomRequest	true	"Room allocation request"
+// @Success		200		{object}	string				"Success"
+// @Failure		400		{object}	string				"Invalid Request"
+// @Failure		500		{object}	string				"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/hospi/allocate/room [post]
+func (impl *hospiControllerImpl) AllocateRoom(c echo.Context) error {
+	var req dto.AllocateRoomRequest
+
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+
+	res := impl.HospiService.AllocateRoom(req)
 	return utils.SendResponse(c, res.Code, res.Message)
 }

@@ -11,16 +11,22 @@ import (
 )
 
 type hospiServiceImpl struct {
-	hospiRepository repository.HospiRepository
-	adminRepository repository.AdminRepository
+	hospiRepository    repository.HospiRepository
+	adminRepository    repository.AdminRepository
+	userRepository     repository.UserRepository
+	treasuryRepository repository.TreasuryRepository
 }
 
 func NewHospiServiceImpl(
 	hospiRepository repository.HospiRepository,
-	adminRepository repository.AdminRepository) service.HospiService {
+	adminRepository repository.AdminRepository,
+	userRepository repository.UserRepository,
+	treasuryRepository repository.TreasuryRepository) service.HospiService {
 	return &hospiServiceImpl{
-		hospiRepository: hospiRepository,
-		adminRepository: adminRepository,
+		hospiRepository:    hospiRepository,
+		adminRepository:    adminRepository,
+		userRepository:     userRepository,
+		treasuryRepository: treasuryRepository,
 	}
 }
 
@@ -148,43 +154,128 @@ func (impl *hospiServiceImpl) DeleteRoom(req dto.DeleteRoomRequest) dto.Response
 	return dto.Response{Code: http.StatusOK, Message: "Successfully deleted the room"}
 }
 
-func (impl *hospiServiceImpl) CheckIn(req dto.CheckInRequest) dto.Response {
-	if req.UserID == 0 || (req.RoomID != 0 && req.NoOfDays == 0) {
-		return dto.Response{Code: http.StatusBadRequest, Message: "Invalid Request"}
+func (impl *hospiServiceImpl) CheckInStatus(req dto.CheckInStatusRequest) dto.Response {
+	user, err := impl.userRepository.FindByEmail(req.EmailID)
+
+	if user == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User with this email not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
-	room := models.RoomReg{
-		RoomID:   req.RoomID,
-		UserID:   req.UserID,
-		NoOfDays: req.NoOfDays,
+	visitor, err := impl.hospiRepository.FindVisitorByUserID(user.ID)
+
+	if visitor == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Please complete registration process at PR desk."}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
-	if req.RoomID != 0 {
-		if err := impl.hospiRepository.RoomReg(&room); err != nil {
-			if err.Error() == "No vacancy" {
-				return dto.Response{Code: http.StatusBadRequest, Message: "Room not vacant"}
-			}
-			return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to register room"}
+	roomReg, err := impl.hospiRepository.FindRoomRegByUserID(visitor.UserID)
+
+	if roomReg == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User has not checked in"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: dto.CheckInStatusResponse{
+		NoOfDays:   roomReg.NoOfDays,
+		StartDate:  roomReg.StartDate,
+		CheckedOut: roomReg.CheckedOut,
+	}}
+}
+
+func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Response {
+	user, err := impl.userRepository.FindByID(req.UserID)
+
+	if user == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	room, err := impl.hospiRepository.FindRoomByID(req.RoomID)
+
+	if room == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Room not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	if room.Occupied >= room.Capacity {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Room is already filled!"}
+	}
+
+	bill, err := impl.treasuryRepository.GetBillByUserIDAndPaidTo(user.ID, "townScript")
+	var roomReg *models.RoomReg
+
+	if bill == nil && err == nil {
+		// room registration not found
+		bill = &models.Bill{
+			UserID: user.ID,
+			Email:  user.Email,
+			Time:   time.Now(),
+			Mode:   "OFFLINE",
+			Amount: req.Amount,
+			PaidTo: models.HOSPI,
 		}
-	}
 
-	temp := models.Visitor{
-		UserID: req.UserID,
-		RoomID: req.RoomID,
-	}
-	if req.CheckInTime != "" {
-		parsedTime, err := time.Parse(time.RFC3339, req.CheckInTime)
+		err := impl.treasuryRepository.AddBillByModel(bill)
+
 		if err != nil {
-			return dto.Response{Code: http.StatusBadRequest, Message: "Failed to parse date"}
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to create bills for user"}
 		}
-		temp.CheckInTime = parsedTime
+
+		roomReg = &models.RoomReg{
+			RoomID:    room.ID,
+			Email:     user.Email,
+			UserID:    user.ID,
+			NoOfDays:  req.NumberOfDays,
+			StartDate: time.Now().Format("15-01-2006"),
+		}
+
+		err = impl.hospiRepository.AddRoomReg(roomReg)
+
+		if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to create room registration for user"}
+		}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	} else {
-		temp.CheckInTime = time.Now()
+		roomReg, err = impl.hospiRepository.FindRoomRegByUserID(user.ID)
+
+		if roomReg == nil && err == nil {
+			return dto.Response{Code: http.StatusBadRequest, Message: "Room registration not found for townscript user!"}
+		} else if err != nil {
+			return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to find room registration for user"}
+		}
 	}
 
-	if err := impl.hospiRepository.AddVisitor(&temp); err != nil {
-		return dto.Response{Code: http.StatusInternalServerError, Message: "Failed to add visitor"}
+	room.Occupied++
+	err = impl.hospiRepository.UpdateRoom(room)
+
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to update room, Internal Server Error"}
 	}
 
-	return dto.Response{Code: http.StatusOK, Message: "Checked In!"}
+	visitor, err := impl.hospiRepository.FindVisitorByUserID(user.ID)
+
+	if visitor == nil && err == nil {
+		return dto.Response{Code: http.StatusBadGateway, Message: "Go back to pr desk"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	visitor.CheckInTime = time.Now()
+	visitor.CheckInBillID = bill.ID
+	visitor.RoomRegID = roomReg.ID
+
+	err = impl.hospiRepository.UpdateVisitor(visitor)
+
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to add visitor"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: "Room allocated!"}
 }

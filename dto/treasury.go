@@ -10,7 +10,7 @@ type AddBillRequest struct {
 	UserID uint             `json:"user_id"`
 	Time   time.Time        `json:"time"`
 	Mode   string           `json:"mode"`
-	Amount uint             `json:"amount"`
+	Amount float32          `json:"amount"`
 	RefID  string           `json:"ref_id"`
 	PaidTo models.AdminRole `json:"paid_to"`
 	Type   string           `json:"type"`

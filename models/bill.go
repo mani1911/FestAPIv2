@@ -14,7 +14,7 @@ type Bill struct {
 	User   User      `gorm:"foreignkey:ID;references:UserID"`
 	Time   time.Time `gorm:"not null"`
 	Mode   string    `gorm:"not null"`
-	Amount uint      `gorm:"not null"`
+	Amount float32   `gorm:"not null"`
 	RefID  string
 	PaidTo AdminRole `gorm:"not null"`
 }

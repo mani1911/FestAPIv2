@@ -30,6 +30,8 @@ func (r *registry) NewHospiService() service.HospiService {
 	return impl.NewHospiServiceImpl(
 		r.NewHospiRepository(),
 		r.NewAdminRepository(),
+		r.NewUserRepository(),
+		r.NewTreasuryRepository(),
 	)
 }
 
