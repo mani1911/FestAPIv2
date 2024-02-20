@@ -182,38 +182,3 @@ func (repository *treasuryRepositoryImpl) AddBillByModel(bill *models.Bill) erro
 
 	return nil
 }
-
-func (repository *treasuryRepositoryImpl) AddCheckOutBill(user *models.User, checkoutdata *dto.CheckOutRequest) error {
-
-	if checkoutdata.Fine > 0 {
-		fineBill := models.Bill{
-			Email:  user.Email,
-			Mode:   "Offline",
-			Amount: float32(checkoutdata.Fine),
-			RefID:  fmt.Sprint(checkoutdata.FineReqID),
-			PaidTo: models.AdminRole("HOSPI"),
-			Time:   time.Now(),
-		}
-
-		if err := repository.DB.Model(&models.Bill{}).Create(&fineBill).Error; err != nil {
-			return errors.New("Error saving fine bill")
-		}
-	}
-	if checkoutdata.Discount > 0 {
-		discBill := models.Bill{
-			Email:  user.Email,
-			Mode:   "Offline",
-			Amount: float32(checkoutdata.Discount),
-			RefID:  fmt.Sprint(checkoutdata.DiscountReqID),
-			PaidTo: models.AdminRole("HOSPI"),
-			Time:   time.Now(),
-		}
-
-		if err := repository.DB.Model(&models.Bill{}).Create(&discBill).Error; err != nil {
-			return errors.New("Error saving discount bill")
-		}
-	}
-
-	return nil
-
-}

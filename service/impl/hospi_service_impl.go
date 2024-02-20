@@ -307,15 +307,56 @@ func (impl *hospiServiceImpl) CheckOut(req dto.CheckOutRequest) dto.Response {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
 	}
 
-	err = impl.hospiRepository.CheckoutVisitor(visitor)
+	roomReg, err := impl.hospiRepository.FindRoomRegByUserID(user.ID)
 	if err != nil {
-		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an issue checking out the user"}
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to update room, Internal Server Error"}
 	}
 
-	err = impl.treasuryRepository.AddCheckOutBill(user, &req)
+	room, err := impl.hospiRepository.FindRoomByID(roomReg.RoomID)
+	if room == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Room not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+	if room.Occupied <= 0 {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Room is already empty!"}
+	}
+
+	room.Occupied--
+	err = impl.hospiRepository.UpdateRoom(room)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Unable to update room, Internal Server Error"}
+	}
+
+	err = impl.treasuryRepository.AddBill(&dto.AddBillRequest{
+		UserID: user.ID,
+		Time:   time.Now(),
+		Mode:   "OFFLINE",
+		Amount: float32(req.Fine),
+		RefID:  req.FineReqID,
+		PaidTo: models.AdminRole("HOSPI"),
+		Type:   "fine",
+	})
 	if err != nil {
 		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an error in adding user discount/fine bills"}
 	}
 
+	err = impl.treasuryRepository.AddBill(&dto.AddBillRequest{
+		UserID: user.ID,
+		Time:   time.Now(),
+		Mode:   "OFFLINE",
+		Amount: float32(req.Discount),
+		RefID:  req.DiscountReqID,
+		PaidTo: models.AdminRole("HOSPI"),
+		Type:   "discount",
+	})
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an error in adding user discount/fine bills"}
+	}
+
+	err = impl.hospiRepository.CheckoutVisitor(visitor)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an issue checking out the user"}
+	}
 	return dto.Response{Code: http.StatusOK, Message: "Checked Out!"}
 }

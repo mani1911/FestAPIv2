@@ -209,19 +209,29 @@ func (repository *hospiRepositoryImpl) CheckoutVisitor(visitor *models.Visitor) 
 	visitor.CheckInBillID = 0
 	visitor.CheckOutTime = time.Now()
 
-	if err := repository.DB.Model(&models.RoomReg{}).Delete("user_id", visitor.UserID).Error; err != nil {
+	roomRegUser := models.RoomReg{
+		UserID: visitor.UserID,
+	}
+
+	if err := repository.DB.Model(&models.RoomReg{}).Where("user_id = ?", visitor.UserID).Delete(&roomRegUser).Error; err != nil {
 		return errors.New("Error deleting room registration")
 	}
 
-	if err := repository.DB.Model(&models.Bill{}).Where("user_id = ?", visitor.UserID).Delete("paid_to", "townScript").Error; err != nil {
+	billTS := models.Bill{
+		PaidTo: "townScript",
+	}
+	if err := repository.DB.Model(&models.Bill{}).Where("user_id = ?", visitor.UserID).Delete(&billTS).Error; err != nil {
 		return errors.New("Error deleting townscript bills")
 	}
 
-	if err := repository.DB.Model(&models.Bill{}).Where("user_id = ?", visitor.UserID).Delete("paid_to", "HOSPI").Error; err != nil {
+	billHospi := models.Bill{
+		PaidTo: "HOSPI",
+	}
+	if err := repository.DB.Model(&models.Bill{}).Where("user_id = ?", visitor.UserID).Delete(&billHospi).Error; err != nil {
 		return errors.New("Error deleting room registration bills")
 	}
 
-	if err := repository.DB.Model(&models.Visitor{}).Save(visitor).Error; err != nil {
+	if err := repository.DB.Model(&models.Visitor{}).Where("user_id = ?", visitor.UserID).Save(&visitor).Error; err != nil {
 		return errors.New("Error checking out visitor")
 	}
 

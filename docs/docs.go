@@ -1569,13 +1569,13 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "discount_req_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "fine": {
                     "type": "integer"
                 },
                 "fine_req_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "user_id": {
                     "type": "integer"
