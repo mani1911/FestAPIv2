@@ -10,4 +10,5 @@ type HospiController interface {
 	DeleteRoom(c echo.Context) error
 	CheckInStatus(c echo.Context) error
 	AllocateRoom(c echo.Context) error
+	CheckOut(c echo.Context) error
 }

@@ -19,4 +19,6 @@ func NewHospiRouter(e *echo.Group, controller app.HospiController) {
 
 	hospiRoutes.POST("/checkInStatus", controller.CheckInStatus)
 	hospiRoutes.POST("/allocate/room", controller.AllocateRoom)
+	hospiRoutes.POST("/checkout", controller.CheckOut)
+
 }

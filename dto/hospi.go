@@ -69,3 +69,9 @@ type AllocateRoomRequest struct {
 	NumberOfDays uint    `json:"number_of_days"`
 	Amount       float32 `json:"amount"`
 }
+
+type CheckOutRequest struct {
+	UserID   uint `json:"user_id"`
+	Fine     uint `json:"fine"`
+	Discount uint `json:"discount"`
+}

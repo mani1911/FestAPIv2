@@ -169,6 +169,15 @@ definitions:
       startDate:
         type: string
     type: object
+  dto.CheckOutRequest:
+    properties:
+      discount:
+        type: integer
+      fine:
+        type: integer
+      user_id:
+        type: integer
+    type: object
   dto.CollegeResponse:
     properties:
       college_id:
@@ -607,15 +616,15 @@ paths:
     post:
       consumes:
       - application/json
-      description: Allocates room for a given user if available
-      operationId: AllocateRoom
+      description: Checks the user out of the room
+      operationId: CheckOut
       parameters:
-      - description: Room allocation request
+      - description: Check Out Request
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.AllocateRoomRequest'
+          $ref: '#/definitions/dto.CheckOutRequest'
       responses:
         "200":
           description: Success
@@ -631,7 +640,7 @@ paths:
             type: string
       security:
       - ApiKeyAuth: []
-      summary: Allocate room for user
+      summary: Check Out
       tags:
       - Hospi
   /api/hospi/checkInStatus:

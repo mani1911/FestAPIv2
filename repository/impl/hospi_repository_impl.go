@@ -2,6 +2,7 @@ package impl
 
 import (
 	"errors"
+	"time"
 
 	"github.com/delta/FestAPI/dto"
 	"github.com/delta/FestAPI/models"
@@ -200,4 +201,29 @@ func (repository *hospiRepositoryImpl) FindVisitorByUserID(userID uint) (*models
 	}
 
 	return &visitor, nil
+}
+
+func (repository *hospiRepositoryImpl) CheckoutVisitor(visitor *models.Visitor) error {
+
+	visitor.RoomRegID = 0
+	visitor.CheckInBillID = 0
+	visitor.CheckOutTime = time.Now()
+
+	if err := repository.DB.Model(&models.RoomReg{}).Delete("user_id", visitor.UserID).Error; err != nil {
+		return errors.New("Error deleting room registration")
+	}
+
+	if err := repository.DB.Model(&models.Bill{}).Where("user_id = ?", visitor.UserID).Delete("paid_to", "townScript").Error; err != nil {
+		return errors.New("Error deleting townscript bills")
+	}
+
+	if err := repository.DB.Model(&models.Bill{}).Where("user_id = ?", visitor.UserID).Delete("paid_to", "HOSPI").Error; err != nil {
+		return errors.New("Error deleting room registration bills")
+	}
+
+	if err := repository.DB.Model(&models.Visitor{}).Save(visitor).Error; err != nil {
+		return errors.New("Error checking out visitor")
+	}
+
+	return nil
 }

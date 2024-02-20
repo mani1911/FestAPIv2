@@ -23,4 +23,5 @@ type HospiRepository interface {
 	FindVisitorByUserID(uint) (*models.Visitor, error)
 	FindRoomRegByUserID(uint) (*models.RoomReg, error)
 	FindRoomRegByUserEmail(string) (*models.RoomReg, error)
+	CheckoutVisitor(*models.Visitor) error
 }

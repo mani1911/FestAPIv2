@@ -394,23 +394,23 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Allocates room for a given user if available",
+                "description": "Checks the user out of the room",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Hospi"
                 ],
-                "summary": "Allocate room for user",
-                "operationId": "AllocateRoom",
+                "summary": "Check Out",
+                "operationId": "CheckOut",
                 "parameters": [
                     {
-                        "description": "Room allocation request",
+                        "description": "Check Out Request",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.AllocateRoomRequest"
+                            "$ref": "#/definitions/dto.CheckOutRequest"
                         }
                     }
                 ],
@@ -1504,6 +1504,20 @@
                 },
                 "startDate": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.CheckOutRequest": {
+            "type": "object",
+            "properties": {
+                "discount": {
+                    "type": "integer"
+                },
+                "fine": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

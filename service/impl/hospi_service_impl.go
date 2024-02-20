@@ -288,3 +288,29 @@ func (impl *hospiServiceImpl) AllocateRoom(req dto.AllocateRoomRequest) dto.Resp
 
 	return dto.Response{Code: http.StatusOK, Message: "Room allocated!"}
 }
+
+func (impl *hospiServiceImpl) CheckOut(req dto.CheckOutRequest) dto.Response {
+
+	user, err := impl.userRepository.FindByID(req.UserID)
+
+	if user == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "User not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	visitor, err := impl.hospiRepository.FindVisitorByUserID(user.ID)
+
+	if visitor == nil && err == nil {
+		return dto.Response{Code: http.StatusBadGateway, Message: "User has never registered as a Visitor"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	err = impl.hospiRepository.CheckoutVisitor(visitor)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: "Checked Out!"}
+}
