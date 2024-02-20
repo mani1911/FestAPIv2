@@ -400,23 +400,23 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Checks the user out of the room",
+                "description": "Allocates room for a given user if available",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Hospi"
                 ],
-                "summary": "Check Out",
-                "operationId": "CheckOut",
+                "summary": "Allocate room for user",
+                "operationId": "AllocateRoom",
                 "parameters": [
                     {
-                        "description": "Check Out Request",
+                        "description": "Room allocation request",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CheckOutRequest"
+                            "$ref": "#/definitions/dto.AllocateRoomRequest"
                         }
                     }
                 ],
@@ -474,6 +474,55 @@ const docTemplate = `{
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/dto.CheckInStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/hospi/checkout": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Checks the user out of the room",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Check Out",
+                "operationId": "CheckOut",
+                "parameters": [
+                    {
+                        "description": "Check Out Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CheckOutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -1519,7 +1568,13 @@ const docTemplate = `{
                 "discount": {
                     "type": "integer"
                 },
+                "discount_req_id": {
+                    "type": "integer"
+                },
                 "fine": {
+                    "type": "integer"
+                },
+                "fine_req_id": {
                     "type": "integer"
                 },
                 "user_id": {

@@ -309,7 +309,12 @@ func (impl *hospiServiceImpl) CheckOut(req dto.CheckOutRequest) dto.Response {
 
 	err = impl.hospiRepository.CheckoutVisitor(visitor)
 	if err != nil {
-		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an issue checking out the user"}
+	}
+
+	err = impl.treasuryRepository.AddCheckOutBill(user, &req)
+	if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "There seems to be an error in adding user discount/fine bills"}
 	}
 
 	return dto.Response{Code: http.StatusOK, Message: "Checked Out!"}

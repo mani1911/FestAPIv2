@@ -71,7 +71,9 @@ type AllocateRoomRequest struct {
 }
 
 type CheckOutRequest struct {
-	UserID   uint `json:"user_id"`
-	Fine     uint `json:"fine"`
-	Discount uint `json:"discount"`
+	UserID        uint `json:"user_id"`
+	Fine          uint `json:"fine"`
+	FineReqID     uint `json:"fine_req_id"`
+	Discount      uint `json:"discount"`
+	DiscountReqID uint `json:"discount_req_id"`
 }

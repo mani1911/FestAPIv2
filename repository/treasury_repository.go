@@ -13,4 +13,5 @@ type TreasuryRepository interface {
 	GetBillArrayByUserIDAndPaidTo(uint, string) (*[]models.Bill, error)
 	UpdateBillWithUserID(string, uint) error
 	AddBillByModel(*models.Bill) error
+	AddCheckOutBill(*models.User, *dto.CheckOutRequest) error
 }
