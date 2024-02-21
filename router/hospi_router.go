@@ -16,6 +16,7 @@ func NewHospiRouter(e *echo.Group, controller app.HospiController) {
 	hospiRoutes.POST("/updateHostel", controller.AddUpdateHostel) // add and update hostel
 	hospiRoutes.POST("/updateRoom", controller.AddUpdateRoom)     // add and update room
 	hospiRoutes.DELETE("/deleteRoom", controller.DeleteRoom)
+	hospiRoutes.GET("/usersInRoom", controller.GetUsersInRoom)
 
 	hospiRoutes.POST("/checkInStatus", controller.CheckInStatus)
 	hospiRoutes.POST("/allocate/room", controller.AllocateRoom)

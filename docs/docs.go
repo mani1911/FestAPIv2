@@ -783,6 +783,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/hospi/usersInRoom": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get user id and email of users using room id",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hospi"
+                ],
+                "summary": "Get Users in Room",
+                "operationId": "GetUsersInRoom",
+                "parameters": [
+                    {
+                        "description": "User in room Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserInRoomRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/pr/register": {
             "post": {
                 "security": [
@@ -1725,6 +1774,14 @@ const docTemplate = `{
                 },
                 "size": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.UserInRoomRequest": {
+            "type": "object",
+            "properties": {
+                "room_id": {
+                    "type": "integer"
                 }
             }
         },

@@ -213,3 +213,25 @@ func (impl *hospiControllerImpl) CheckOut(c echo.Context) error {
 	res := impl.HospiService.CheckOut(req)
 	return utils.SendResponse(c, res.Code, res.Message)
 }
+
+// @Summary		Get Users in Room
+// @Description	Get user id and email of users using room id
+// @ID				GetUsersInRoom
+// @Tags			Hospi
+// @Accept			json
+// @Param			request	body		dto.UserInRoomRequest	true	"User in room Request"
+// @Success		200		{object}	string					"Success"
+// @Failure		400		{object}	string					"Invalid Request"
+// @Failure		500		{object}	string					"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/hospi/usersInRoom [post]
+func (impl *hospiControllerImpl) GetUsersInRoom(c echo.Context) error {
+	var req dto.UserInRoomRequest
+
+	if err := c.Bind(&req); err != nil {
+		return utils.SendResponse(c, http.StatusBadRequest, "Invalid Request")
+	}
+
+	res := impl.HospiService.GetUsersInRoom(req)
+	return utils.SendResponse(c, res.Code, res.Message)
+}

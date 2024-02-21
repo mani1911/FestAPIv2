@@ -11,4 +11,5 @@ type HospiService interface {
 	CheckInStatus(dto.CheckInStatusRequest) dto.Response
 	AllocateRoom(dto.AllocateRoomRequest) dto.Response
 	CheckOut(dto.CheckOutRequest) dto.Response
+	GetUsersInRoom(dto.UserInRoomRequest) dto.Response
 }

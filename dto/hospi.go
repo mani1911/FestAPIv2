@@ -77,3 +77,12 @@ type CheckOutRequest struct {
 	Discount      uint   `json:"discount"`
 	DiscountReqID string `json:"discount_req_id"`
 }
+
+type UserInRoomRequest struct {
+	RoomID uint `json:"room_id"`
+}
+
+type UserInRoomResponse struct {
+	UserID uint   `json:"user_id"`
+	Email  string `json:"email"`
+}

@@ -276,6 +276,11 @@ definitions:
       size:
         type: string
     type: object
+  dto.UserInRoomRequest:
+    properties:
+      room_id:
+        type: integer
+    type: object
   dto.UserInfoRequest:
     properties:
       info_type:
@@ -861,6 +866,37 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Add/Update a new room.
+      tags:
+      - Hospi
+  /api/hospi/usersInRoom:
+    post:
+      consumes:
+      - application/json
+      description: Get user id and email of users using room id
+      operationId: GetUsersInRoom
+      parameters:
+      - description: User in room Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserInRoomRequest'
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Invalid Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Users in Room
       tags:
       - Hospi
   /api/pr/register:

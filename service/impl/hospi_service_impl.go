@@ -360,3 +360,23 @@ func (impl *hospiServiceImpl) CheckOut(req dto.CheckOutRequest) dto.Response {
 	}
 	return dto.Response{Code: http.StatusOK, Message: "Checked Out!"}
 }
+
+func (impl *hospiServiceImpl) GetUsersInRoom(req dto.UserInRoomRequest) dto.Response {
+
+	room, err := impl.hospiRepository.FindRoomByID(req.RoomID)
+	if room == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "Room not found"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	userDetails, err := impl.hospiRepository.FindUsersByRoomID(req.RoomID)
+	if userDetails == nil && err == nil {
+		return dto.Response{Code: http.StatusBadRequest, Message: "No registrations in room"}
+	} else if err != nil {
+		return dto.Response{Code: http.StatusInternalServerError, Message: "Internal Server Error"}
+	}
+
+	return dto.Response{Code: http.StatusOK, Message: userDetails}
+
+}

@@ -237,3 +237,17 @@ func (repository *hospiRepositoryImpl) CheckoutVisitor(visitor *models.Visitor) 
 
 	return nil
 }
+
+func (repository *hospiRepositoryImpl) FindUsersByRoomID(roomID uint) ([]*dto.UserInRoomResponse, error) {
+	var res []*dto.UserInRoomResponse
+
+	if err := repository.DB.Model(&models.RoomReg{RoomID: roomID}).Select("email, user_id").Find(&res).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return res, nil
+
+}
